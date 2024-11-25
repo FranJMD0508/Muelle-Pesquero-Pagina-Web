@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import pool from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js"
 import errorHandling from "./middleware/errorHandler.js";
-import {createPescadoTable, createHerramientaTable} from "./data/createUserTable.js";
+import {createPescadoTable, createHerramientaTable, createClienteTable, createTransaccionesTable} from "./data/createUserTable.js";
 dotenv.config();
 
 const app = express();
@@ -22,6 +22,8 @@ app.use(errorHandling);
 // Crear esta tabla antes de empezar el servidor
 createHerramientaTable();
 createPescadoTable();
+createClienteTable();
+createTransaccionesTable();
 // Probando la conexion con la base de datos
 app.get("/", async(req,res) => {
     const result = await pool.query("SELECT current_database()")
