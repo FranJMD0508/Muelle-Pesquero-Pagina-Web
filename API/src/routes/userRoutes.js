@@ -59,8 +59,8 @@ router.delete("/clientes/:id", deleteCliente);          // Eliminar cliente
 // Rutas de Transacciones
 router.post("/transacciones", createtransacciones);       // Crear transacción
 router.get("/transacciones", getAllTransacciones);      // Obtener todas las transacciones
-router.get("/transacciones/:id", getTransaccionesByid); // Obtener transacción por ID
 router.get("/transacciones/rango", getTransaccionesByRangoFecha);  // Obtener transacciones por rango de fecha
+router.get("/transacciones/:id", getTransaccionesByid); // Obtener transacción por ID
 router.get("/transacciones/monto/rango", getTransaccionesMontosByRangoFecha);  // Obtener monto total por rango de fecha
 router.delete("/transacciones/:id", deleteTransaccion); // Eliminar transacción
 

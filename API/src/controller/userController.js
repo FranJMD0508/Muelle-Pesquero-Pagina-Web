@@ -148,20 +148,32 @@ export const getMontoNeto = async(req,res,next) => {
     
     };
     
-    export const getTransaccionesByRangoFecha = async (req, res, next) => {
-        const { fechaInicio, fechaFin } = req.body;
+    const isValidDate = (date) => {
+        // Verifica si la fecha es válida para el formato TIMESTAMP (YYYY-MM-DD HH:MM:SS)
+        const parsedDate = Date.parse(date);
+        return !isNaN(parsedDate);
+    };
     
-        // Validación simple de fechas (puedes agregar validaciones más estrictas)
+    export const getTransaccionesByRangoFecha = async (req, res, next) => {
+        const { fechaInicio, fechaFin } = req.query;
+    
         if (!fechaInicio || !fechaFin) {
-            return handleResponse(res,400,"Ambas Fechas Son Requeridas ");
+            return handleResponse(res, 400, "Ambas Fechas Son Requeridas");
         }
+    
+        // Verificar si las fechas son válidas
+        if (!isValidDate(fechaInicio) || !isValidDate(fechaFin)) {
+            return handleResponse(res, 400, "Las fechas deben estar en un formato válido.");
+        }
+    
         try {
             const transacciones = await getTransaccionesEntreFechasService(fechaInicio, fechaFin);
             handleResponse(res, 200, "Transacciones obtenidas con éxito", transacciones);
         } catch (e) {
-            next(e);
+            return handleResponse(res, 500, "Algo salió mal",  "Huevon" );
         }
     };
+    
 
     export const getTransaccionesByid = async (req, res, next) => {
         try {
@@ -174,23 +186,38 @@ export const getMontoNeto = async(req,res,next) => {
 
     
 
-    
-
     export const getTransaccionesMontosByRangoFecha = async (req, res, next) => {
-        const { fechaInicio, fechaFin } = req.body;
+        const { fechaInicio, fechaFin } = req.query;
     
-        // Validación simple de fechas (puedes agregar validaciones más estrictas)
+        // Validación simple de fechas
         if (!fechaInicio || !fechaFin) {
-            return handleResponse(res,400,"Ambas Fechas Son Requeridas ");
+            return handleResponse(res, 400, "Ambas Fechas Son Requeridas");
         }
+    
+        // Verificar que las fechas sean válidas
+        const isValidDate = (date) => !isNaN(Date.parse(date)); // Usamos Date.parse() para verificar fechas válidas
+    
+        if (!isValidDate(fechaInicio) || !isValidDate(fechaFin)) {
+            return handleResponse(res, 400, "Las fechas deben estar en un formato válido.");
+        }
+    
         try {
-            const transacciones = await getMontoTotalEntreFechasService(fechaInicio, fechaFin);
-            handleResponse(res, 200, "Transacciones obtenidas con éxito", transacciones);
+            // Obtener el monto total entre las fechas
+            const montoTotal = await getMontoTotalEntreFechasService(fechaInicio, fechaFin);
+    
+            if (montoTotal === 0) {
+                return handleResponse(res, 200, "No se encontraron transacciones en el rango de fechas proporcionado.", { montoTotal });
+            }
+    
+            // Devolver el monto total dentro de un objeto de respuesta
+            handleResponse(res, 200, "Monto total obtenido con éxito", { montoTotal });
+    
         } catch (e) {
-            next(e);
+            console.error("Error al obtener el monto total:", e.message);
+            return handleResponse(res, 500, "Algo salió mal", { error: e.message });
         }
     };
-
+    
 export const getPescadoById = async (req,res,next) => {
     try{
         const Pescado = await getPescadosServiceByid(req.params.id);

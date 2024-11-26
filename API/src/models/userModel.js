@@ -103,13 +103,11 @@ export const deleteTransaccionesServiceByid = async (id) => {
 
 //Funcion para obtener el Monto Neto de todas las transacciones realizadas
 export const getMontoNetoService = async () => {
-    const result = await pool.query(`
-        SELECT 
+    const result = await pool.query(`SELECT 
             COALESCE(SUM(CASE WHEN tipo = 'ingreso' THEN monto ELSE 0 END), 0) - 
             COALESCE(SUM(CASE WHEN tipo = 'egreso' THEN monto ELSE 0 END), 0) AS monto_neto
         FROM transacciones
-    `);
-
+        WHERE fecha BETWEEN $1 AND $2`);
     // Retorna el monto neto, o 0 si es null
     return result.rows[0].monto_neto;
 };
@@ -125,10 +123,19 @@ export const getTransaccionesEntreFechasService = async (fechaInicio, fechaFin) 
 
 export const getMontoTotalEntreFechasService = async (fechaInicio, fechaFin) => {
     // Asegúrate de que las fechas estén en el formato 'YYYY-MM-DD HH:MM:SS'
+
     const result = await pool.query(
-        "SELECT SUM(monto) AS monto_total FROM transacciones WHERE fecha BETWEEN $1 AND $2", 
+        `SELECT 
+    COALESCE(SUM(CASE WHEN tipo = 'ingreso' THEN monto ELSE 0 END), 0) - 
+    COALESCE(SUM(CASE WHEN tipo = 'egreso' THEN monto ELSE 0 END), 0) AS monto_neto
+    FROM transacciones
+         WHERE fecha BETWEEN $1 AND $2`, 
         [fechaInicio, fechaFin]
     );
-    // Devolvemos el monto total
-    return result.rows[0].monto_total;  // El resultado se encuentra en result.rows[0].monto_total
+    
+    // Verificamos si hay resultados y devolvemos el monto total
+    if (result.rows.length === 0 || result.rows[0].monto_total === null) {
+        return 0;  // Si no hay transacciones en el rango, devolvemos 0
+    }
+    return parseFloat(result.rows[0].monto_neto);  // Convertimos el resultado a un número decimal
 }
