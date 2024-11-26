@@ -2,7 +2,9 @@ import React from 'react'
 
 function NavMessage() {
   return (
-    <div>NavMessage</div>
+    <a className='nav-link nav-icon' href="#">
+      <i className='bi bi-envelope'></i>
+    </a>
   )
 }
 

@@ -1,7 +1,4 @@
 
-.toggle-sidebar .sidebar{
-    left: -300px;
-}
 
 .sidebar{
     position: fixed;
@@ -35,7 +32,7 @@
     background-color: #aab7cf;
 }
 
-@media (max-width: 1200px){
+@media (min-width: 1200px){
     #main, #footer{
         margin-left: 300px;
     }
@@ -47,7 +44,7 @@
     }
 }
 
-@media (max-width: 1200px){
+@media (min-width: 1200px){
     .toggle-sidebar #main,
     .toggle-sidebar #footer{
         margin-left: 0;
