@@ -30,7 +30,8 @@ import {
     deleteTransaccion,
 
     // Monto Neto (si es necesario)
-    getMontoNeto
+    getMontoNeto,
+    getVentasYClientesEntreFechas
 } from "../controller/userController.js";
 
 const router = express.Router();
@@ -60,9 +61,11 @@ router.delete("/clientes/:id", deleteCliente);          // Eliminar cliente
 router.post("/transacciones", createtransacciones);       // Crear transacción
 router.get("/transacciones", getAllTransacciones);      // Obtener todas las transacciones
 router.get("/transacciones/rango", getTransaccionesByRangoFecha);  // Obtener transacciones por rango de fecha
+router.get("/transacciones/clientes", getVentasYClientesEntreFechas)
 router.get("/transacciones/:id", getTransaccionesByid); // Obtener transacción por ID
 router.get("/transacciones/monto/rango", getTransaccionesMontosByRangoFecha);  // Obtener monto total por rango de fecha
 router.delete("/transacciones/:id", deleteTransaccion); // Eliminar transacción
+
 
 // Ruta para obtener el monto neto (si es necesario)
 router.get("/monto/total", getMontoNeto);               // Obtener el monto neto

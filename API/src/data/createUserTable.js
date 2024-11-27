@@ -1,12 +1,15 @@
 import pool from "../config/db.js";
 
 export const createPescadoTable = async () => {
-    const queryText = `Create table if not exists Pescados(
-    id serial primary key,
-    codigo_pescado varchar(100) unique not null,
-    pescado varchar(100)  not null,
-    peso_pescado float not null default 0
-)`;
+    const queryText = ` 
+    CREATE TABLE IF NOT EXISTS Pescados(
+        id serial PRIMARY KEY,
+        codigo_pescado varchar(100) UNIQUE NOT NULL,
+        pescado varchar(100) NOT NULL,
+        peso_pescado float NOT NULL DEFAULT 0,        
+        fecha_entrada DATE,
+        fecha_caducidad DATE 
+    );`;
 try{
     pool.query(queryText);
     //console.log("Tabla Creada si no existe");
@@ -31,14 +34,15 @@ try{
 };
 
 export const createClienteTable = async () => {
-    const queryText = `Create table if not exists Clientes(
-    id serial primary key,
-    nombre varchar(100) not null,
-    cedula varchar(100) unique not null,
-    email varchar(100),
-    telefono varchar(30),
-    direccion text
-)`;
+    const queryText = `
+    CREATE TABLE IF NOT EXISTS Clientes (
+    id SERIAL PRIMARY KEY,               -- Identificador único de cliente (interno)
+    nombre VARCHAR(100) NOT NULL,         -- Nombre del cliente
+    cedula VARCHAR(100) UNIQUE NOT NULL,  -- Cédula del cliente (única, ya que cada cliente tiene una cédula única)
+    email VARCHAR(100),                  -- Correo electrónico del cliente
+    telefono VARCHAR(30),                -- Teléfono del cliente
+    direccion TEXT                       -- Dirección del cliente
+);`;
 try{
     pool.query(queryText);
     //console.log("Tabla Creada si no existe");
@@ -48,17 +52,96 @@ try{
 };
 
 export const createTransaccionesTable = async () => {
-    const queryText = `CREATE TABLE if not exists transacciones(
-    id SERIAL PRIMARY KEY,
-    tipo VARCHAR(10) CHECK (tipo IN ('ingreso', 'egreso')),  
-    monto NUMERIC(15, 2) NOT NULL,   
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  
-    descripcion TEXT
-);`;
-try{
-    pool.query(queryText);
-    //console.log("Tabla Creada si no existe");
-}catch(e){
-    console.log("Error al crear la tabla: ",e);
+    const queryText = `
+    CREATE TABLE IF NOT EXISTS transacciones (
+    id SERIAL PRIMARY KEY,                 -- Identificador único de la transacción
+    tipo VARCHAR(10) CHECK (tipo IN ('ingreso', 'egreso')),  -- Tipo de transacción (ingreso o egreso)
+    monto NUMERIC(15, 2) NOT NULL,          -- Monto de la transacción
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Fecha y hora de la transacción
+    descripcion TEXT,                      -- Descripción de la transacción
+    codigo_pescado VARCHAR(100),           -- Código de pescado asociado
+    nombre_cliente VARCHAR(100) NOT NULL,   -- Nombre del cliente que realiza la transacción
+    cedula_cliente VARCHAR(100) NOT NULL,   -- Cédula del cliente que realiza la transacción
+    email_cliente VARCHAR(100),             -- Correo electrónico del cliente
+    telefono_cliente VARCHAR(30),           -- Teléfono del cliente
+    direccion_cliente TEXT,                 -- Dirección del cliente
+    CONSTRAINT fk_codigo_pescado FOREIGN KEY (codigo_pescado) REFERENCES pescados(codigo_pescado),  -- Relación con la tabla pescados
+    CONSTRAINT fk_cedula_cliente FOREIGN KEY (cedula_cliente) REFERENCES clientes(cedula)   -- Relación con la tabla clientes (cedula)
+);
+ `;
+    try {
+        await pool.query(queryText);
+        console.log("Tabla transacciones creada correctamente.");
+    } catch (e) {
+        console.log("Error al crear la tabla transacciones: ", e);
+    }
 };
-};
+
+//Crear el trigger para las base de datos
+
+export const createFunction = async () => {
+    const queryText = `
+    CREATE OR REPLACE FUNCTION insertar_o_actualizar_cliente()
+    	RETURNS TRIGGER AS $$
+    BEGIN
+    -- Verifica si el cliente ya existe en la tabla 'clientes' por su cédula
+    IF NOT EXISTS (SELECT 1 FROM clientes WHERE cedula = NEW.cedula_cliente) THEN
+        -- Si no existe, inserta un nuevo cliente en la tabla 'clientes'
+        INSERT INTO clientes (nombre, cedula, email, telefono, direccion)
+        VALUES (NEW.nombre_cliente, NEW.cedula_cliente, NEW.email_cliente, NEW.telefono_cliente, NEW.direccion_cliente);
+    ELSE
+        -- Si ya existe, actualiza la información del cliente
+        UPDATE clientes 
+        SET nombre = NEW.nombre_cliente,
+            email = NEW.email_cliente,
+            telefono = NEW.telefono_cliente,
+            direccion = NEW.direccion_cliente
+        WHERE cedula = NEW.cedula_cliente;
+    END IF;
+    -- Devuelve el nuevo registro de la transacción
+    RETURN NEW;
+    END;
+$$ LANGUAGE plpgsql;
+    `;
+  
+    try {
+      await pool.query(queryText);  // Ejecuta la función en la base de datos
+      console.log("Función 'insertar_o_actualizar_cliente' creada correctamente.");
+    } catch (e) {
+      console.log("Error al crear la función: ", e);
+    }
+  };
+
+  export const createTrigger = async () => {
+    // Consulta para verificar si el trigger ya existe
+    const checkTriggerQuery = `
+      SELECT 1
+      FROM pg_trigger t
+      JOIN pg_class c ON c.oid = t.tgrelid
+      WHERE c.relname = 'transacciones' 
+      AND t.tgname = 'trigger_insertar_cliente';
+    `;
+  
+    try {
+      // Verificamos si el trigger ya existe
+      const result = await pool.query(checkTriggerQuery);
+  
+      // Si el trigger no existe, lo creamos
+      if (result.rowCount === 0) {
+        const createTriggerQuery = `
+        CREATE TRIGGER trigger_insertar_cliente
+    AFTER INSERT ON transacciones
+    FOR EACH ROW
+    EXECUTE FUNCTION insertar_o_actualizar_cliente();
+        `;
+        
+        // Ejecutamos la consulta para crear el trigger
+        await pool.query(createTriggerQuery);
+        console.log("Trigger creado exitosamente.");
+      } else {
+        console.log("El trigger ya existe, no se creó.");
+      }
+    } catch (err) {
+      console.error("Error al crear el trigger:", err);
+    }
+  };
