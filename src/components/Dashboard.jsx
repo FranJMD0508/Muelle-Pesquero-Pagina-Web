@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import './dashboard.css'
 import Card from './Card';
+import Reports from './Reports';
 
 function Dashboard() {
-  const [pescados, setPescados] = useState([]);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch('http://localhost:5001/api/pescados');
-      const result = await response.json();
-      console.log(result);
-      const data = await result.data;
-      setPescados(data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
+  const [cards, setCards] = useState([]);
+
+  const fetchData = () => {
+    fetch('http://localhost:5001/api/pescados')
+      .then(response => response.json())
+      .then(data => {
+        setCards(data.data)
+      })
+      .catch(e => console.log(e.message));
   };
 
   useEffect(() => {
@@ -26,10 +25,12 @@ function Dashboard() {
         <div className="row">
             <div className="col-lg-8">
                 <div className="row">
-                    {
-                      pescados && pescados.length > 0 &&
-                      pescados.map(pescado => <Card key={pescado.id} pescado={pescado}/>)
-                    }
+                    <Card card={"Ventas"} icon={"bi bi-cart"} />
+                    <Card card={"Ganancias"} icon={"bi bi-currency-dollar"} />
+                    <Card card={"Clientes"} icon={"bi bi-people-fill"} />
+                    <div className="col-12">
+                      <Reports />
+                    </div>
                 </div>
             </div>
             <div className="col-lg-4"></div>
