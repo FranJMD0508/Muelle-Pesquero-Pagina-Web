@@ -21,7 +21,8 @@ import {
     updateHerramientaServiceByid, 
     updatePescadoServiceByid,
     getTransaccionesEntreFechasService,
-    getTransaccionesServiceByid } from "../models/userModel.js";
+    getTransaccionesServiceByid, 
+    getVentasYClientesEntreFechasService} from "../models/userModel.js";
 
 const handleResponse = (res,status,message,data = null) => {
     res.status(status).json({
@@ -32,18 +33,19 @@ const handleResponse = (res,status,message,data = null) => {
 };
 
 export const createpescado = async (req, res, next) => {
-    const { codigo_pescado, pescado, peso_pescado } = req.body;
+    const { codigo_pescado, pescado,peso_pescado,fecha_entrada,fecha_caducidad } = req.body;
 
     // Convertir peso_pescado a un número entero
     const pesoPescadoInt = parseFloat(peso_pescado);
-
+    isValidDate(fecha_entrada);
+    isValidDate(fecha_caducidad);
     // Verificar si la conversión fue exitosa
     if (isNaN(pesoPescadoInt)) {
         return res.status(400).json({ message: "El peso del pescado debe ser un número entero válido." });
     }
 
     try {
-        const newPescado = await createPescadoService(codigo_pescado, pescado, pesoPescadoInt);
+        const newPescado = await createPescadoService(codigo_pescado, pescado, pesoPescadoInt,fecha_entrada,fecha_caducidad);
         handleResponse(res, 201, "Pescado Creado Con Éxito", newPescado);
     } catch (e) {
         next(e);
@@ -81,13 +83,30 @@ export const createcliente = async (req, res, next) => {
 };
 
 export const createtransacciones = async (req, res, next) => {
-    const { tipo,monto,descripcion } = req.body;
+    const {     tipo, 
+        monto, 
+        descripcion, 
+        codigo_pescado, 
+        nombre_cliente, 
+        cedula_cliente, 
+        email_cliente, 
+        telefono_cliente, 
+        direccion_cliente} = req.body;
         // Validación de parámetros (opcional pero recomendable)
     if (!tipo || !monto) {
             return handleResponse(res,404,"Faltan datos requeridos: Tipo, Monto")
         }
     try {
-        const transaccion = await createTransaccionesService(tipo,monto,descripcion);
+        const transaccion = await createTransaccionesService(    
+            tipo, 
+            monto, 
+            descripcion, 
+            codigo_pescado, 
+            nombre_cliente, 
+            cedula_cliente, 
+            email_cliente, 
+            telefono_cliente, 
+            direccion_cliente);
         handleResponse(res, 201, "Transaccion Creada Con Éxito", transaccion);
     } catch (e) {
         next(e);
@@ -253,9 +272,11 @@ export const getHerramientaById = async (req,res,next) => {
 
 
 export const updatePescado = async (req,res,next) => {
-    const {codigo_pescado,pescado,peso_pescado} = req.body
+    const {codigo_pescado,pescado,peso_pescado,fecha_entrada,fecha_caducidad} = req.body
+    isValidDate(fecha_entrada);
+    isValidDate(fecha_caducidad);
     try{
-        const updatePescado = await updatePescadoServiceByid(codigo_pescado,pescado,peso_pescado,req.params.id);
+        const updatePescado = await updatePescadoServiceByid(codigo_pescado,pescado,peso_pescado,fecha_entrada,fecha_caducidad,req.params.id);
         if(!updatePescado) return handleResponse(res,404,"Pescado no encontrado");
         handleResponse(res,200,"Pescado Actualizado Con exito",updatePescado)
     }
@@ -330,4 +351,36 @@ export const deleteTransaccion = async (req,res,next) => {
     catch(e){
         next(e);
     };
+};
+
+export const getVentasYClientesEntreFechas = async(req,res,next) => {
+    const { fechaInicio, fechaFin } = req.query;
+    
+    // Validación simple de fechas
+    if (!fechaInicio || !fechaFin) {
+        return handleResponse(res, 400, "Ambas Fechas Son Requeridas");
+    }
+
+    // Verificar que las fechas sean válidas
+    const isValidDate = (date) => !isNaN(Date.parse(date)); // Usamos Date.parse() para verificar fechas válidas
+
+    if (!isValidDate(fechaInicio) || !isValidDate(fechaFin)) {
+        return handleResponse(res, 400, "Las fechas deben estar en un formato válido.");
+    }
+
+    try {
+        // Obtener el monto total entre las fechas
+        const ventasYclientes = await getVentasYClientesEntreFechasService(fechaInicio, fechaFin);
+
+        if (ventasYclientes === 0) {
+            return handleResponse(res, 200, "No se encontraron transacciones en el rango de fechas proporcionado.", { ventasYclientes });
+        }
+
+        // Devolver el monto total dentro de un objeto de respuesta
+        handleResponse(res, 200, "Ventas y Clientes obtenidos con éxito", { ventasYclientes });
+
+    } catch (e) {
+        next(e)
+        
+    }  
 };
