@@ -11,11 +11,6 @@ function CardFilter({filterChange}) {
                 <h6>Filtro</h6>
             </li>
             <li>
-                <a className='dropdown-item' onClick={() => filterChange('Todo')}>
-                    Todo
-                </a>
-            </li>
-            <li>
                 <a className='dropdown-item' onClick={() => filterChange('Ventas')}>
                     Ventas
                 </a>

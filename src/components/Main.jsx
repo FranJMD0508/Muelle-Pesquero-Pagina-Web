@@ -8,7 +8,7 @@ function Main() {
   const posiciones = [2, 0, 3, 1];
   return (
     <main id='main' className='main'>
-      <PageTitle page="Dashboard"/>
+      <PageTitle page="Centro de administración"/>
       <Dashboard />
     </main>
   )

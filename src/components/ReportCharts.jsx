@@ -47,7 +47,7 @@ function ReportCharts({ filter }) {
             },
             xaxis: {
                 type: 'datetime',
-                categories: ['2024-01-01','2024-02-01','2024-03-01','2024-04-01','2024-05-01', '2024-06-01', '2024-07-01', '2024-08-01', '2024-09-01', '2024-10-01', '2024-11-01', '2024-12-01'],
+                categories: [],
             },
             tooltip: {
                 x: {
@@ -57,16 +57,16 @@ function ReportCharts({ filter }) {
         }
     });
 
-    const fetchTransacciones = () => {
+    const fetchTransacciones = (array) => {
         fetch('http://localhost:5001/api/transacciones')
         .then(response => response.json())
         .then(data => {
-          procesarTransacciones(data.data);
+          procesarTransacciones(data.data,array);
         })
         .catch(e => console.log(e.message));
     }
 
-    const procesarTransacciones = (transacciones) => {
+    const procesarTransacciones = (transacciones, array) => {
         const ganancias = transacciones.reduce((acc, transaccion) => {
           const fecha = new Date(transaccion.fecha).toISOString().split('T')[0]; 
           const monto = transaccion.tipo === 'ingreso' ? parseFloat(transaccion.monto) : -parseFloat(transaccion.monto);
@@ -76,113 +76,100 @@ function ReportCharts({ filter }) {
           acc[fecha] += monto;
           return acc;
         }, {});
+
+        const ventas = transacciones.reduce((acc, transaccion) => {
+          const fecha = new Date(transaccion.fecha).toISOString().split('T')[0]; 
+          const nventas = transaccion.tipo === 'ingreso' ? 1 : 0;
+          if (!acc[fecha]) {
+            acc[fecha] = 0;
+          }
+          acc[fecha] += nventas;
+          return acc;
+        }, {});
+
+        const clientes = transacciones.reduce((acc, transaccion) => {
+          const fecha = new Date(transaccion.fecha).toISOString().split('T')[0]; 
+          const nclientes = transaccion.tipo === 'ingreso' ? 1 : 0;
+
+          if (!acc[fecha]) {
+            acc[fecha] = 0;
+          }
+          if (array.includes(transaccion.tipo) === false) {
+            acc[fecha] += nclientes;
+            array.push(transaccion.tipo);
+          }
+          return acc;
+        }, {});
     
-          const gananciaData = Object.keys(ganancias).map(fecha => ({
+        const gananciaData = Object.keys(ganancias).map(fecha => ({
             x: fecha,
             y: ganancias[fecha],
             
           }));
 
+        const ventasData = Object.keys(ventas).map(fecha => ({
+            x: fecha,
+            y: ventas[fecha],
+            
+          }));
+
+        const clientesData = Object.keys(clientes).map(fecha => ({
+            x: fecha,
+            y: clientes[fecha],
+            
+          }));
+
+          let newSeries, newColors, newCategories;
+          if (filter === 'Ventas' || filter === "Ventas") {
+              newSeries = [
+                  {
+                      name: 'Ventas',
+                      data: ventasData
+                  },
+              ];
+              newColors = ['#4154f1', '#2eca6a', '#ff771d'];
+              newCategories = ventasData.map(fecha => fecha.x)
+          }
+          else if (filter === 'Ganancias' || filter === "Ganancias") {
+              newSeries = [
+                  {
+                      name: 'Ganancias',
+                      data: gananciaData
+                  },
+              ];
+              newColors = ['#2eca6a', '#4154f1', '#ff771d'];
+              newCategories = gananciaData.map(fecha => fecha.x);
+          }
+          else if (filter === 'Clientes' || filter === "Clientes") {
+              newSeries = [
+                  {
+                      name: 'Clientes',
+                      data: clientesData
+                  },
+              ];
+              newColors = ['#ff771d', '#4154f1', '#2eca6a'];
+              newCategories = clientesData.map(fecha => fecha.x);
+          }
+
           setData(prevData => ({
-            ...prevData,
-            series: [
-                {
-                    name: 'Ventas',
-                    data: [10, 41, 35, 51, 49, 62, 500]
-                },
-                {
-                    name: 'Ganancias',
-                    data: gananciaData
-                },
-                {
-                    name: 'Clientes',
-                    data: [10, 20, 30, 40, 50, 60, 90]
-                },
-            ],
-        }));
-        console.log("Ganancia Despues: ",gananciaData);
-    };
-    
-
-    const updateSeries = (filter) => {
-        let newSeries, newColors;
-
-        if (filter === 'Todo' || filter === "Todo") {
-            newSeries = [
-                {
-                    name: 'Ventas',
-                    data: [10, 41, 35, 51, 49, 62, 90]
-                },
-                {
-                    name: 'Ganancias',
-                    data: [{
-                        x: '2024-01-01',
-                        y: null
-                      },
-                      {
-                        x: '2024-01-01',
-                        y: 44
-                      },
-                      {
-                        x: 'Dec 25 2024',
-                        y: 31
-                      },     
-                    ]
-                },
-                {
-                    name: 'Clientes',
-                    data: [10, 20, 30, 40, 50, 60, 90]
-                },
-            ];
-            newColors = ['#4154f1', '#2eca6a', '#ff771d'];
-        }
-        else if (filter === 'Ventas' || filter === "Ventas") {
-            newSeries = [
-                {
-                    name: 'Ventas',
-                    data: [10, 41, 35, 51, 49, 62, 90]
-                },
-            ];
-            newColors = ['#4154f1', '#2eca6a', '#ff771d'];
-        }
-        else if (filter === 'Ganancias' || filter === "Ganancias") {
-            newSeries = [
-                {
-                    name: 'Ganancias',
-                    data: [0]
-                },
-            ];
-            newColors = ['#2eca6a', '#4154f1', '#ff771d'];
-        }
-        else if (filter === 'Clientes' || filter === "Clientes") {
-            newSeries = [
-                {
-                    name: 'Clientes',
-                    data: [10, 20, 30, 40, 50, 60, 90]
-                },
-            ];
-            newColors = ['#ff771d', '#4154f1', '#2eca6a'];
-        }
-        
-
-        setData((prevData) => ({
             ...prevData,
             series: newSeries,
             options: {
-                ...prevData.options,
-                colors: newColors
-            }
-
-        }));
+              ...prevData.options,
+              xaxis: {
+                ...prevData.options.xaxis,
+                categories: newCategories,
+              },
+              colors: newColors,
+            },
+          }));
+          console.log("Ganancia: ", gananciaData.map(fecha => fecha.x));
     };
 
     useEffect(() => {
-        updateSeries(filter);
+        const clientes = []
+        fetchTransacciones(clientes);
     }, [filter]);
-
-    useEffect(() => {
-        fetchTransacciones();
-    }, []);
 
   return (
     <Chart

@@ -3,7 +3,7 @@ import ChartFilter from './ChartFilter'
 import ReportCharts from './ReportCharts';
 
 function Reports() {
-    const [filter, setFilter] = useState('Todo');
+    const [filter, setFilter] = useState('Ventas');
     const handleFilterChange = filter => {
         setFilter(filter);
     };
