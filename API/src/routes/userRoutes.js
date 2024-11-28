@@ -31,12 +31,25 @@ import {
 
     // Monto Neto (si es necesario)
     getMontoNeto,
-    getVentasYClientesEntreFechas
+    getVentasYClientesEntreFechas,
+    // Registro de pescado
+    createResgistropescado,
+    updateIngresoPescado,
+    deleteIngresoPescado,
+    // Empleados
+    getAllNomina,
+    getNominaById,
+    createnomina,
+    updateNomina,
+    deleteNomina
 } from "../controller/userController.js";
 
 const router = express.Router();
 
 // Rutas de Pescados
+router.post("/ingreso/pescado",createResgistropescado)
+router.put("/ingreso/pescado",updateIngresoPescado)
+router.delete("/ingreso/pescado/:id",deleteIngresoPescado)
 router.post("/pescados", createpescado);                // Crear pescado
 router.get("/pescados", getAllPescados);                // Obtener todos los pescados
 router.get("/pescados/:id", getPescadoById);            // Obtener pescado por ID
@@ -66,6 +79,12 @@ router.get("/transacciones/:id", getTransaccionesByid); // Obtener transacción 
 router.get("/transacciones/monto/rango", getTransaccionesMontosByRangoFecha);  // Obtener monto total por rango de fecha
 router.delete("/transacciones/:id", deleteTransaccion); // Eliminar transacción
 
+// Rutas de Empleados
+router.get("/nomina",getAllNomina)
+router.get("/nomina/:id",getNominaById)
+router.post("/nomina",createnomina)
+router.post("/nomina",updateNomina)
+router.delete("/nomina",deleteNomina)
 
 // Ruta para obtener el monto neto (si es necesario)
 router.get("/monto/total", getMontoNeto);               // Obtener el monto neto
