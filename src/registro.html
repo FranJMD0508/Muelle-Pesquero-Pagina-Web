@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Muelle Pesquero</title>
+</head>
+<body>
+    <header>
+        <a href="" class="logo">
+            <img src="assets/images/pez.png" alt="logo">
+            <h2>MUELLE PESQUERO</h2>
+        </a>
+        <nav>
+            <a href="">COMPRAR</a>
+            <a href="">DASHBOARD</a>
+            <a href="">RELLENO</a>
+            <div class="dropdown">
+            <button class="dropbtn">PRODUCCIÓN</button>
+            <img src="assets/images/chevron-down-solid.svg" alt="Descripción del SVG" width="15" height="15">
+            <i class="fa-solid fa-chevron-down"></i>
+                <div class="menu-desplegable">
+                    <a href="formulario.html">FORMULARIO</a>
+                    <a href="registro.html">REGISTRO</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="hero">
+        <h1><p>REGISTRO</p><p>DE LOTES</p></h1>
+    </div>
+    <div class="checkbox-y-confirmar-y-rechazar">
+        <button id="btnRechazar">Rechazar</button>
+        <button id="btnEnviar">Aceptar</button>
+    </div>
+    <div id="enviado" class="modal"> 
+        <div class="modal-content"> 
+            <span class="close">&times;</span> 
+            <p>Se han enviado los lotes de pescado</p> 
+        </div> 
+    </div>
+    <table id="miTabla" class="tabla-produccion"> 
+        <thead>
+            <tr>
+                <th>Seleccionar</th>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Peso</th>
+                <th>Fecha de Llegada</th>
+                <th>Fecha de Vencimiento</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Las filas nuevas se añadirán aquí -->
+        </tbody>
+    </table>
+    
+    <script src="script2.js"></script>
+    
+</body>
+</html>
