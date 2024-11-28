@@ -1,69 +1,65 @@
-*{
-    margin: 0;
-    padding: 0;
-}
-
 body {
+    height: 90vh;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-}
-
-header{
-    padding: 10px;
-    color: white;
-    background-color: rgb(51, 176, 249);
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    margin: 0;
+    padding: 20px;
 }
 
 /* PARA LAS TABLAS */
 .container {
-    max-width: 800px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  flex-grow: 1;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-    text-align: center;
+  text-align: center;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+  width: 100%;
+  border-collapse: collapse;
 }
 
-th, td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+th,
+td {
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  padding: 10px;
 }
 
 th {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 /* FIN DE LAS TABLAS */
 
 /* CSS DE INDEX*/
 nav {
+    width: 150px;
+    height: 80vh;
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    position: relative;
+    padding-right: 5px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    background-color: rgba(158, 209, 212, 0.267);
     border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .botones_nav {
-    background-color: rgb(183, 226, 255);
     text-align: center;
+    width: 90%;
     color: #000;
     text-decoration: none;
-    margin-right: 10px;
+    margin: -0.8px auto;
     padding: 10px;
+    border:rgba(0, 0, 0, 0.1) solid 0.5px;
     border-radius: 7px;
-    transition: all 0.2s;
+    transition: background-color 0.3s;
 }
 
 .botones_nav:hover {

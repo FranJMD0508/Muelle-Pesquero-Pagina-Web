@@ -3,13 +3,16 @@ import pool from "../config/db.js";
 export const createPescadoTable = async () => {
     const queryText = ` 
     CREATE TABLE IF NOT EXISTS Pescados(
-        id serial PRIMARY KEY,
-        codigo_pescado varchar(100) UNIQUE NOT NULL,
-        pescado varchar(100) NOT NULL,
-        peso_pescado float NOT NULL DEFAULT 0,        
-        fecha_entrada DATE,
-        fecha_caducidad DATE 
-    );`;
+    id serial PRIMARY KEY,
+    codigo_pescado varchar(100) NOT NULL,     -- Clave foránea que hace referencia a TiposPescado
+    pescado varchar(100) not null,
+    cantidad_pescado float NOT NULL DEFAULT 0,  -- Peso del pescado ingresado
+    fecha_entrada DATE,                       -- Fecha de entrada
+    fecha_caducidad DATE,                        -- Fecha de salida
+    CONSTRAINT fk_codigo_pescado FOREIGN KEY (codigo_pescado)
+        REFERENCES TiposPescado(codigo_pescado)
+        ON DELETE CASCADE  -- Opcional: Elimina los registros en IngresoPescado cuando se elimina un tipo de pescado
+);`;
 try{
     pool.query(queryText);
     //console.log("Tabla Creada si no existe");
@@ -17,6 +20,69 @@ try{
     console.log("Error al crear la tabla: ",e);
 };
 };
+
+export const createNominaTable = async () => {
+    const queryText = ` 
+    CREATE TABLE if not exists Nomina(
+    id SERIAL PRIMARY KEY,             -- ID único para cada empleado (auto-incremental)
+    nombre VARCHAR(100) NOT NULL,      -- Nombre completo del empleado
+    apellido VARCHAR(100) NOT NULL,    -- Apellido del empleado
+    cedula VARCHAR(20) UNIQUE NOT NULL, -- Cédula de identidad (única para cada empleado)
+    clave VARCHAR(255) unique NOT NULL      -- Clave de acceso (puede ser una contraseña)
+);
+`;
+try{
+    pool.query(queryText);
+    //console.log("Tabla Creada si no existe");
+}catch(e){
+    console.log("Error al crear la tabla: ",e);
+};
+};
+
+
+export const createEmbarcacionTable = async () => {
+    const queryText = ` 
+    -- Crear el tipo ENUM si no existe previamente
+    DO $$ BEGIN
+    CREATE TYPE estado_embarcacion AS ENUM ('Operando', 'Inactivo');
+    EXCEPTION
+    WHEN duplicate_object THEN NULL; -- Si el tipo ya existe, no hacer nada
+    END $$;
+
+-- Crear la tabla solo si no existe
+    CREATE TABLE IF NOT EXISTS embarcaciones (
+    id SERIAL PRIMARY KEY,               -- Identificador único para cada embarcación
+    cantidad_barco int default 0,
+    tipo_embarcacion VARCHAR(100),       -- Nombre o tipo de la embarcación
+    estado estado_embarcacion,           -- Estado de la embarcación (Operando/Inactivo)
+    capacidad_carga_max FLOAT           -- Capacidad máxima de carga (en toneladas)
+);
+`;
+try{
+    pool.query(queryText);
+    //console.log("Tabla Creada si no existe");
+}catch(e){
+    console.log("Error al crear la tabla: ",e);
+};
+};
+
+
+export const createResgistroPescadoTable = async () => {
+    const queryText = ` 
+    CREATE TABLE IF NOT EXISTS TiposPescado(
+    codigo_pescado varchar(100) PRIMARY KEY,  -- Código único para cada tipo de pescado
+    pescado varchar(100) NOT NULL,            -- Tipo de pescado
+    descripcion text         -- Descripción opcional
+);`;
+try{
+    pool.query(queryText);
+    //console.log("Tabla Creada si no existe");
+}catch(e){
+    console.log("Error al crear la tabla: ",e);
+};
+};
+
+
 
 export const createHerramientaTable = async () => {
     const queryText = `Create table if not exists Herramientas(
@@ -65,7 +131,7 @@ export const createTransaccionesTable = async () => {
     email_cliente VARCHAR(100),             -- Correo electrónico del cliente
     telefono_cliente VARCHAR(30),           -- Teléfono del cliente
     direccion_cliente TEXT,                 -- Dirección del cliente
-    CONSTRAINT fk_codigo_pescado FOREIGN KEY (codigo_pescado) REFERENCES pescados(codigo_pescado),  -- Relación con la tabla pescados
+    CONSTRAINT fk_codigo_pescado FOREIGN KEY (codigo_pescado) REFERENCES TiposPescado(codigo_pescado),  -- Relación con la tabla pescados
     CONSTRAINT fk_cedula_cliente FOREIGN KEY (cedula_cliente) REFERENCES clientes(cedula)   -- Relación con la tabla clientes (cedula)
 );
  `;

@@ -25,7 +25,7 @@ function SideBar({ setRoute }) {
                         href="#"
                         onClick={() => setRoute('Alimentos')}
                     >
-                        <i class="fa-solid fa-fish"></i>
+                        <i className="fa-solid fa-fish"></i>
                         <span>Alimentos</span>
                     </a>
                 </li>

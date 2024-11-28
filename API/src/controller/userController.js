@@ -22,7 +22,19 @@ import {
     updatePescadoServiceByid,
     getTransaccionesEntreFechasService,
     getTransaccionesServiceByid, 
-    getVentasYClientesEntreFechasService} from "../models/userModel.js";
+    getVentasYClientesEntreFechasService,
+    createIngresoPescadoService,
+    deleteIngresoPescadoServiceByid,
+    createNominaService,
+    getAllNominaService,
+    getNominaServiceByid,
+    deleteNominaServiceByid,
+    updateNominaServiceByid,
+    createEmbarcacionService,
+    getAllEmbarcacionService,
+    getEmbarcacionServiceByid,
+    updateEmbarcacionServiceByid,
+    deleteEmbarcacionServiceByid} from "../models/userModel.js";
 
 const handleResponse = (res,status,message,data = null) => {
     res.status(status).json({
@@ -33,10 +45,10 @@ const handleResponse = (res,status,message,data = null) => {
 };
 
 export const createpescado = async (req, res, next) => {
-    const { codigo_pescado, pescado,peso_pescado,fecha_entrada,fecha_caducidad } = req.body;
+    const { codigo_pescado, pescado,cantidad_pescado,fecha_entrada,fecha_caducidad } = req.body;
 
     // Convertir peso_pescado a un número entero
-    const pesoPescadoInt = parseFloat(peso_pescado);
+    const pesoPescadoInt = parseFloat(cantidad_pescado);
     isValidDate(fecha_entrada);
     isValidDate(fecha_caducidad);
     // Verificar si la conversión fue exitosa
@@ -46,6 +58,16 @@ export const createpescado = async (req, res, next) => {
 
     try {
         const newPescado = await createPescadoService(codigo_pescado, pescado, pesoPescadoInt,fecha_entrada,fecha_caducidad);
+        handleResponse(res, 201, "Pescado Creado Con Éxito", newPescado);
+    } catch (e) {
+        next(e);
+    }
+};
+
+export const createResgistropescado = async (req, res, next) => {
+    const { codigo_pescado, pescado, descripcion } = req.body;
+    try {
+        const newPescado = await createIngresoPescadoService(codigo_pescado, pescado, descripcion);
         handleResponse(res, 201, "Pescado Creado Con Éxito", newPescado);
     } catch (e) {
         next(e);
@@ -81,6 +103,31 @@ export const createcliente = async (req, res, next) => {
         next(e);
     }
 };
+
+export const createEmbarcacion = async (req, res, next) => {
+    const { cantidad_barco,tipo_embarcacion,estado_embarcacion,capacidad_carga_max} = req.body;
+    const cantidad_de_barco = parseInt(cantidad_barco);
+    const capacidad_carga = parseFloat(capacidad_carga_max);
+    try {
+        const newEmbarcacion = await createEmbarcacionService(cantidad_de_barco,tipo_embarcacion,estado_embarcacion,capacidad_carga);
+        handleResponse(res, 201, "Embarcacion Creada Con Éxito", newEmbarcacion);
+    } catch (e) {
+        next(e);
+    }
+};
+
+export const createnomina = async (req, res, next) => {
+    const { nombre,apellido,cedula,clave} = req.body;
+    try {
+        const newEmpleado = await createNominaService(nombre,apellido,cedula,clave);
+        handleResponse(res, 201, "Empleado Creado Con Éxito", newEmpleado);
+    } catch (e) {
+        next(e);
+    }
+};
+
+
+
 
 export const createtransacciones = async (req, res, next) => {
     const {     tipo, 
@@ -135,10 +182,31 @@ export const getAllHerramientas = async (req,res,next) => {
     };
 };
 
+
+export const getAllEmbarcacion = async (req,res,next) => {
+    try{
+        const embarcaciones = await getAllEmbarcacionService();
+        handleResponse(res,200,"Embarcaciones Mostradas con Exito", embarcaciones);
+    }
+    catch(e){
+        next(e);
+    };
+};
+
 export const getAllClientes = async (req,res,next) => {
     try{
         const clientes = await getAllClientesService();
         handleResponse(res,200,"Clientes Mostrados con Exito", clientes);
+    }
+    catch(e){
+        next(e);
+    };
+};
+
+export const getAllNomina = async (req,res,next) => {
+    try{
+        const clientes = await getAllNominaService();
+        handleResponse(res,200,"Empleados Mostrados con Exito", clientes);
     }
     catch(e){
         next(e);
@@ -203,6 +271,15 @@ export const getMontoNeto = async(req,res,next) => {
         }
     };
 
+    export const getEmbarcacionsByid = async (req, res, next) => {
+        try {
+            const embarcacion = await getEmbarcacionServiceByid(req.params.id);
+            handleResponse(res, 200, "Embarcacion obtenida con éxito", embarcacion);
+        } catch (e) {
+            next(e);
+        }
+    };
+
     
 
     export const getTransaccionesMontosByRangoFecha = async (req, res, next) => {
@@ -259,6 +336,17 @@ export const getClienteById = async (req,res,next) => {
     };
 };
 
+export const getNominaById = async (req,res,next) => {
+    try{
+        const Empleado = await getNominaServiceByid(req.params.id);
+        if(!Empleado) return handleResponse(res,404,"Empleado no encontrado");
+        handleResponse(res,200,"Empleado Encontrado Con exito",Empleado);
+    }
+    catch(e){
+        next(e);
+    };
+};
+
 export const getHerramientaById = async (req,res,next) => {
     try{
         const herramienta = await getHerramientasServiceByid(req.params.id);
@@ -285,6 +373,20 @@ export const updatePescado = async (req,res,next) => {
     };
 };
 
+
+export const updateIngresoPescado = async (req,res,next) => {
+    const {codigo_pescado,pescado,descripcion} = req.body
+    try{
+        const updatePescado = await updateIngresoPescadoServiceByid(codigo_pescado,pescado,descripcion,req.params.id);
+        if(!updatePescado) return handleResponse(res,404,"Pescado no encontrado");
+        handleResponse(res,200,"Pescado Actualizado Con exito",updatePescado)
+    }
+    catch(e){
+        next(e);
+    };
+};
+
+
 export const updateCliente = async (req,res,next) => {
     const {nombre,cedula,email,telefono,direccion} = req.body
     try{
@@ -297,12 +399,38 @@ export const updateCliente = async (req,res,next) => {
     };
 };
 
+export const updateNomina = async (req,res,next) => {
+    const {nombre,apellido,cedula,clave} = req.body
+    try{
+        const updateNomina = await updateNominaServiceByid(nombre,apellido,cedula,clave,req.params.id);
+        if(!updateNomina) return handleResponse(res,404,"Nomina no encontrado");
+        handleResponse(res,200,"Nomina Actualizado Con exito",updateNomina)
+    }
+    catch(e){
+        next(e);
+    };
+};
+
 export const updateherramienta = async (req,res,next) => {
     const {codigo_herramienta,herramienta,cantidad_herramienta} = req.body
     try{
         const updateherramienta = await updateHerramientaServiceByid(codigo_herramienta,herramienta,cantidad_herramienta,req.params.id);
         if(!updateherramienta) return handleResponse(res,404,"Herramienta no encontrado");
-        handleResponse(res,200,"Herramienta Actualizado Con exito",updateherramienta)
+        handleResponse(res,200,"Herramienta Actualizada Con exito",updateherramienta)
+    }
+    catch(e){
+        next(e);
+    };
+};
+
+export const updateEmbarcacion = async (req,res,next) => {
+    const {cantidad_barco,tipo_embarcacion,estado_embarcacion,capacidad_carga_max} = req.body
+    const cantidad_de_barco = parseInt(cantidad_barco);
+    const capacidad_carga = parseFloat(capacidad_carga_max);
+    try{
+        const updateEmbarcacion = await updateEmbarcacionServiceByid(cantidad_de_barco,capacidad_carga,estado_embarcacion,req.params.id);
+        if(!updateEmbarcacion) return handleResponse(res,404,"Embarcacion no encontrada");
+        handleResponse(res,200,"Embarcacion Actualizada Con exito",updateEmbarcacion)
     }
     catch(e){
         next(e);
@@ -320,6 +448,30 @@ export const deletePescado = async (req,res,next) => {
     };
 };
 
+export const deleteIngresoPescado = async (req,res,next) => {
+    try{
+        const deletePescado = await deleteIngresoPescadoServiceByid(req.params.id);
+        if(!deletePescado) return handleResponse(res,404,"Pescado no encontrado");
+        handleResponse(res,200,"Pescado Eliminado Con exito",deletePescado)
+    }
+    catch(e){
+        next(e);
+    };
+};
+
+
+export const deleteEmbarcacion = async (req,res,next) => {
+    try{
+        const deleteEmbarcacion = await deleteEmbarcacionServiceByid(req.params.id);
+        if(!deleteEmbarcacion) return handleResponse(res,404,"Embarcacion no encontrada");
+        handleResponse(res,200,"Embarcacion Eliminada Con exito",deleteEmbarcacion)
+    }
+    catch(e){
+        next(e);
+    };
+};
+
+
 export const deleteHerramienta = async (req,res,next) => {
     try{
         const deleteHerramienta = await deleteHerramientaServiceByid(req.params.id);
@@ -336,6 +488,17 @@ export const deleteCliente = async (req,res,next) => {
         const deletecliente = await deleteClienteServiceByid(req.params.id);
         if(!deletecliente) return handleResponse(res,404,"Cliente no encontrado");
         handleResponse(res,200,"Cliente Eliminado Con exito",deletecliente)
+    }
+    catch(e){
+        next(e);
+    };
+};
+
+export const deleteNomina = async (req,res,next) => {
+    try{
+        const deleteNomina = await deleteNominaServiceByid(req.params.id);
+        if(!deleteNomina) return handleResponse(res,404,"Empleado no encontrado");
+        handleResponse(res,200,"Empleado Eliminado Con exito",deleteNomina)
     }
     catch(e){
         next(e);

@@ -24,7 +24,7 @@ function Main({ route }) {
     else if (route === 'Transacciones' || route === "Transacciones") {
       return <Transacciones />
     }
-    else if (route === 'Maquinaria' || route === "Clientes") {
+    else if (route === 'Clientes' || route === "Clientes") {
       return <Clientes />
     }
     else if (route === 'Maquinaria' || route === "Maquinaria") {
