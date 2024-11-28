@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú de Ventas de Pescados</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Menú de Ventas de Muelle Pesquero</h1>
+        <section class="search-bar">
+            <input type="text" id="search-input" placeholder="Buscar pescados...">
+            <button id="search-button"><img src="lupa.jpg" alt="Buscar"></button>
+        </section>
+    </header>
+    <main>
+        <section class="menu">
+            <article class="item" data-product="jurel">
+                <h2>Jurel</h2>
+                <img src="jurel2.jpg" alt="Salmón" data-hover="jurel.jpg">
+                <p>Precio: $13.00/kg</p>
+                <p>Descripción: Pez azul de carne oscura y sabor intenso.</p>
+                <button class="order-button">ORDENAR</button>
+            </article>
+            <article class="item" data-product="atun">
+                <h2>Atún</h2>
+                <img src="atun.jpg" alt="Atún" data-hover="atun2.jpg">
+                <p>Precio: $25.00/kg</p>
+                <p>Descripción: Atún de alta calidad, perfecto para ensaladas y platos a la parrilla.</p>
+                <button class="order-button">ORDENAR</button>
+            </article>
+            <article class="item" data-product="robalo">
+                <h2>Robalo</h2>
+                <img src="robalo.jpg" alt="Robalo" data-hover="robalo2.jpg">
+                <p>Precio: $12.00/kg</p>
+                <p>Descripción: Pescado blanco, excelente para freír y asar.</p>
+                <button class="order-button">ORDENAR</button>
+            </article>
+            <article class="item" data-product="merluza">
+                <h2>Merluza</h2>
+                <img src="merluza.jpg" alt="Merluza" data-hover="merluza2.jpg">
+                <p>Precio: $11.00/kg</p>
+                <p>Descripción: Merluza fresca, ideal para sopas y guisos.</p>
+                <button class="order-button">ORDENAR</button>
+            </article>
+            <article class="item" data-product="pargo">
+                <h2>Pargo</h2>
+                <img src="pargo.jpg" alt="Pargo" data-hover="pargo2.jpg">
+                <p>Precio: $36.00/kg</p>
+                <p>Descripción: Pez blanco de carne firme y sabor delicado.</p>
+                <button class="order-button">ORDENAR</button>
+            </article>
+            <article class="item" data-product="sardina">
+                <h2>Sardina</h2>
+                <img src="sardina.jpg" alt="Sardina" data-hover="sardina2.jpg">
+                <p>Precio: $3.20/kg</p>
+                <p>Descripción: Pequeño pez de agua salada, rico en omega-3 y calcio.</p>
+                <button class="order-button">ORDENAR</button>
+            </article>
+            <article class="item" data-product="dorado">
+                <h2>Dorado</h2>
+                <img src="dorado.jpg" alt="dorado" data-hover="dorado2.jpg">
+                <p>Precio: $12.30/kg</p>
+                <p>Descripción: Pez de colores brillantes, conocido también como mahi-mahi.</p>
+                <button class="order-button">ORDENAR</button>
+            </article>
+            <article class="item" data-product="corvina">
+                <h2>Corvina</h2>
+                <img src="corvina.jpg" alt="corvina" data-hover="corvina2.jpg">
+                <p>Precio: $12.00/kg</p>
+                <p>Descripción: Pez blanco de carne firme y sabor suave.</p>
+                <button class="order-button">ORDENAR</button>
+            </article>
+            <article class="item" data-product="trucha">
+                <h2>Trucha</h2>
+                <img src="trucha.jpg" alt="trucha" data-hover="trucha2.jpg">
+                <p>Precio: $17.00/kg</p>
+                <p>Descripción: Pez de agua dulce, similar al salmón, con carne rosada. </p>
+                <button class="order-button">ORDENAR</button>
+            </article>
+            <article class="item" data-product="camarones">
+                <h2>Camarones</h2>
+                <img src="camaron.jpg" alt="camarones" data-hover="camaron2.jpg">
+                <p>Precio: $12.00/kg</p>
+                <p>Descripción: Crustáceos pequeños, con sabor dulce y textura firme.</p>
+                <button class="order-button">ORDENAR</button>
+            </article>
+            <article class="item" data-product="langostas">
+                <h2>langostas</h2>
+                <img src="langosta.jpg" alt="langostas" data-hover="langosta2.jpg">
+                <p>Precio: $100.00/kg</p>
+                <p>Descripción: Crustáceo de gran tamaño y carne delicada.</p>
+                <button class="order-button">ORDENAR</button>
+            </article>
+            <article class="item" data-product="mejillones">
+                <h2>mejillones</h2>
+                <img src="mejillones.jpg" alt="mejillones" data-hover="mejillones2.jpg">
+                <p>Precio: $6.10/kg</p>
+                <p>Descripción: Moluscos de concha negra, ricos en hierro y proteínas.</p>
+                <button class="order-button">ORDENAR</button>
+            </article>
+            <article class="item" data-product="calamares">
+                <h2>Calamares</h2>
+                <img src="calamares2.jpg" alt="calamares" data-hover="calamares.jpg">
+                <p>Precio: $33.20/kg</p>
+                <p>Descripción: Cefalópodos con cuerpo alargado y tentáculos comestibles.</p>
+                <button class="order-button">ORDENAR</button>
+            </article>
+            <article class="item" data-product="cangrejos">
+                <h2>Cangrejo</h2>
+                <img src="cangrejo.jpg" alt="cangrejos" data-hover="cangrejo2.jpg">
+                <p>Precio: $36.20/kg</p>
+                <p>Descripción: Crustáceos de caparazón duro, con carne dulce y jugosa.</p>
+                <button class="order-button">ORDENAR</button>
+            </article>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Menú de Ventas de Muelle Pesquero</p>
+        <p>            All Rights Reserved.      </p> 
+    </footer>
+    <script src="scriptpagina1.js"></script>
+</body>
+</html>
