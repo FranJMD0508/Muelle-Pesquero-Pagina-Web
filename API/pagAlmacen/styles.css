@@ -4,7 +4,7 @@
 }
 
 body {
-    height: 95.1vh;
+    height: 94.4vh;
     font-family: Arial, sans-serif;
     display: flex;
     margin: 0;
@@ -65,6 +65,8 @@ nav {
 
 /* PARA LAS TABLAS */
 .container {
+  overflow: hidden;
+  overflow-y: auto;
   flex-grow: 1;
   padding: 20px;
   border-radius: 5px;
