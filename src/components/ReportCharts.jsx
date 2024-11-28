@@ -25,25 +25,24 @@ function ReportCharts({ filter }) {
                     show: false,
                 },
             },
-            markers: {
-                size: 4,
-            },
-            colors: ['#4154f1', '#2eca6a', '#ff771d'],
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shadeIntensity: 1,
-                    opacityFrom: 0.3,
-                    opacityTo: 0.4,
-                    stops: [0, 90, 100],
+            plotOptions: {
+                bar: {
+                  horizontal: false,
+                  columnWidth: '55%',
+                  borderRadius: 5,
+                  borderRadiusApplication: 'end'
                 },
-            },
+              },
             dataLabels: {
                 enabled: false
-            },
+            },  
+            colors: [],
             stroke: {
-                curve: 'smooth',
+                show: true,
                 width: 2,
+            },
+            fill: {
+                opacity: 1
             },
             xaxis: {
                 type: 'datetime',
@@ -94,9 +93,9 @@ function ReportCharts({ filter }) {
           if (!acc[fecha]) {
             acc[fecha] = 0;
           }
-          if (array.includes(transaccion.tipo) === false) {
+          if (array.includes(transaccion.cedula_cliente) === false) {
             acc[fecha] += nclientes;
-            array.push(transaccion.tipo);
+            array.push(transaccion.cedula_cliente);
           }
           return acc;
         }, {});
@@ -118,6 +117,7 @@ function ReportCharts({ filter }) {
             y: clientes[fecha],
             
           }));
+          console.log("Ganancia: ", gananciaData.map(fecha => fecha.x));
 
           let newSeries, newColors, newCategories;
           if (filter === 'Ventas' || filter === "Ventas") {
@@ -127,7 +127,7 @@ function ReportCharts({ filter }) {
                       data: ventasData
                   },
               ];
-              newColors = ['#4154f1', '#2eca6a', '#ff771d'];
+              newColors = ['#4154f1'];
               newCategories = ventasData.map(fecha => fecha.x)
           }
           else if (filter === 'Ganancias' || filter === "Ganancias") {
@@ -137,7 +137,7 @@ function ReportCharts({ filter }) {
                       data: gananciaData
                   },
               ];
-              newColors = ['#2eca6a', '#4154f1', '#ff771d'];
+              newColors = ['#2eca6a'];
               newCategories = gananciaData.map(fecha => fecha.x);
           }
           else if (filter === 'Clientes' || filter === "Clientes") {
@@ -147,7 +147,7 @@ function ReportCharts({ filter }) {
                       data: clientesData
                   },
               ];
-              newColors = ['#ff771d', '#4154f1', '#2eca6a'];
+              newColors = ['#ff771d'];
               newCategories = clientesData.map(fecha => fecha.x);
           }
 
@@ -163,7 +163,6 @@ function ReportCharts({ filter }) {
               colors: newColors,
             },
           }));
-          console.log("Ganancia: ", gananciaData.map(fecha => fecha.x));
     };
 
     useEffect(() => {

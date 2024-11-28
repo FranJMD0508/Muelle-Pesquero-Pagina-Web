@@ -4,7 +4,7 @@ import './pageTitle.css'
 function PageTitle({page}) {
   return (
     <div className="pagetitle">
-      <h1>Dashboard</h1>
+      <h1>Centro de administración</h1>
       <nav>
         <ol className='breadcrumb'>
           <li className='breadcrumb-item'>

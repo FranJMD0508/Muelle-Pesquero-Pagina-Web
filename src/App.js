@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 //Icons
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'remixicon/fonts/remixicon.css';
@@ -12,11 +13,13 @@ import SideBar from './components/SideBar';
 import Main from './components/Main';
 
 function App() {
+  const [route, setRoute] = useState('Dashboard');
+
   return (
     <>
       <Header />
-      <SideBar />
-      <Main />
+      <SideBar setRoute={setRoute}/>
+      <Main route={route}/>
     </>
   );
 }

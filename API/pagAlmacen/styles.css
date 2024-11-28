@@ -1,9 +1,20 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    height: 90vh;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-    margin: 0;
-    padding: 20px;
+}
+
+header{
+    padding: 10px;
+    color: white;
+    background-color: rgb(51, 176, 249);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 /* PARA LAS TABLAS */
@@ -39,29 +50,20 @@ th {
 
 /* CSS DE INDEX*/
 nav {
-    width: 150px;
-    height: 80vh;
     display: flex;
-    flex-direction: column;
-    position: relative;
-    padding-right: 5px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    background-color: rgba(158, 209, 212, 0.267);
+    justify-content: flex-end;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .botones_nav {
+    background-color: rgb(183, 226, 255);
     text-align: center;
-    width: 90%;
     color: #000;
     text-decoration: none;
-    margin: -0.8px auto;
+    margin-right: 10px;
     padding: 10px;
-    border:rgba(0, 0, 0, 0.1) solid 0.5px;
     border-radius: 7px;
-    transition: background-color 0.3s;
+    transition: all 0.2s;
 }
 
 .botones_nav:hover {

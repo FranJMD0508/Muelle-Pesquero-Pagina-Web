@@ -73,7 +73,7 @@
 
 .sidebar-nav .nav-item a{
     display: flex;
-    justify-content: space-between;
+    margin-bottom: 15px;
 }
 
 .sidebar-nav .nav-heading{
@@ -94,6 +94,10 @@
     transition: all 0.2s;
     padding: 10px 15px;
     border-radius: 4px;
+}
+
+.sidebar-nav .nav-link i{
+    margin-right: 10px;
 }
 
 .sidebar-nav .nav-link:hover{

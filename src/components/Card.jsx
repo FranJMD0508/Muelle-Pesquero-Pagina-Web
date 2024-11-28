@@ -62,18 +62,16 @@ function Card({card, icon}) {
 
   useEffect(() => {
     if (fechaInicio && fechaFin) {
-      fetchMonto(`http://localhost:5001/API/transacciones/monto/rango?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+        fetchMonto(`http://localhost:5001/API/transacciones/monto/rango?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
     }
   }, [fechaInicio, fechaFin]);
 
   useEffect(() => {
-    fetchTransacciones('http://localhost:5001/api/transacciones');
+    fetchTransacciones(`http://localhost:5001/api/transacciones/clientes?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
   }, []);
 
-
-  const countIngresos = transacciones.reduce((acc, transaccion) => {
-    return transaccion.tipo === 'ingreso' ? acc + 1 : acc;
-  }, 0);
+  console.log("Transacciones:", transacciones.ventasYclientes);
+  console.log("Monto:", monto);
 
   return (
     <div className='col-xxl-4 col-md-6'>
@@ -94,9 +92,9 @@ function Card({card, icon}) {
               {card === 'Ganancias' && monto
                 ? '$' + (monto?.montoTotal?.toLocaleString('en-US') || '0')
                 : card === 'Ventas' && monto
-                ? (countIngresos?.toLocaleString('en-US') || '0')
+                ? (transacciones.ventasYclientes.cantidad_ventas?.toLocaleString('en-US') || '0')
                 : card === 'Clientes' && monto
-                ? monto?.totalClientes?.toLocaleString('en-US') || '0'
+                ? (transacciones.ventasYclientes.cantidad_clientes?.toLocaleString('en-US') || '0')
                 : 'Cargando...'}
             </h6>
           </div>
