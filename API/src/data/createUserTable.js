@@ -29,6 +29,7 @@ export const createNominaTable = async () => {
     apellido VARCHAR(100) NOT NULL,    -- Apellido del empleado
     cedula VARCHAR(20) UNIQUE NOT NULL, -- Cédula de identidad (única para cada empleado)
     clave VARCHAR(255) unique NOT NULL      -- Clave de acceso (puede ser una contraseña)
+    rol VARCHAR(50) NOT NULL          -- Guarda el rol del trabajador (Viene de un dropdonw del registro)
 );
 `;
 try{

@@ -12,17 +12,112 @@
         <h1>Registros</h1>
         <ul>
             <li><a href="index.html"><i class="fas fa-home"></i> Inicio</a></li>
-            <li><a href="pescados.html"><i class="fa-solid fa-fish"></i> Alimentos</a></li>
-            <li><a href="#"><i class="fa-solid fa-screwdriver-wrench"></i> Herramientas</a></li>
-            <li><a href="#"><i class="fa-solid fa-receipt"></i> Transacciones</a></li>
-            <li><a href="clientes.html"><i class="fas fa-users"></i> Clientes</a></li>
-            <li><a href="#"><i class="fa-solid fa-ship"></i> Maquinaria</a></li>
-            <li><a href="#"><i class="fa-solid fa-id-card-clip"></i> Nomina</a></li>
+            <li><a href="#" id="linkPescados"><i class="fa-solid fa-fish"></i> Alimentos</a></li>
+            <li><a href="#" id="linkHerramientas"><i class="fa-solid fa-screwdriver-wrench"></i> Herramientas</a></li>
+            <li><a href="#" id="linkTransacciones"><i class="fa-solid fa-receipt"></i> Transacciones</a></li>
+            <li><a href="#" id="linkClientes"><i class="fas fa-users"></i> Clientes</a></li>
+            <li><a href="#" id="linkMaquinaria"><i class="fa-solid fa-ship"></i> Maquinaria</a></li>
+            <li><a href="#" id="linkNomina"><i class="fa-solid fa-id-card-clip"></i> Nomina</a></li>
         </ul>
         <div class="usuario">
             <p>Usuario</p>
         </div>
     </nav>
+    <div class="container" style="display: none;" id="alimentosT">
+        <h1>Inventario de alimentos</h1>
+        <table id="alimentos">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Peso</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los productos se agregarán aquí dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+    <div class="container" style="display: none;" id="herramientasT">
+        <h1>Historial de Clientes</h1>
+        <table id="herramientas">
+            <thead>
+                <tr>
+                    <th>Cedula</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Telefono</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los productos se agregarán aquí dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+    <div class="container" style="display: none;" id="transaccionesT">
+        <h1>Historial de Clientes</h1>
+        <table id="transacciones">
+            <thead>
+                <tr>
+                    <th>Cedula</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Telefono</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los productos se agregarán aquí dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+    <div class="container" style="display: none;" id="clientesT">
+        <h1>Historial de Clientes</h1>
+        <table id="clientes">
+            <thead>
+                <tr>
+                    <th>Cedula</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Telefono</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los productos se agregarán aquí dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+    <div class="container" style="display: none;" id="maquinariaT">
+        <h1>Historial de Clientes</h1>
+        <table id="maquinaria">
+            <thead>
+                <tr>
+                    <th>Cedula</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Telefono</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los productos se agregarán aquí dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+    <div class="container" style="display: none;" id="nominaT">
+        <h1>Historial de Clientes</h1>
+        <table id="nomina">
+            <thead>
+                <tr>
+                    <th>Cedula</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Telefono</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los productos se agregarán aquí dinámicamente -->
+            </tbody>
+        </table>
+    </div>
     <script src="almacenamiento.js"></script>
 </body>
 </html>

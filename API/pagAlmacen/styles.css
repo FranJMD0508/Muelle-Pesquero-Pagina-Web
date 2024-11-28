@@ -4,7 +4,8 @@
 }
 
 body {
-    height: 94.4vh;
+    overflow: hidden;
+    height: 95.8vh;
     font-family: Arial, sans-serif;
     display: flex;
     margin: 0;
@@ -14,7 +15,7 @@ body {
 /* CSS DE INDEX*/
 nav {
   height: 100%;
-  width: 200px;
+  min-width: 176px;
   background-color: #333;
   color: #fff;
   padding: 20px;
@@ -67,10 +68,13 @@ nav {
 .container {
   overflow: hidden;
   overflow-y: auto;
+  overflow: hidden;
+  overflow-y: auto;
   flex-grow: 1;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: all 1s ease-in-out;
 }
 
 h1 {
@@ -91,5 +95,12 @@ td {
 
 th {
   background-color: #f2f2f2;
+}
+
+.opciones {
+  margin: 0;
+  text-align: left;
+  border-bottom: none;
+  vertical-align: middle;
 }
 /* FIN DE LAS TABLAS */
