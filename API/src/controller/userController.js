@@ -534,10 +534,7 @@ export const getVentasYClientesEntreFechas = async(req,res,next) => {
     if (!fechaInicio || !fechaFin) {
         return handleResponse(res, 400, "Ambas Fechas Son Requeridas");
     }
-
-    // Verificar que las fechas sean válidas
-    const isValidDate = (date) => !isNaN(Date.parse(date)); // Usamos Date.parse() para verificar fechas válidas
-
+    
     if (!isValidDate(fechaInicio) || !isValidDate(fechaFin)) {
         return handleResponse(res, 400, "Las fechas deben estar en un formato válido.");
     }

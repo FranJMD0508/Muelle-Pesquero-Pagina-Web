@@ -281,7 +281,6 @@ export const getVentasYClientesEntreFechasService = async (fechaInicio, fechaFin
             cantidad_ventas: 0
         };
     }
-
     return {
         cantidad_clientes: result.rows[0].cantidad_clientes,
         cantidad_ventas: result.rows[0].cantidad_ventas
