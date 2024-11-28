@@ -40,6 +40,33 @@ try{
 };
 
 
+export const createEmbarcacionTable = async () => {
+    const queryText = ` 
+    -- Crear el tipo ENUM si no existe previamente
+    DO $$ BEGIN
+    CREATE TYPE estado_embarcacion AS ENUM ('Operando', 'Inactivo');
+    EXCEPTION
+    WHEN duplicate_object THEN NULL; -- Si el tipo ya existe, no hacer nada
+    END $$;
+
+-- Crear la tabla solo si no existe
+    CREATE TABLE IF NOT EXISTS embarcaciones (
+    id SERIAL PRIMARY KEY,               -- Identificador único para cada embarcación
+    cantidad_barco int default 0,
+    tipo_embarcacion VARCHAR(100),       -- Nombre o tipo de la embarcación
+    estado estado_embarcacion,           -- Estado de la embarcación (Operando/Inactivo)
+    capacidad_carga_max FLOAT           -- Capacidad máxima de carga (en toneladas)
+);
+`;
+try{
+    pool.query(queryText);
+    //console.log("Tabla Creada si no existe");
+}catch(e){
+    console.log("Error al crear la tabla: ",e);
+};
+};
+
+
 export const createResgistroPescadoTable = async () => {
     const queryText = ` 
     CREATE TABLE IF NOT EXISTS TiposPescado(

@@ -26,6 +26,11 @@ export const getAllHerramientasService = async () => {
     return result.rows;
 };
 
+export const getAllEmbarcacionService = async () => {
+    const result = await pool.query("SELECT * FROM Embarcaciones");
+    return result.rows;
+};
+
 // Obtener un registro por ID
 export const getPescadosServiceByid = async (id) => {
     const result = await pool.query("SELECT * FROM pescados where id = $1", [id]);
@@ -53,6 +58,10 @@ export const getTransaccionesServiceByid = async (id) => {
     return result.rows[0];
 };
 
+export const getEmbarcacionServiceByid = async (id) => {
+    const result = await pool.query("SELECT * FROM embarcacion where id = $1", [id]);
+    return result.rows[0];
+};
 
 
 // Crear registros
@@ -63,6 +72,8 @@ export const createPescadoService = async (codigo_pescado, pescado, cantidad_pes
     );
     return result.rows[0];
 };
+
+
 
 export const createIngresoPescadoService = async (codigo_pescado, pescado, descripcion) => {
     const result = await pool.query(
@@ -92,6 +103,14 @@ export const createNominaService = async (nombre, apellido, cedula, clave) => {
     const result = await pool.query(
         "INSERT INTO Nomina (nombre, apellido, cedula, clave) VALUES ($1,$2,$3,$4) RETURNING *",
         [nombre, apellido, cedula, clave]
+    );
+    return result.rows[0];
+};
+
+export const createEmbarcacionService = async (tipo_embarcacion,estado_embarcacion,capacidad_carga_max) => {
+    const result = await pool.query(
+        "INSERT INTO embarcacion (tipo_embarcacion,estado_embarcacion,capacidad_carga_max) VALUES ($1,$2,$3) RETURNING *",
+        [tipo_embarcacion,estado_embarcacion,capacidad_carga_max]
     );
     return result.rows[0];
 };
@@ -145,6 +164,14 @@ export const updateHerramientaServiceByid = async (codigo_herramienta, herramien
     return result.rows[0];
 };
 
+export const updateEmbarcacionServiceByid = async (tipo_embarcacion,estado_embarcacion,capacidad_carga_max, id) => {
+    const result = await pool.query(
+        "UPDATE embarcacion SET tipo_embarcacion = $1, estado_embarcacion = $2 , capacidad_carga_max = $3 WHERE id=$4 RETURNING *",
+        [tipo_embarcacion,estado_embarcacion,capacidad_carga_max, id]
+    );
+    return result.rows[0];
+};
+
 export const updateClienteServiceByid = async (nombre, cedula, email, telefono, direccion, id) => {
     const result = await pool.query(
         "UPDATE Clientes SET nombre = $1, cedula= $2, email = $3 , telefono = $4, direccion = $5 WHERE id= $6 RETURNING *",
@@ -184,6 +211,11 @@ export const deleteClienteServiceByid = async (id) => {
 
 export const deleteNominaServiceByid = async (id) => {
     const result = await pool.query("DELETE FROM Nomina WHERE id=$1 RETURNING *", [id]);
+    return result.rows[0];
+};
+
+export const deleteEmbarcacionServiceByid = async (id) => {
+    const result = await pool.query("DELETE FROM embarcacion WHERE id=$1 RETURNING *", [id]);
     return result.rows[0];
 };
 

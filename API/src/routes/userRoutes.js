@@ -41,7 +41,12 @@ import {
     getNominaById,
     createnomina,
     updateNomina,
-    deleteNomina
+    deleteNomina,
+    getAllEmbarcacion,
+    getEmbarcacionsByid,
+    createEmbarcacion,
+    updateEmbarcacion,
+    deleteEmbarcacion
 } from "../controller/userController.js";
 
 const router = express.Router();
@@ -83,8 +88,15 @@ router.delete("/transacciones/:id", deleteTransaccion); // Eliminar transacción
 router.get("/nomina",getAllNomina)
 router.get("/nomina/:id",getNominaById)
 router.post("/nomina",createnomina)
-router.post("/nomina",updateNomina)
-router.delete("/nomina",deleteNomina)
+router.post("/nomina/:id",updateNomina)
+router.delete("/nomina/:id",deleteNomina)
+
+// Rutas de Embarcacion
+router.get("/Embarcacion",getAllEmbarcacion)
+router.get("/Embarcacion/:id",getEmbarcacionsByid)
+router.post("/Embarcacion",createEmbarcacion)
+router.post("/Embarcacion/:id",updateEmbarcacion)
+router.delete("Embarcacion/:id",deleteEmbarcacion)
 
 // Ruta para obtener el monto neto (si es necesario)
 router.get("/monto/total", getMontoNeto);               // Obtener el monto neto
