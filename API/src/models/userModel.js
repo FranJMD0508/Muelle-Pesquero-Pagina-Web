@@ -6,6 +6,10 @@ export const getAllPescadosService = async () => {
     return result.rows;
 };
 
+export const getAllRegistroPescadosService = async () => {
+    const result = await pool.query("SELECT * FROM Tipospescado");
+    return result.rows;
+};
 export const getAllClientesService = async () => {
     const result = await pool.query("SELECT * FROM Clientes");
     return result.rows;
@@ -59,7 +63,7 @@ export const getTransaccionesServiceByid = async (id) => {
 };
 
 export const getEmbarcacionServiceByid = async (id) => {
-    const result = await pool.query("SELECT * FROM embarcacion where id = $1", [id]);
+    const result = await pool.query("SELECT * FROM embarcaciones where id = $1", [id]);
     return result.rows[0];
 };
 
@@ -107,10 +111,10 @@ export const createNominaService = async (nombre, apellido, cedula, clave) => {
     return result.rows[0];
 };
 
-export const createEmbarcacionService = async (tipo_embarcacion,estado_embarcacion,capacidad_carga_max) => {
+export const createEmbarcacionService = async (cantidad_barco,tipo_embarcacion,estado,capacidad_carga_max) => {
     const result = await pool.query(
-        "INSERT INTO embarcacion (tipo_embarcacion,estado_embarcacion,capacidad_carga_max) VALUES ($1,$2,$3) RETURNING *",
-        [tipo_embarcacion,estado_embarcacion,capacidad_carga_max]
+        "INSERT INTO embarcaciones (cantidad_barco,tipo_embarcacion,estado,capacidad_carga_max) VALUES ($1,$2,$3,$4) RETURNING *",
+        [cantidad_barco,tipo_embarcacion,estado,capacidad_carga_max]
     );
     return result.rows[0];
 };
@@ -164,10 +168,10 @@ export const updateHerramientaServiceByid = async (codigo_herramienta, herramien
     return result.rows[0];
 };
 
-export const updateEmbarcacionServiceByid = async (tipo_embarcacion,estado_embarcacion,capacidad_carga_max, id) => {
+export const updateEmbarcacionServiceByid = async (cantidad_embarcacion,tipo_embarcacion,estado_embarcacion,capacidad_carga_max, id) => {
     const result = await pool.query(
-        "UPDATE embarcacion SET tipo_embarcacion = $1, estado_embarcacion = $2 , capacidad_carga_max = $3 WHERE id=$4 RETURNING *",
-        [tipo_embarcacion,estado_embarcacion,capacidad_carga_max, id]
+        "UPDATE embarcaciones SET cantidad_barco = $1 tipo_embarcacion = $2, estado_embarcacion = $3 , capacidad_carga_max = $4 WHERE id=$5 RETURNING *",
+        [cantidad_barco,tipo_embarcacion,estado_embarcacion,capacidad_carga_max, id]
     );
     return result.rows[0];
 };
@@ -215,7 +219,7 @@ export const deleteNominaServiceByid = async (id) => {
 };
 
 export const deleteEmbarcacionServiceByid = async (id) => {
-    const result = await pool.query("DELETE FROM embarcacion WHERE id=$1 RETURNING *", [id]);
+    const result = await pool.query("DELETE FROM embarcaciones WHERE id=$1 RETURNING *", [id]);
     return result.rows[0];
 };
 
@@ -283,3 +287,31 @@ export const getVentasYClientesEntreFechasService = async (fechaInicio, fechaFin
         cantidad_ventas: result.rows[0].cantidad_ventas
     };
 };
+
+export const getPescadoConMayoresIngresosEntreFechasService = async (fechaInicio, fechaFin) => {
+        const result = await pool.query(
+            `SELECT 
+                t.codigo_pescado,
+                p.pescado,
+                SUM(t.monto) AS total_ingresos
+            FROM transacciones t
+            JOIN Pescados p ON t.codigo_pescado = p.codigo_pescado
+            WHERE t.tipo = 'ingreso'
+            AND t.fecha BETWEEN $1 AND $2
+            GROUP BY t.codigo_pescado, p.pescado
+            ORDER BY total_ingresos DESC
+            LIMIT 5;`,  
+            [fechaInicio, fechaFin]  
+        );
+    
+        // Si no se encuentran resultados
+        if (result.rows.length === 0) {
+            return {
+                message: "No se encontraron ingresos para ningún pescado en el rango de fechas proporcionado.",
+                data: []
+            };
+        }
+        console.log(result.rows)
+        // Retornamos los resultados obtenidos
+        return result.rows;
+    };

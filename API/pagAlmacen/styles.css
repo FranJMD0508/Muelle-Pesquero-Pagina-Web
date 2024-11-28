@@ -68,6 +68,8 @@ nav {
 .container {
   overflow: hidden;
   overflow-y: auto;
+  overflow: hidden;
+  overflow-y: auto;
   flex-grow: 1;
   padding: 20px;
   border-radius: 5px;
