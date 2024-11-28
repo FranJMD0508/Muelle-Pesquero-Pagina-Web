@@ -54,7 +54,7 @@ export const createEmbarcacionTable = async () => {
     id SERIAL PRIMARY KEY,               -- Identificador único para cada embarcación
     cantidad_barco int default 0,
     tipo_embarcacion VARCHAR(100),       -- Nombre o tipo de la embarcación
-    estado estado_embarcacion,           -- Estado de la embarcación (Operando/Inactivo)
+    estado estado_embarcacion not null,           -- Estado de la embarcación (Operando/Inactivo)
     capacidad_carga_max FLOAT           -- Capacidad máxima de carga (en toneladas)
 );
 `;

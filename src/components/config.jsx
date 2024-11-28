@@ -1,5 +1,5 @@
 const config = {
-    apiUrl: 'https://1ea0-190-120-250-84.ngrok-free.app/api/',
+    apiUrl: 'http://localhost:5001/api/',
 };
 
 export default config;

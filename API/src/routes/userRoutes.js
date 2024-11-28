@@ -46,12 +46,15 @@ import {
     getEmbarcacionsByid,
     createEmbarcacion,
     updateEmbarcacion,
-    deleteEmbarcacion
+    deleteEmbarcacion,
+    getAllResgistroPescados,
+    getPescadoConMayoresIngresosEntreFechas
 } from "../controller/userController.js";
 
 const router = express.Router();
 
 // Rutas de Pescados
+router.get("/ingreso/pescado",getAllResgistroPescados)
 router.post("/ingreso/pescado",createResgistropescado)
 router.put("/ingreso/pescado",updateIngresoPescado)
 router.delete("/ingreso/pescado/:id",deleteIngresoPescado)
@@ -78,6 +81,7 @@ router.delete("/clientes/:id", deleteCliente);          // Eliminar cliente
 // Rutas de Transacciones
 router.post("/transacciones", createtransacciones);       // Crear transacción
 router.get("/transacciones", getAllTransacciones);      // Obtener todas las transacciones
+router.get("/transacciones/masvendidos",getPescadoConMayoresIngresosEntreFechas)
 router.get("/transacciones/rango", getTransaccionesByRangoFecha);  // Obtener transacciones por rango de fecha
 router.get("/transacciones/clientes", getVentasYClientesEntreFechas)
 router.get("/transacciones/:id", getTransaccionesByid); // Obtener transacción por ID
@@ -92,11 +96,11 @@ router.post("/nomina/:id",updateNomina)
 router.delete("/nomina/:id",deleteNomina)
 
 // Rutas de Embarcacion
-router.get("/Embarcacion",getAllEmbarcacion)
-router.get("/Embarcacion/:id",getEmbarcacionsByid)
-router.post("/Embarcacion",createEmbarcacion)
-router.post("/Embarcacion/:id",updateEmbarcacion)
-router.delete("Embarcacion/:id",deleteEmbarcacion)
+router.get("/embarcacion",getAllEmbarcacion)
+router.get("/embarcacion/:id",getEmbarcacionsByid)
+router.post("/embarcacion",createEmbarcacion)
+router.post("/embarcacion/:id",updateEmbarcacion)
+router.delete("embarcacion/:id",deleteEmbarcacion)
 
 // Ruta para obtener el monto neto (si es necesario)
 router.get("/monto/total", getMontoNeto);               // Obtener el monto neto

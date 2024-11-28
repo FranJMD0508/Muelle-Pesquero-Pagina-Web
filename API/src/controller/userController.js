@@ -34,7 +34,9 @@ import {
     getAllEmbarcacionService,
     getEmbarcacionServiceByid,
     updateEmbarcacionServiceByid,
-    deleteEmbarcacionServiceByid} from "../models/userModel.js";
+    deleteEmbarcacionServiceByid,
+    getAllRegistroPescadosService,
+    getPescadoConMayoresIngresosEntreFechasService} from "../models/userModel.js";
 
 const handleResponse = (res,status,message,data = null) => {
     res.status(status).json({
@@ -104,12 +106,13 @@ export const createcliente = async (req, res, next) => {
     }
 };
 
+
 export const createEmbarcacion = async (req, res, next) => {
-    const { cantidad_barco,tipo_embarcacion,estado_embarcacion,capacidad_carga_max} = req.body;
+    const { cantidad_barco,tipo_embarcacion,estado,capacidad_carga_max} = req.body;
     const cantidad_de_barco = parseInt(cantidad_barco);
     const capacidad_carga = parseFloat(capacidad_carga_max);
     try {
-        const newEmbarcacion = await createEmbarcacionService(cantidad_de_barco,tipo_embarcacion,estado_embarcacion,capacidad_carga);
+        const newEmbarcacion = await createEmbarcacionService(cantidad_de_barco,tipo_embarcacion,estado,capacidad_carga);
         handleResponse(res, 201, "Embarcacion Creada Con Éxito", newEmbarcacion);
     } catch (e) {
         next(e);
@@ -171,7 +174,15 @@ export const getAllPescados = async (req,res,next) => {
     };
 };
 
-
+export const getAllResgistroPescados = async (req,res,next) => {
+    try{
+        const Pescados = await getAllRegistroPescadosService();
+        handleResponse(res,200,"Pescados Mostrados con Exito", Pescados);
+    }
+    catch(e){
+        next(e);
+    };
+};
 export const getAllHerramientas = async (req,res,next) => {
     try{
         const herramientas = await getAllHerramientasService();
@@ -547,3 +558,35 @@ export const getVentasYClientesEntreFechas = async(req,res,next) => {
         
     }  
 };
+
+export const getPescadoConMayoresIngresosEntreFechas = async (req, res, next) => {
+           const { fechaInicio, fechaFin } = req.query;
+    
+        // Validación simple de fechas
+        if (!fechaInicio || !fechaFin) {
+            return handleResponse(res, 400, "Ambas Fechas Son Requeridas");
+        }
+    
+        // Verificar que las fechas sean válidas
+        const isValidDate = (date) => !isNaN(Date.parse(date)); // Usamos Date.parse() para verificar fechas válidas
+    
+        if (!isValidDate(fechaInicio) || !isValidDate(fechaFin)) {
+            return handleResponse(res, 400, "Las fechas deben estar en un formato válido.");
+        }
+    
+        try {
+            // Llamar al servicio que consulta la base de datos
+            const result = await getPescadoConMayoresIngresosEntreFechasService(fechaInicio, fechaFin);
+    
+            // Verificar que la respuesta no esté vacía o sea undefined
+            if (!result || result.length === 0) {
+                return handleResponse(res, 200, "No se encontraron transacciones en el rango de fechas proporcionado.");
+            }
+    
+            // Devolver la respuesta con los datos obtenidos
+            handleResponse(res, 200, "Ventas y Clientes obtenidos con éxito", { ventasYclientes: result });
+            
+        } catch (e) {
+            next(e);
+        }
+    };

@@ -83,9 +83,6 @@ function Card({card, icon}) {
     console.log(`FECHAA: ${config.apiUrl}transacciones/clientes?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
   }, []);
 
-  console.log("Transacciones:", transacciones.ventasYclientes);
-  console.log("Monto:", monto);
-
   return (
     <div className='col-xxl-4 col-md-6'>
     <div className='card info-card sales-card'>

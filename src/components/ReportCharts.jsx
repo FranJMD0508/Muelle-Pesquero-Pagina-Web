@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Chart from 'react-apexcharts'
+import Chart from 'react-apexcharts';
+import config from './config';
 
 function ReportCharts({ filter }) {
     const [data, setData] = useState({
@@ -25,17 +26,6 @@ function ReportCharts({ filter }) {
                     show: false,
                 },
             },
-            plotOptions: {
-                bar: {
-                  horizontal: false,
-                  columnWidth: '55%',
-                  borderRadius: 5,
-                  borderRadiusApplication: 'end'
-                },
-              },
-            dataLabels: {
-                enabled: false
-            },  
             colors: [],
             stroke: {
                 show: true,
@@ -57,7 +47,12 @@ function ReportCharts({ filter }) {
     });
 
     const fetchTransacciones = (array) => {
-        fetch('http://localhost:5001/api/transacciones')
+      fetch(config.apiUrl + "transacciones", {
+        method: "get",
+        headers: new Headers({
+          "ngrok-skip-browser-warning": "69420",
+        }),
+      })
         .then(response => response.json())
         .then(data => {
           procesarTransacciones(data.data,array);
