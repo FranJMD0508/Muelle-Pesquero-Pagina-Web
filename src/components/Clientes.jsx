@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './tablas.css'
+import config from './config';
 
 function Clientes() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5001/api/clientes')
+    fetch(config.apiUrl + "clientes", {
+      method: "get",
+      headers: new Headers({
+        "ngrok-skip-browser-warning": "69420",
+      }),
+    })
     .then(response => response.json())
     .then(data => {
       setData(data.data)

@@ -77,7 +77,7 @@ function SideBar({ setRoute }) {
                         href="#"
                         onClick={() => setRoute('Maquinaria')}
                     >
-                        <i className="bi bi-table"></i>
+                        <i className="fa-solid fa-ship"></i>
                         <span>Maquinaria</span>
                     </a>
                 </li>
@@ -90,7 +90,7 @@ function SideBar({ setRoute }) {
                         href="#"
                         onClick={() => setRoute('Nomina')}
                     >
-                        <i className="bi bi-table"></i>
+                        <i className="fa-solid fa-id-card-clip"></i>
                         <span>Nómina</span>
                     </a>
                 </li>

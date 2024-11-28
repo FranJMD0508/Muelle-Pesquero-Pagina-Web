@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import './tablas.css';
+import config from './config';
 
 function Maquinaria() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch('https://e544-190-120-250-84.ngrok-free.app/api/embarcacion', {
+    fetch(config.apiUrl + "embarcacion", {
       method: "get",
       headers: new Headers({
         "ngrok-skip-browser-warning": "69420",
@@ -13,7 +15,6 @@ function Maquinaria() {
     .then(response => response.json())
     .then(data => {
       setData(data.data)
-      console.log("Data:",data.data)
     })
     .catch(e => console.log(e.message));
   }, []);
@@ -27,7 +28,7 @@ function Maquinaria() {
                 <th>Cantidad</th>
                 <th>Tipo de Embarcación</th>
                 <th>Estado</th>
-                <th>Capacidad máxima</th>
+                <th>Capacidad máxima (T) </th>
             </tr>
         </thead>
           <tbody>

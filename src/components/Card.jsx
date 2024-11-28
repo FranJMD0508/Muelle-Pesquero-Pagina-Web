@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CardFilter from './CardFilter'
 import './card.css'
+import config from './config';
 
 function Card({card, icon}) {
   const now = new Date();
@@ -22,7 +23,6 @@ function Card({card, icon}) {
     if (filter === 'Hoy' || filter === "Hoy"){
       startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
       endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
-      console.log("fi:", startDate, "ff:", endDate);
     }
     else if (filter === 'Este Mes' || filter === "Este mes"){
       startDate = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
@@ -40,10 +40,17 @@ function Card({card, icon}) {
     
     setFechaInicio(startDate.toISOString());
     setFechaFin(endDate.toISOString());
+    console.log("ANTES fi:", fechaInicio, "ff:", fechaFin);
   };
+  console.log("DESPUES fi:", fechaInicio, "ff:", fechaFin);
 
   const fetchMonto = (url) => {
-    fetch(url)
+    fetch(url, {
+      method: "get",
+      headers: new Headers({
+        "ngrok-skip-browser-warning": "69420",
+      }),
+    })
       .then(response => response.json())
       .then(data => {
         setMonto(data.data)
@@ -52,7 +59,12 @@ function Card({card, icon}) {
   };
 
   const fetchTransacciones = (url) => {
-    fetch(url)
+    fetch(url, {
+      method: "get",
+      headers: new Headers({
+        "ngrok-skip-browser-warning": "69420",
+      }),
+    })
       .then(response => response.json())
       .then(data => {
         setTransacciones(data.data)
@@ -62,12 +74,13 @@ function Card({card, icon}) {
 
   useEffect(() => {
     if (fechaInicio && fechaFin) {
-        fetchMonto(`http://localhost:5001/API/transacciones/monto/rango?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+        fetchMonto(`${config.apiUrl}transacciones/monto/rango?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
     }
   }, [fechaInicio, fechaFin]);
 
   useEffect(() => {
-    fetchTransacciones(`http://localhost:5001/api/transacciones/clientes?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+    fetchTransacciones(`${config.apiUrl}transacciones/clientes?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+    console.log(`FECHAA: ${config.apiUrl}transacciones/clientes?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
   }, []);
 
   console.log("Transacciones:", transacciones.ventasYclientes);

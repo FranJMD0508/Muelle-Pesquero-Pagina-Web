@@ -5,21 +5,6 @@ import Reports from './Reports';
 
 function Dashboard() {
 
-  const [cards, setCards] = useState([]);
-
-  const fetchData = () => {
-    fetch('http://localhost:5001/api/pescados')
-      .then(response => response.json())
-      .then(data => {
-        setCards(data.data)
-      })
-      .catch(e => console.log(e.message));
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
     <section className="dashboard section">
         <div className="row">
