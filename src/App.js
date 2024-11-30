@@ -24,7 +24,7 @@ function App() {
         </>
       );
     } 
-    else if (route === 'Dashboard') {
+    else if (route === 'Admin') {
       return (
         <>
           <Header />
