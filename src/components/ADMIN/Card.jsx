@@ -9,7 +9,7 @@ function Card({card, icon}) {
   const [fechaInicio, setFechaInicio] = useState(new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0).toISOString());
   const [fechaFin, setFechaFin] = useState(new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999).toISOString());
   const [monto, setMonto] = useState(null);
-  const [transacciones, setTransacciones] = useState([]);
+  const [transacciones, setTransacciones] = useState({ventasYclientes: {cantidad_ventas: 0, cantidad_clientes: 0}});
 
   const handleFilterChange = (filter) => {
     setFilter(filter);
@@ -40,9 +40,7 @@ function Card({card, icon}) {
     
     setFechaInicio(startDate.toISOString());
     setFechaFin(endDate.toISOString());
-    console.log("ANTES fi:", fechaInicio, "ff:", fechaFin);
   };
-  console.log("DESPUES fi:", fechaInicio, "ff:", fechaFin);
 
   const fetchMonto = (url) => {
     fetch(url, {
@@ -79,9 +77,11 @@ function Card({card, icon}) {
   }, [fechaInicio, fechaFin]);
 
   useEffect(() => {
-    fetchTransacciones(`${config.apiUrl}transacciones/clientes?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
-    console.log(`FECHAA: ${config.apiUrl}transacciones/clientes?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
-  }, []);
+    if (fechaInicio && fechaFin) {
+      fetchTransacciones(`${config.apiUrl}transacciones/clientes?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+      console.log(`FECHAA: ${config.apiUrl}transacciones/clientes?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
+    }
+  }, [fechaInicio, fechaFin]);
 
   return (
     <div className='col-xxl-4 col-md-6'>
@@ -99,13 +99,15 @@ function Card({card, icon}) {
           </div>
           <div className='ps-3'>
             <h6>
-              {card === 'Ganancias' && monto
-                ? '$' + (monto?.montoTotal?.toLocaleString('en-US') || '0')
-                : card === 'Ventas' && monto
-                ? (transacciones.ventasYclientes.cantidad_ventas?.toLocaleString('en-US') || '0')
-                : card === 'Clientes' && monto
-                ? (transacciones.ventasYclientes.cantidad_clientes?.toLocaleString('en-US') || '0')
-                : 'Cargando...'}
+                {
+                    card === 'Ganancias' && monto
+                    ? '$' + (monto?.montoTotal?.toLocaleString('en-US') || '0')
+                    : card === 'Ventas' && monto
+                    ? (transacciones.ventasYclientes.cantidad_ventas?.toLocaleString('en-US') || '0')
+                    : card === 'Clientes' && monto
+                    ? (transacciones.ventasYclientes.cantidad_clientes?.toLocaleString('en-US') || '0')
+                    : 'Cargando...'
+                }
             </h6>
           </div>
         </div>

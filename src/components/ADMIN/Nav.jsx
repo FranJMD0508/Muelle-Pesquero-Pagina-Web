@@ -1,7 +1,5 @@
 import React from 'react'
 import './nav.css'
-import NavNotice from './NavNotice'
-import NavMessage from './NavMessage'
 import NavAvatar from './NavAvatar'
 
 function Nav() {

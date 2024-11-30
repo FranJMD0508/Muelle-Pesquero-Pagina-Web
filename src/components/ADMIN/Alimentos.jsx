@@ -50,7 +50,7 @@ function Alimentos() {
                         <td>{formatDate(producto.fecha_entrada)}</td>
                         <td>{formatDate(producto.fecha_caducidad)}</td>
                     </tr>
-                    ))
+                  ))
                 }
           </tbody>
       </table>

@@ -4,46 +4,54 @@ import config from './config';
 
 function ReportCharts({ filter }) {
     const [data, setData] = useState({
-        series: [
-            {
-                name: 'Ventas',
-                data: []
-            },
-            {
-                name: 'Ganancias',
-                data: []
-            },
-            {
-                name: 'Clientes',
-                data: []
-            },
-        ],
-        options: {
-            chart: {
-                height: 350,
-                type: 'area',
-                toolbar: {
-                    show: false,
-                },
-            },
-            colors: [],
-            stroke: {
-                show: true,
-                width: 2,
-            },
-            fill: {
-                opacity: 1
-            },
-            xaxis: {
-                type: 'datetime',
-                categories: [],
-            },
-            tooltip: {
-                x: {
-                    format: 'dd/MM/yy HH:mm',
-                },
-            },
+      series: [
+        {
+          data: [],
         }
+      ],
+      options: {
+        chart: {
+          height: 350,
+          type: 'area',
+          zoom: {
+            enabled: false,
+          },
+          toolbar:{
+            show: false,
+          }
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        markers: {
+          size: 4,
+        },
+        fill: {
+          type: 'gradient',
+          gradient: {
+            stops: [0, 90, 100],
+          }
+        },
+        xaxis: {
+          categories: [],
+        },
+        stroke: {
+          curve: 'smooth',
+          width: 2,
+        },
+        plotOptions: {
+          line: {
+            colors: {
+              threshold: 0,
+            },
+          },
+        },
+        tooltip: {
+          x: {
+            format: 'dd/MM/yy HH:mm',
+          }
+        },
+      },
     });
 
     const fetchTransacciones = (array) => {
@@ -61,6 +69,7 @@ function ReportCharts({ filter }) {
     }
 
     const procesarTransacciones = (transacciones, array) => {
+        array.length = 0;
         const ganancias = transacciones.reduce((acc, transaccion) => {
           const fecha = new Date(transaccion.fecha).toISOString().split('T')[0]; 
           const monto = transaccion.tipo === 'ingreso' ? parseFloat(transaccion.monto) : -parseFloat(transaccion.monto);
@@ -170,7 +179,7 @@ function ReportCharts({ filter }) {
         options={data.options}
         series={data.series}
         type={data.options.chart.type}
-        height={350}
+        height={data.options.chart.height}
     />
   );
 }

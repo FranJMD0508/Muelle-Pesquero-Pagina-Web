@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './dashboard.css'
 import Card from './Card';
 import Reports from './Reports';
+import TopSelling from './TopSelling';
 
 function Dashboard() {
 
@@ -15,6 +16,9 @@ function Dashboard() {
                     <Card card={"Clientes"} icon={"bi bi-people-fill"} />
                     <div className="col-12">
                       <Reports />
+                    </div>
+                    <div className="col-12">
+                      <TopSelling />
                     </div>
                 </div>
             </div>

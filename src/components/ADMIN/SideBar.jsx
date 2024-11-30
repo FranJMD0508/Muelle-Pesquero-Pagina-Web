@@ -9,7 +9,6 @@ function SideBar({ setRoute }) {
                 <li className='nav-item'>
                     <a 
                         className='nav-link'
-                        href="/"
                         onClick={() => setRoute('Dashboard')}
                     >
                         <i className='bi bi-speedometer'></i>
@@ -22,7 +21,6 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        href="#"
                         onClick={() => setRoute('Alimentos')}
                     >
                         <i className="fa-solid fa-fish"></i>
@@ -35,7 +33,6 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        href="#"
                         onClick={() => setRoute('Herramientas')}
                     >
                         <i className="bi bi-tools"></i>
@@ -48,7 +45,6 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        href="#"
                         onClick={() => setRoute('Transacciones')}
                     >
                         <i className="bi bi-cash-coin"></i>
@@ -61,7 +57,6 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        href="#"
                         onClick={() => setRoute('Clientes')}
                     >
                         <i className="bi bi-people-fill"></i>
@@ -74,7 +69,6 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        href="#"
                         onClick={() => setRoute('Maquinaria')}
                     >
                         <i className="fa-solid fa-ship"></i>
@@ -87,7 +81,6 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        href="#"
                         onClick={() => setRoute('Nomina')}
                     >
                         <i className="fa-solid fa-id-card-clip"></i>
