@@ -10,7 +10,7 @@ function ComercialMain({ route }) {
   }
 
   return (
-    <main id='main' className='main'>
+    <main id='comercialMain'>
       {renderContent()}
     </main>
   )

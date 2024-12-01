@@ -1,0 +1,75 @@
+
+footer{
+    background-color: rgb(101, 179, 252);
+    color: white;
+    display: flex;
+    gap: 20px;
+    padding: 20px 30px 20px 10px;
+}
+
+#logo-footer{
+    margin: 0 50px 0 50px;
+    color: white;
+    text-align: center;
+    align-content: center;
+}
+
+#logo-footer img{
+    border-radius: 50%;
+    height: 50%;
+    margin-bottom: 10px;
+}
+
+.apartado{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.apartado h4{
+    font-size: 18px;
+    border-bottom: 2px solid white;
+    padding-bottom: 10px;
+}
+
+.apartado h5{
+    font-size: 16px;
+    margin: 0 0 -5px 0;
+}
+
+.apartado img{
+    height: 30px;
+    width: 50px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 5px;
+}
+
+.apartado a{
+    display: flex;
+    gap: 10px;
+    color: white;
+    width: max-content;
+    transition: all 0.1s ease;
+}
+
+#perfil{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+#perfil a{
+    background-color: rgb(91, 161, 225);
+    padding: 5px;
+    min-width: 150px;
+    transition: all 0.1s ease;
+}
+
+#perfil a:hover{
+    background-color: rgb(66, 120, 171);
+}
+
+.apartado a:hover{
+    color: rgb(237, 237, 237);
+}

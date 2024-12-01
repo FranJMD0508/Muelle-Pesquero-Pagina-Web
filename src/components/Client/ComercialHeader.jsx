@@ -1,7 +1,7 @@
 import React from 'react'
 import './header.css'
 
-function Header() {
+function Header({ setRoute }) {
   return (
     <header>
         <a href="/" className='logo'>
@@ -9,11 +9,36 @@ function Header() {
           <h1>MUELLE PESQUERO</h1>
         </a>
       <nav className='nav-bar'>
-        <a href="">INICIO</a>
-        <a href="">CATÁLOGO</a>
-        <a href="">NOSOTROS</a>
-        <a href="">INICIAR SESIÓN</a>
-        <a href="">CONTACTO</a>
+        <a
+          href=""
+          onClick={() => setRoute('Inicio')}
+        >
+          INICIO
+        </a>
+        <a
+          href=""
+          onClick={() => setRoute('Inicio')}
+        >
+          CATÁLOGO
+        </a>
+        <a
+          href=""
+          onClick={() => setRoute('Inicio')}
+        >
+          NOSOTROS
+        </a>
+        <a
+          href=""
+          onClick={() => setRoute('Inicio')}
+        >
+          CONTACTO
+        </a>
+        <a 
+          href=""
+          onClick={() => setRoute('Inicio')}
+        >
+          PERFIL
+        </a>
       </nav>
     </header>
   )

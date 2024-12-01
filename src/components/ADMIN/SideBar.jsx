@@ -9,7 +9,7 @@ function SideBar({ setRoute }) {
                 <li className='nav-item'>
                     <a 
                         className='nav-link'
-                        onClick={() => setRoute('Dashboard')}
+                        onClick={() => setRoute('Admin Dashboard')}
                     >
                         <i className='bi bi-speedometer'></i>
                         <span>Dashboard</span> 
@@ -21,7 +21,7 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        onClick={() => setRoute('Alimentos')}
+                        onClick={() => setRoute('Admin Alimentos')}
                     >
                         <i className="fa-solid fa-fish"></i>
                         <span>Alimentos</span>
@@ -33,7 +33,7 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        onClick={() => setRoute('Herramientas')}
+                        onClick={() => setRoute('Admin Herramientas')}
                     >
                         <i className="bi bi-tools"></i>
                         <span>Herramientas</span>
@@ -45,7 +45,7 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        onClick={() => setRoute('Transacciones')}
+                        onClick={() => setRoute('Admin Transacciones')}
                     >
                         <i className="bi bi-cash-coin"></i>
                         <span>Transacciones</span>
@@ -57,7 +57,7 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        onClick={() => setRoute('Clientes')}
+                        onClick={() => setRoute('Admin Clientes')}
                     >
                         <i className="bi bi-people-fill"></i>
                         <span>Clientes</span>
@@ -69,7 +69,7 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        onClick={() => setRoute('Maquinaria')}
+                        onClick={() => setRoute('Admin Maquinaria')}
                     >
                         <i className="fa-solid fa-ship"></i>
                         <span>Maquinaria</span>
@@ -81,7 +81,7 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        onClick={() => setRoute('Nomina')}
+                        onClick={() => setRoute('Admin Nomina')}
                     >
                         <i className="fa-solid fa-id-card-clip"></i>
                         <span>Nómina</span>
