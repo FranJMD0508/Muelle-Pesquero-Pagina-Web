@@ -12,24 +12,30 @@ import Header from './components/ADMIN/Header';
 import SideBar from './components/ADMIN/SideBar';
 import Main from './components/ADMIN/Main';
 import ComercialHeader from './components/Client/ComercialHeader';
+import ComercialMain from './components/Client/ComercialMain';
+import ComercialFooter from './components/Client/ComercialFooter';
 
 function App() {
-  const [route, setRoute] = useState('Cliente');
+  const [route, setRoute] = useState('Cliente Inicio');
+  const ruta = route.split(' ');
+  console.log(ruta);
 
   const renderContent = () => {
-    if (route === 'Cliente') {
+    if (ruta[0] === 'Cliente') {
       return (
         <>
-          <ComercialHeader />
+          <ComercialHeader setRoute={setRoute}/>
+          <ComercialMain route={ruta[1]}/>
+          <ComercialFooter />
         </>
       );
     } 
-    else if (route === 'Dashboard') {
+    else if (ruta[0] === 'Admin') {
       return (
         <>
           <Header />
           <SideBar setRoute={setRoute} />
-          <Main route={route} />
+          <Main route={ruta[1]} />
         </>
       );
     }
