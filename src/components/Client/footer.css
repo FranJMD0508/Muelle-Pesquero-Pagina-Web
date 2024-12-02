@@ -1,6 +1,6 @@
 
 footer{
-    background-color: rgb(101, 179, 252);
+    background: linear-gradient(to bottom, rgb(82, 169, 216), rgb(0, 63, 139));
     color: white;
     display: flex;
     gap: 20px;

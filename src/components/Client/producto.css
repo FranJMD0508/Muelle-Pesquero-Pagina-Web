@@ -1,0 +1,98 @@
+
+
+.producto-card{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0px 0 30px rgba(1, 41, 112, 0.15);
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.producto-card img{
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-top: auto;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.producto-card img:hover{
+    transform: scale(1.1);
+    z-index: 0;
+}
+
+.info h4{
+    color: white;
+    margin: 0;
+    cursor: default;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
+}
+
+.info h5{
+    margin-top: 20px;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: default;
+    font-weight: 600;
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
+    transition: all 0.5s ease;
+}
+
+
+.info h5:hover{
+    animation: saltar infinite 1s ease-in-out;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.105));
+}
+
+.info{
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+    background: linear-gradient(to bottom, rgb(82, 169, 216), rgb(0, 83, 139));
+    z-index: 1;
+    padding: 5px;
+    align-items: center;
+}
+
+.agregar{
+    display: flex;
+    width: 40%;
+    background-color: white;
+    margin-bottom: 10px;
+    padding: 3px;
+    gap: 10px;
+    border-radius: 3px;
+    justify-content: center;
+    color: rgb(103, 103, 103);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.agregar:hover{
+    background-color: rgb(228, 228, 228);
+    transform: scale(1.1);
+    color: rgb(103, 103, 103);
+}
+
+@keyframes saltar{
+    0% {
+        transform: scale(1);
+    }
+
+    50%{
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
