@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: color #fff;;
+    background: #f5f6f7;;
 }
 
 header {
@@ -27,7 +27,7 @@ main{
 }
 
 .item {
-    background-color: rgb(44, 124, 177);
+    background-color: rgba(44, 124, 177, 0.349);
     border: 1px solid #ddd;
     padding: 20px;
     border-radius: 5px;
@@ -53,13 +53,9 @@ main{
 
 .item img{
     width: 180px;
-    height: auto;
-    background-color: transparent;
-    transition: opacity 0.3s ease;
-}
-
-.item img:hover{
-    opacity: 0;
+    height: 180px;
+    background-size: cover;
+    border-radius: 6px;
 }
 
 footer {
@@ -123,9 +119,9 @@ footer {
     padding: 10px 12px;
     font-size: 16px;
     color: #007bff;
-    background-color: #fff;
+    background-color: #ffffff7c;
     border: 2px solid #007bff;
-    border-radius: 5px;
+    border-radius: 18px;
     cursor: pointer;
     transition: transform 0.5s ease, background-color 0.5s ease, color 0.5s ease;
 
@@ -133,6 +129,6 @@ footer {
 
 .order-button:hover{
     transform: scale(1.2);
-    background-color: #09f ;
+    background-color: rgba(0, 153, 255, 0.521) ;
     color: #fff;
 }
