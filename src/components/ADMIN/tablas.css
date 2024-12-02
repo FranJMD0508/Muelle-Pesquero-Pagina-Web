@@ -1,0 +1,41 @@
+
+
+.container {
+    flex-grow: 1;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    color: #012970;
+    font-family: sans-serif;
+    font-weight: 700;
+}
+
+.container h1{
+    text-align: center;
+    color: #012970;
+    font-family: "Roboto", sans-serif;
+    font-size: 900;
+}
+
+table {
+    background-color: #fff;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    padding: 10px;
+}
+
+th {
+    background-color: #fff;
+}
+
+
+td{
+    color: #899bbd;
+}
