@@ -64,6 +64,7 @@ footer{
     padding: 5px;
     min-width: 150px;
     transition: all 0.1s ease;
+    align-items: center;
 }
 
 #perfil a:hover{

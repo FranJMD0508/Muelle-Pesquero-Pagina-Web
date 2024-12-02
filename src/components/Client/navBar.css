@@ -54,23 +54,29 @@
 
 @media (max-width: 600px) {
     .menu {
-        display: none; /* Oculta el menú por defecto */
-        flex-direction: column;
-        position: fixed;
-        top: 196px; /* Ajusta según la altura de tu navbar */
-        left: -300px;
-        width: 100px;
-        background-color: #333;
-        transition: left 0.3s;
+        position: absolute;
+        top: 48px;
+        background-color: rgb(31, 127, 224);
+        left: -500px;
+        transition: all 0.3s ease;
+    }
+
+    .menu:not(.open){
+        width: 150px;
     }
 
     .menu.open {
-        display: flex; /* Muestra el menú cuando está abierto */
-        left: -1px;
+        left: 0px;
+        width: 150px;
     }
 
     .menu ul{
         flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .menu li:nth-child(odd){
+        border-right: none;
     }
 
     .menu-toggle {
