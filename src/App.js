@@ -14,6 +14,7 @@ import Main from './components/ADMIN/Main';
 import ComercialHeader from './components/Client/ComercialHeader';
 import ComercialMain from './components/Client/ComercialMain';
 import ComercialFooter from './components/Client/ComercialFooter';
+import NavBar from './components/Client/NavBar';
 
 function App() {
   const [route, setRoute] = useState('Cliente Inicio');
@@ -24,7 +25,8 @@ function App() {
     if (ruta[0] === 'Cliente') {
       return (
         <>
-          <ComercialHeader setRoute={setRoute}/>
+          <ComercialHeader />
+          <NavBar setRoute={setRoute}/>
           <ComercialMain route={ruta[1]}/>
           <ComercialFooter />
         </>

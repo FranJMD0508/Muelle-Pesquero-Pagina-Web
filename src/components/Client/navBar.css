@@ -1,0 +1,83 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    background-color: rgb(47, 150, 254);
+    padding: 0;
+    margin: 0;
+}
+
+.navbar .menu {
+    display: flex;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar .menu ul {
+    list-style: none;
+    justify-content: center;
+    display: flex;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar .menu li {
+    text-align: center;
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: medium;
+    padding: 0.6rem 0 0.6rem 0;
+    flex: 1;
+    transition: all 0.2s ease;
+}
+
+.navbar li:hover{
+    background-color: rgb(42, 135, 228);
+    color: white;
+}
+
+.navbar li:nth-child(odd){
+    border-left: 1px solid rgba(88, 88, 88, 0.596);
+    border-right: 1px solid rgba(88, 88, 88, 0.596);
+}
+
+.menu-toggle {
+    display: none;
+    background: transparent;
+    color: white;
+    border: none;
+    padding-left: 0.5rem;
+    cursor: pointer;
+}
+
+
+@media (max-width: 600px) {
+    .menu {
+        display: none; /* Oculta el menú por defecto */
+        flex-direction: column;
+        position: fixed;
+        top: 196px; /* Ajusta según la altura de tu navbar */
+        left: -300px;
+        width: 100px;
+        background-color: #333;
+        transition: left 0.3s;
+    }
+
+    .menu.open {
+        display: flex; /* Muestra el menú cuando está abierto */
+        left: -1px;
+    }
+
+    .menu ul{
+        flex-direction: column;
+    }
+
+    .menu-toggle {
+        display: block; /* Muestra el botón de menú */
+    }
+
+    i {
+        font-size: 2rem;
+    }
+}
