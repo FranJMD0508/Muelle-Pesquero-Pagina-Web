@@ -52,7 +52,7 @@ function NavBar({ setRoute }) {
                 </li>
             </ul>
         </div>
-        <button className="menu-toggle" onClick={toggleMenu}>
+        <button className="menu-toggle" onClick={toggleMenu} onBlur={toggleMenu}>
             {isOpen ? <i className='bi bi-x-lg'></i> : <i className='bi bi-list'></i>}
         </button>
     </nav>

@@ -1,16 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react';
 import './producto.css'
 
 function Producto({ img, nombre, precio }) {
+  const [estado, setEstado] = useState(false);
+
+  const toggleInfo = () => {
+    setEstado(!estado);
+  };
+
   return (
     <div className="producto-card">
-        <img src={img} alt="producto" />
-        <div className="info">
+        <img src={img} alt="producto" tabIndex="0" onFocus={toggleInfo} onBlur={toggleInfo}/>
+        <div className={`info ${estado ? 'open' : 'closed'}`}>
           <h4>{nombre}</h4>
           <h5>${precio}</h5>
-          <a href="" className='agregar'>
+          <a href="" className={`agregar ${!estado ? 'open' : 'closed'}`}>
             <i className='bi bi-cart-fill'></i>
-            AGREGAR
+            <span>AGREGAR</span>
           </a>
         </div>
     </div>

@@ -3,13 +3,12 @@
     background: linear-gradient(to bottom, rgb(0,0,0,0.100), rgb(0,0,0,0.650)), url("../images/muellepesquero.jpeg");
     background-size: cover;
     background-position: center;
+    padding: 70px;
     display: flex;
     flex-direction: column;
-    padding: 70px;
     gap: 20px;
     text-align: center;
     align-items: center;
-    margin: auto;
 }
 
 #boton{
@@ -26,8 +25,16 @@
 }
 
 h1{
+    z-index: 1;
     color: white;
 }
 h4{
     color: white;
+}
+
+@media (max-width: 422px) {
+    #boton{
+        width: 100%;
+        padding: 3px 3rem;
+    }
 }
