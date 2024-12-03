@@ -59,9 +59,9 @@
         position: absolute;
         top: 48px;
         background-color: rgb(31, 127, 224);
-        left: -500px;
+        left: -150px;
         transition: all 0.3s ease;
-        z-index: 10;
+        
     }
 
     .menu:not(.open){
@@ -70,7 +70,7 @@
 
     .menu.open {
         left: 0px;
-        width: 150px;
+        width: 150px;    
     }
 
     .menu ul{

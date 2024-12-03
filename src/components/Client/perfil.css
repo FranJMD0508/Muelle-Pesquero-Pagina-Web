@@ -1,19 +1,23 @@
 
+*{
+    z-index: 1;
+}
+
 .contenedorForm{
     background: url('../images/mar.png');
     background-position: center;
     background-size: cover;
     display: flex;
-    flex-direction: row;
     margin: 50px 0 50px 0;
     border-radius: 10px;
     height: 70vh;
-    min-width: 55vw;
+    min-width: 70vw;
     box-shadow: 0px 0 10px rgba(0, 0, 0, 0.447);
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
     align-items: center;
+    z-index: 0;
 }
 
 .avisoIniciar, .avisoRegistrar{
@@ -124,22 +128,18 @@
 
 .iniciar.open{
     left: 0;
-    z-index: 2;
 }
 
 .iniciar.closed{
     left: -50%;
-    z-index: 1;
 }
 
 .registrar.open{
     left: 100%;
-    z-index: 1;
 }
 
 .registrar.closed{
     left: 50%;
-    z-index: 2;
 }
 
 .iniciar form, .registrar form{
@@ -215,4 +215,74 @@
 .iniciar button:hover, .registrar button:hover{
     background-color: rgb(156, 156, 156);
     transform: scale(1.04);
+}
+
+@media (max-width: 1254px) {
+    .contenedorForm{
+        min-width: 90vw;
+    }
+    .iniciar button, .registrar button{
+        width: 70%;
+    }
+    .inputbox{
+        margin: 20px 0;
+    }
+}
+
+@media (max-width: 700px){
+    .contenedorForm{
+        height: 90vh;
+    }
+    .iniciar, .registrar{
+        max-height: 50%;
+        min-width: 100%;
+    }
+    .avisoIniciar, .avisoRegistrar{
+        min-width: 100%;
+        max-height: 50%;
+    }
+
+    .inputbox{
+        margin: 10px 0;
+    }
+
+    .iniciar.open{
+        left: 0;
+        top: 0;
+    }
+
+    .iniciar.closed{
+        top: -50%;
+        left: 0;
+    }
+
+    .registrar.open{
+        top: 100%;
+        left: 0;
+    }
+
+    .registrar.closed{
+        left: 0;
+        top: 50%;
+    }
+
+    .avisoIniciar.open{
+        left: 0;
+        top: -50%;
+    }
+    
+    .avisoIniciar.closed{
+        left: 0;
+        top: 0;
+    }
+    
+    .avisoRegistrar.open{
+        left: 0;
+        top: 100%;
+    }
+    
+    .avisoRegistrar.closed{
+        left: 0;
+        top: 50%;
+    }
 }

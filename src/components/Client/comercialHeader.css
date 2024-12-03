@@ -59,3 +59,11 @@ h1{
     background-color: rgb(42, 135, 228);
     color: white;
 }
+
+@media (max-width: 600px){
+    #logo{
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px;
+    }
+}
