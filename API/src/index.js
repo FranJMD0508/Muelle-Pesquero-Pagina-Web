@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import pool from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js"
 import errorHandling from "./middleware/errorHandler.js";
-import {createPescadoTable, createHerramientaTable, createClienteTable, createTransaccionesTable, createTrigger, createFunction, createResgistroPescadoTable, createNominaTable, createEmbarcacionTable} from "./data/createUserTable.js";
+import {createPescadoTable, createInventarioTable, createClienteTable, createTransaccionesTable, createNominaTable, createEmbarcacionTable, createInventarioPescadoTable, createTipoProductos, ingresarTiposProductos, createSolicitudVentasTable} from "./data/createUserTable.js";
 dotenv.config();
 
 const app = express();
@@ -20,13 +20,13 @@ app.use("/api", userRoutes);
 //Manejo de Errores en el Middleware
 app.use(errorHandling);
 // Crear esta tabla antes de empezar el servidor
-createHerramientaTable();
+createInventarioTable();
 createPescadoTable();
-createResgistroPescadoTable();
+ingresarTiposProductos();
+createSolicitudVentasTable();
+createTipoProductos();
+createInventarioPescadoTable();
 createClienteTable();
-createTransaccionesTable();
-createFunction();
-createTrigger();
 createNominaTable();
 createEmbarcacionTable();
 // Probando la conexion con la base de datos

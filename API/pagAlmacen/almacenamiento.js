@@ -1,5 +1,6 @@
+let url = "https://cd48-200-8-185-118.ngrok-free.app"
 document.addEventListener("DOMContentLoaded", () => {
-    fetch("https://1ea0-190-120-250-84.ngrok-free.app/API/pescados/", {
+    fetch(url+"/API/pescados/", {
         method: "GET", // Especificando el método GET explícitamente
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420", // Para saltar la advertencia de Ngrok
@@ -22,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch((error) => console.error("Error al obtener los objs:", error));
 
-    fetch("https://1ea0-190-120-250-84.ngrok-free.app/API/herramientas/", {
+    fetch(url+"/API/herramientas/", {
         method: "GET", // Especificando el método GET explícitamente
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420", // Para saltar la advertencia de Ngrok
@@ -44,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch((error) => console.error("Error al obtener los clientes:", error));
 
-    fetch("https://1ea0-190-120-250-84.ngrok-free.app/API/transacciones/", {
+    fetch(url + "/API/transacciones/", {
         method: "GET", // Especificando el método GET explícitamente
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420", // Para saltar la advertencia de Ngrok
@@ -67,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch((error) => console.error("Error al obtener los objs:", error));
 
-    fetch("https://1ea0-190-120-250-84.ngrok-free.app/API/clientes/", {
+    fetch(url+"/API/clientes/", {
         method: "GET", // Especificando el método GET explícitamente
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420", // Para saltar la advertencia de Ngrok
@@ -91,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch((error) => console.error("Error al obtener los objs:", error));
 
-    fetch('https://1ea0-190-120-250-84.ngrok-free.app/API/maquinaria/', {
+    fetch(url+'/API/maquinaria/', {
         method: "GET",  // Especificando el método GET explícitamente
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420",  // Para saltar la advertencia de Ngrok
@@ -116,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(error => console.error('Error al obtener los objs:', error));
 
-    fetch('https://1ea0-190-120-250-84.ngrok-free.app/API/nomina/', {
+    fetch(url+'/API/nomina/', {
         method: "GET",  // Especificando el método GET explícitamente
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420",  // Para saltar la advertencia de Ngrok

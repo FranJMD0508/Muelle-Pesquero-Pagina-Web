@@ -6,12 +6,19 @@ export const getAllPescadosService = async () => {
     return result.rows;
 };
 
-export const getAllRegistroPescadosService = async () => {
-    const result = await pool.query("SELECT * FROM Tipospescado");
+export const getAllInventarioPescadosService = async () => {
+    const result = await pool.query("SELECT * FROM inventario_pescado");
     return result.rows;
 };
+
 export const getAllClientesService = async () => {
     const result = await pool.query("SELECT * FROM Clientes");
+    return result.rows;
+};
+
+
+export const getAllSolicitudVentasService = async () => {
+    const result = await pool.query("SELECT * FROM solicitud_ventas");
     return result.rows;
 };
 
@@ -25,8 +32,8 @@ export const getAllTransaccionesService = async () => {
     return result.rows;
 };
 
-export const getAllHerramientasService = async () => {
-    const result = await pool.query("SELECT * FROM herramientas");
+export const getAllInventarioService = async () => {
+    const result = await pool.query("SELECT * FROM Inventario");
     return result.rows;
 };
 
@@ -36,14 +43,18 @@ export const getAllEmbarcacionService = async () => {
 };
 
 // Obtener un registro por ID
-export const getPescadosServiceByid = async (id) => {
-    const result = await pool.query("SELECT * FROM pescados where id = $1", [id]);
+export const getPescadosServiceByid = async (id_pescado) => {
+    const result = await pool.query("SELECT * FROM pescados where id_pescado = $1", [id_pescado]);
     return result.rows[0];
 };
 
+export const getInventarioPescadosServiceByid = async (id_pescado) => {
+    const result = await pool.query("SELECT * FROM inventario_pescado where id_pescado = $1", [id_pescado]);
+    return result.rows[0];
+};
 
-export const getHerramientasServiceByid = async (id) => {
-    const result = await pool.query("SELECT * FROM herramientas where id = $1", [id]);
+export const getInventarioServiceByid = async (codigo_producto) => {
+    const result = await pool.query("SELECT * FROM inventario where codigo_producto = $1", [codigo_producto]);
     return result.rows[0];
 };
 
@@ -62,35 +73,35 @@ export const getTransaccionesServiceByid = async (id) => {
     return result.rows[0];
 };
 
-export const getEmbarcacionServiceByid = async (id) => {
-    const result = await pool.query("SELECT * FROM embarcaciones where id = $1", [id]);
+export const getEmbarcacionServiceByid = async (id_embarcacion) => {
+    const result = await pool.query("SELECT * FROM embarcacion where id_embarcacion = $1", [id_embarcacion]);
     return result.rows[0];
 };
 
 
 // Crear registros
-export const createPescadoService = async (codigo_pescado, pescado, cantidad_pescado, fecha_entrada, fecha_caducidad) => {
+export const createPescadoService = async (id_pescado, nombre, precio) => {
     const result = await pool.query(
-        "INSERT INTO pescados (codigo_pescado, pescado, cantidad_pescado, fecha_entrada, fecha_caducidad) VALUES ($1,$2,$3,$4,$5) RETURNING *",
-        [codigo_pescado, pescado, cantidad_pescado, fecha_entrada, fecha_caducidad]
+        "INSERT INTO pescados (id_pescado,nombre,precio) VALUES ($1,$2,$3) RETURNING *",
+        [id_pescado,nombre,precio]
     );
     return result.rows[0];
 };
 
 
 
-export const createIngresoPescadoService = async (codigo_pescado, pescado, descripcion) => {
+export const createInvetarioPescadoService = async (id_pescado, nombre,peso,fecha_ingreso, fecha_caducidad,estado,proceso,id_embarcacion) => {
     const result = await pool.query(
-        "INSERT INTO TiposPescado (codigo_pescado, pescado, descripcion) VALUES ($1,$2,$3) RETURNING *",
-        [codigo_pescado, pescado, descripcion]
+        "INSERT INTO inventario_pescado (id_pescado, nombre,peso,fecha_ingreso, fecha_caducidad,estado,proceso,id_embarcacion) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *",
+        [id_pescado, nombre,peso,fecha_ingreso, fecha_caducidad,estado,proceso,id_embarcacion]
     );
     return result.rows[0];
 };
 
-export const createHerramientaService = async (codigo_herramienta, herramienta, cantidad_herramienta) => {
+export const createInventarioService = async (codigo_producto, nombre_producto, tipo_producto,cantidad) => {
     const result = await pool.query(
-        "INSERT INTO herramientas (codigo_herramienta, herramienta, cantidad_herramienta) VALUES ($1,$2,$3) RETURNING *",
-        [codigo_herramienta, herramienta, cantidad_herramienta]
+        "INSERT INTO inventario (codigo_producto, nombre_producto, tipo_producto,cantidad) VALUES ($1,$2,$3,$4) RETURNING *",
+        [codigo_producto, nombre_producto, tipo_producto,cantidad]
     );
     return result.rows[0];
 };
@@ -103,6 +114,22 @@ export const createClienteService = async (nombre, cedula, email, telefono, dire
     return result.rows[0];
 };
 
+export const createSolicitudVentaService = async (nombre_cliente, cedula_cliente, peso_pez, nombre_solicitud, estatus) => {
+    const queryText = `
+    INSERT INTO solicitud_ventas (nombre_cliente, cedula_cliente, peso_pez, nombre_solicitud, estatus)
+    VALUES ($1, $2, $3, $4, $5);
+    RETURNING * 
+    `;
+    
+    try {
+        await pool.query(queryText, [nombre_cliente, cedula_cliente, peso_pez, nombre_solicitud, estatus]);
+        console.log("Solicitud de venta ingresada correctamente.");
+    } catch (e) {
+        console.log("Error al ingresar solicitud de venta: ", e);
+    }
+};
+
+
 export const createNominaService = async (nombre, apellido, cedula, clave) => {
     const result = await pool.query(
         "INSERT INTO Nomina (nombre, apellido, cedula, clave) VALUES ($1,$2,$3,$4) RETURNING *",
@@ -111,10 +138,10 @@ export const createNominaService = async (nombre, apellido, cedula, clave) => {
     return result.rows[0];
 };
 
-export const createEmbarcacionService = async (cantidad_barco,tipo_embarcacion,estado,capacidad_carga_max) => {
+export const createEmbarcacionService = async (id_embarcacion,nombre,capacidad,tipo_embarcacion,estado) => {
     const result = await pool.query(
-        "INSERT INTO embarcaciones (cantidad_barco,tipo_embarcacion,estado,capacidad_carga_max) VALUES ($1,$2,$3,$4) RETURNING *",
-        [cantidad_barco,tipo_embarcacion,estado,capacidad_carga_max]
+        "INSERT INTO embarcaciones (id_embarcacion,nombre,capacidad,tipo_embarcacion,estado) VALUES ($1,$2,$3,$4,$5) RETURNING *",
+        [id_embarcacion,nombre,capacidad,tipo_embarcacion,estado]
     );
     return result.rows[0];
 };
@@ -144,37 +171,40 @@ export const createTransaccionesService = async (
 };
 
 // Actualizar registros
-export const updateIngresoPescadoServiceByid = async (codigo_pescado, pescado, descripcion, id) => {
+export const updatePescadoServiceByid = async (id_pescado, nombre, precio, id) => {
     const result = await pool.query(
-        "UPDATE TiposPescado SET codigo_pescado = $1, pescado = $2, descripcion = $3 WHERE id=$4 RETURNING *",
-        [codigo_pescado, pescado, descripcion, id]
+        "UPDATE pescados SET id_pescado = $1, nombre = $2, precio = $3 WHERE id_pescado = $4 RETURNING *",
+        [id_pescado, nombre, precio, id]
     );
     return result.rows[0];
 };
 
-export const updatePescadoServiceByid = async (codigo_pescado, pescado, peso_pescado, fecha_entrada, fecha_caducidad, id) => {
+
+export const updateInventarioPescadoServiceByid = async (id_pescado, nombre, peso, fecha_ingreso, fecha_caducidad, estado, proceso, id_embarcacion) => {
     const result = await pool.query(
-        "UPDATE pescados SET codigo_pescado = $1, pescado = $2 , peso_pescado = $3 , fecha_entrada = $4, fecha_caducidad = $5 WHERE id=$6 RETURNING *",
-        [codigo_pescado, pescado, peso_pescado, fecha_entrada, fecha_caducidad, id]
+        "UPDATE inventario_pescado SET nombre = $1, peso = $2, fecha_ingreso = $3, fecha_caducidad = $4, estado = $5, proceso = $6, id_embarcacion = $7 WHERE id_pescado = $8 RETURNING *",
+        [nombre, peso, fecha_ingreso, fecha_caducidad, estado, proceso, id_embarcacion, id_pescado]
+    );0
+    return result.rows[0];
+};
+
+
+export const updateInventarioServiceByid = async (nombre_producto, tipo_producto,cantidad, codigo_producto) => {
+    const result = await pool.query(
+        "UPDATE inventario SET nombre = $1, tipo_producto = $2 , cantidad = $3 WHERE codigo_producto =$4 RETURNING *",
+        [nombre_producto, tipo_producto,cantidad, codigo_producto]
     );
     return result.rows[0];
 };
 
-export const updateHerramientaServiceByid = async (codigo_herramienta, herramienta, cantidad_herramienta, id) => {
+export const updateEmbarcacionServiceByid = async (nombre, tipo_embarcacion, estado, capacidad, id_embarcacion) => {
     const result = await pool.query(
-        "UPDATE herramientas SET codigo_herramienta = $1, herramienta = $2 , cantidad_herramienta = $3 WHERE id=$4 RETURNING *",
-        [codigo_herramienta, herramienta, cantidad_herramienta, id]
+        "UPDATE embarcaciones SET nombre = $1, tipo_embarcacion = $2, estado = $3, capacidad = $4 WHERE id_embarcacion = $5 RETURNING *",
+        [nombre, tipo_embarcacion, estado, capacidad, id_embarcacion]
     );
-    return result.rows[0];
+    return result.rows[0];  // Retorna el registro actualizado
 };
 
-export const updateEmbarcacionServiceByid = async (cantidad_embarcacion,tipo_embarcacion,estado_embarcacion,capacidad_carga_max, id) => {
-    const result = await pool.query(
-        "UPDATE embarcaciones SET cantidad_barco = $1 tipo_embarcacion = $2, estado_embarcacion = $3 , capacidad_carga_max = $4 WHERE id=$5 RETURNING *",
-        [cantidad_barco,tipo_embarcacion,estado_embarcacion,capacidad_carga_max, id]
-    );
-    return result.rows[0];
-};
 
 export const updateClienteServiceByid = async (nombre, cedula, email, telefono, direccion, id) => {
     const result = await pool.query(
@@ -183,6 +213,28 @@ export const updateClienteServiceByid = async (nombre, cedula, email, telefono, 
     );
     return result.rows[0];
 };
+
+export const updateSolicitudVentaService = async (id, nombre_cliente, cedula_cliente, peso_pez, nombre_solicitud, estatus) => {
+    const queryText = `
+    UPDATE solicitud_ventas
+    SET
+        nombre_cliente = $1,
+        cedula_cliente = $2,
+        peso_pez = $3,
+        nombre_solicitud = $4,
+        estatus = $5
+    WHERE id = $6;
+    RETURNING *
+    `;
+    
+    try {
+        await pool.query(queryText, [nombre_cliente, cedula_cliente, peso_pez, nombre_solicitud, estatus, id]);
+        console.log("Solicitud de venta actualizada correctamente.");
+    } catch (e) {
+        console.log("Error al actualizar la solicitud de venta: ", e);
+    }
+};
+
 
 export const updateNominaServiceByid = async (nombre, apellido, cedula, clave,id) => {
     const result = await pool.query(
@@ -193,18 +245,25 @@ export const updateNominaServiceByid = async (nombre, apellido, cedula, clave,id
 };
 
 // Eliminar registros
-export const deletePescadoServiceByid = async (id) => {
-    const result = await pool.query("DELETE FROM pescados WHERE id=$1 RETURNING *", [id]);
+export const deletePescadoServiceByid = async (id_pescado) => {
+    const result = await pool.query(
+        "DELETE FROM pescados WHERE id_pescado = $1 RETURNING *",
+        [id_pescado]
+    );
     return result.rows[0];
 };
 
-export const deleteIngresoPescadoServiceByid = async (id) => {
-    const result = await pool.query("DELETE FROM TiposPescado WHERE id=$1 RETURNING *", [id]);
-    return result.rows[0];
+export const deleteInventarioPescadoServiceByid = async (id_pescado) => {
+    const result = await pool.query(
+        "DELETE FROM inventario_pescado WHERE id_pescado = $1 RETURNING *",
+        [id_pescado]
+    );
+    return result.rows[0];  
 };
 
-export const deleteHerramientaServiceByid = async (id) => {
-    const result = await pool.query("DELETE FROM herramientas WHERE id=$1 RETURNING *", [id]);
+
+export const deleteInventarioServiceByid = async (codigo_producto) => {
+    const result = await pool.query("DELETE FROM inventario WHERE codigo_producto =$1 RETURNING *", [codigo_producto]);
     return result.rows[0];
 };
 
@@ -213,13 +272,29 @@ export const deleteClienteServiceByid = async (id) => {
     return result.rows[0];
 };
 
+export const deleteSolicitudVentaService = async (id) => {
+    const queryText = `
+    DELETE FROM solicitud_ventas
+    WHERE id = $1;
+    RETURNING *
+    `;
+    
+    try {
+        await pool.query(queryText, [id]);
+        console.log("Solicitud de venta eliminada correctamente.");
+    } catch (e) {
+        console.log("Error al eliminar la solicitud de venta: ", e);
+    }
+};
+
+
 export const deleteNominaServiceByid = async (id) => {
     const result = await pool.query("DELETE FROM Nomina WHERE id=$1 RETURNING *", [id]);
     return result.rows[0];
 };
 
-export const deleteEmbarcacionServiceByid = async (id) => {
-    const result = await pool.query("DELETE FROM embarcaciones WHERE id=$1 RETURNING *", [id]);
+export const deleteEmbarcacionServiceByid = async (id_embarcacion) => {
+    const result = await pool.query("DELETE FROM embarcaciones WHERE id_embarcacion=$1 RETURNING *", [id_embarcacion]);
     return result.rows[0];
 };
 
@@ -281,36 +356,9 @@ export const getVentasYClientesEntreFechasService = async (fechaInicio, fechaFin
             cantidad_ventas: 0
         };
     }
+
     return {
         cantidad_clientes: result.rows[0].cantidad_clientes,
         cantidad_ventas: result.rows[0].cantidad_ventas
     };
 };
-
-export const getPescadoConMayoresIngresosEntreFechasService = async (fechaInicio, fechaFin) => {
-        const result = await pool.query(
-            `SELECT 
-                t.codigo_pescado,
-                p.pescado,
-                SUM(t.monto) AS total_ingresos
-            FROM transacciones t
-            JOIN Pescados p ON t.codigo_pescado = p.codigo_pescado
-            WHERE t.tipo = 'ingreso'
-            AND t.fecha BETWEEN $1 AND $2
-            GROUP BY t.codigo_pescado, p.pescado
-            ORDER BY total_ingresos DESC
-            LIMIT 5;`,  
-            [fechaInicio, fechaFin]  
-        );
-    
-        // Si no se encuentran resultados
-        if (result.rows.length === 0) {
-            return {
-                message: "No se encontraron ingresos para ningún pescado en el rango de fechas proporcionado.",
-                data: []
-            };
-        }
-        console.log(result.rows)
-        // Retornamos los resultados obtenidos
-        return result.rows;
-    };
