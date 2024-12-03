@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './navBar.css'
 
 function NavBar({ setRoute }) {
     const [isOpen, setIsOpen] = useState(false);
 
+    useEffect(() => {
+      const savedRoute = localStorage.getItem('currentRoute');
+      if (savedRoute) {
+          setRoute(savedRoute);
+      }
+    }, [setRoute]);
+
+
     const toggleMenu = () => {
       setIsOpen(!isOpen);
+    };
+
+    const handleRouteChange = (route) => {
+      setRoute(route);
+      localStorage.setItem('currentRoute', route);
     };
 
   return (
@@ -13,27 +26,27 @@ function NavBar({ setRoute }) {
         <div className={`menu ${isOpen ? 'open' : ''}`}>
             <ul>
                 <li
-                onClick={() => setRoute('Inicio')}
+                onClick={() => handleRouteChange('Cliente Inicio')}
                 >
                 INICIO
                 </li>
                 <li
-                onClick={() => setRoute('Inicio')}
+                onClick={() => handleRouteChange('Cliente')}
                 >
                 CATÁLOGO
                 </li>
                 <li
-                onClick={() => setRoute('Inicio')}
+                onClick={() => handleRouteChange('Cliente')}
                 >
                 NOSOTROS
                 </li>
                 <li
-                onClick={() => setRoute('Inicio')}
+                onClick={() => handleRouteChange('Cliente')}
                 >
                 CONTACTO
                 </li>
                 <li 
-                onClick={() => setRoute('Inicio')}
+                onClick={() => handleRouteChange('Cliente Perfil')}
                 >
                 PERFIL
                 </li>
