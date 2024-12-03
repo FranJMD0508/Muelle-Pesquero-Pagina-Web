@@ -1,3 +1,4 @@
+
 .navbar {
     display: flex;
     align-items: center;
@@ -5,10 +6,10 @@
     padding: 0;
     margin: 0;
     filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.168));
+    z-index: 999;
 }
 
 .navbar .menu {
-    display: flex;
     width: 100%;
     padding: 0;
     margin: 0;
@@ -59,6 +60,7 @@
         position: absolute;
         top: 48px;
         background-color: rgb(31, 127, 224);
+        z-index: 2;
         left: -150px;
         transition: all 0.3s ease;
         

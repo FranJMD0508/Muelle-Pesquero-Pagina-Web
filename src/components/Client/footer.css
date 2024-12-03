@@ -76,6 +76,10 @@ footer{
     color: rgb(237, 237, 237);
 }
 
+.link{
+    align-items: center;
+}
+
 @media (max-width: 1254px) {
     footer{
         flex-direction: column;

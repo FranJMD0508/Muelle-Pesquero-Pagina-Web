@@ -1,7 +1,4 @@
 
-*{
-    z-index: 1;
-}
 
 .contenedorForm{
     background: url('../images/mar.png');
@@ -188,6 +185,7 @@
 
 .opciones a:hover{
     color: rgb(0, 76, 197);
+    text-decoration: underline;
 }
 
 #recordarDiv{
