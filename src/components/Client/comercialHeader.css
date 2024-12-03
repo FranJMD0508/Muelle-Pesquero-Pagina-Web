@@ -5,12 +5,12 @@ h1{
     
 }
 
-header{
+#cabecero{
     display: flex;
     flex-direction: column;
 }
 
-.logo{
+#logo{
     color: white;
     justify-content: center;
     align-items: center;
@@ -20,9 +20,10 @@ header{
     background: linear-gradient(to bottom, rgb(82, 169, 216), rgb(0, 74, 165));
 }
 
-.logo img{
-    min-height: 70px;
+#logo img{
+    height: 70px;
     border-radius: 50%;
+    margin-right: 5px;
     transition: all 0.3s ease;
 }
 
@@ -45,11 +46,11 @@ header{
     border-right: 1px solid rgba(88, 88, 88, 0.596);
 }
 
-.logo:hover{
+#logo:hover{
     color: white;
 }
 
-.logo img:hover{
+#logo img:hover{
     transform: scale(1.1);
     margin: 0 15px 0 15px;
 }
@@ -57,4 +58,12 @@ header{
 .nav-bar a:hover{
     background-color: rgb(42, 135, 228);
     color: white;
+}
+
+@media (max-width: 600px){
+    #logo{
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px;
+    }
 }

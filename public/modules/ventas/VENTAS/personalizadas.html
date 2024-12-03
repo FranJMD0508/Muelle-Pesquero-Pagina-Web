@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitud Personalizada</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Solicitud Personalizada</h1>
+    </header>
+    <main>
+        <form id="solicitudForm">
+            <div class="form-group">
+                <label for="cliente">Nombre del Cliente:</label>
+                <input type="text" id="cliente" name="cliente" placeholder="Nombre y Cédula">
+                <label for="fecha">Fecha de Solicitud:</label>
+                <input type="date" id="fecha" name="fecha">
+            </div>
+            <div class="form-group">
+                <label for="producto">Productos:</label>
+                <select id="producto" name="producto">
+                    <option value="atun">Atún</option>
+                    <option value="calamares">Calamares</option>
+                    <option value="cangrejos">Cangrejos</option>
+                    <option value="pargo">Pargo</option>
+                    <option value="merluza">Merluza</option>
+                    <option value="corvina">Corvina</option>
+                    <option value="dorado">Dorado</option>
+                    <option value="jurel">Jurel</option>
+                    <option value="langostas">Langostas</option>
+                    <option value="mejillones">Mejillones</option>
+                    <option value="robalo">Robalo</option>
+                    <option value="sardina">Sardina</option>
+                    <option value="trucha">Trucha</option>
+                </select>
+                <label for="cantidad">Peso a Solicitar (kg):</label>
+                <input type="number" id="cantidad" name="cantidad" step="0.01" placeholder="0.00" min="0.01">
+                <label for="precioUnitario">Precio Unitario:</label>
+                <span id="precioUnitario"></span>
+            </div>
+        </form>
+    </main>
+    <footer>
+        <p>&copy;2024 Interfaz de Ventas de Muelle Pesquero</p>
+        <p>                 All Rights Reserved.      </p>
+        <button class="back-button" onclick="location.href='menuprincipal.html'">VOLVER AL MENU PRINCIPAL</button>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
+
