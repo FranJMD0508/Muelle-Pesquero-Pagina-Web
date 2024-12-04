@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const url = "https://f786-190-120-250-84.ngrok-free.app";
-    fetch(url+"inventario/pescado/", {
+    fetch(url+"/api/pescados", {
         method: "GET", // Especificando el método GET explícitamente
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420", // Para saltar la advertencia de Ngrok
@@ -8,22 +8,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }) // Cambia la URL según tu configuración
         .then((response) => response.json())
         .then((data) => {
+            let count = 0;
             const objsTable = document.querySelector("#alimentos tbody");
             data.data.forEach((obj) => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                    <td>${obj.codigo_pescado}</td>
-                    <td>${obj.pescado}</td>
-                    <td>${obj.cantidad_pescado} kg</td>
-                    <a class="editar"><i class="fa-solid fa-pen-to-square"></i></a><a class="eliminar"><i class="fa-regular fa-pen-to-square"></i></a>
-
+                    <td>${obj.id_pescado}</td>
+                    <td>${obj.nombre}</td>
+                    <td>${obj.peso} kg</td>
+                    <a class="editar" value=${count}><i class="fa-solid fa-pen-to-square"></i></a><a class="eliminar ${count}"><i class="fa-regular fa-pen-to-square"></i></a>
+                    
                 `;
+                count++;
                 objsTable.appendChild(row);
             });
         })
         .catch((error) => console.error("Error al obtener los objs:", error));
 
-    fetch(url+"inventario/herramientas/", {
+    fetch(url+"/api/inventario/herramientas", {
         method: "GET", // Especificando el método GET explícitamente
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420", // Para saltar la advertencia de Ngrok
@@ -35,17 +37,17 @@ document.addEventListener("DOMContentLoaded", () => {
             data.data.forEach((obj) => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                    <td>${obj.cedula}</td>
-                    <td>${obj.nombre}</td>
-                    <td>${obj.email}</td>
-                    <td>${obj.telefono}</td>
+                    <td>${obj.codigo_producto}</td>
+                    <td>${obj.nombre_producto}</td>
+                    <td>${obj.tipo_producto}</td>
+                    <td>${obj.cantidad}</td>
                 `;//Revisar Objetos
                 herramientasTable.appendChild(row);
             });
         })
         .catch((error) => console.error("Error al obtener los clientes:", error));
 
-    fetch(url+"/transacciones/", {
+    fetch(url+"/api/transacciones", {
         method: "GET", // Especificando el método GET explícitamente
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420", // Para saltar la advertencia de Ngrok
@@ -57,18 +59,19 @@ document.addEventListener("DOMContentLoaded", () => {
             data.data.forEach((obj) => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
-                        <td>${obj.codigo_pescado}</td>
-                        <td>${obj.pescado}</td>
-                        <td>${obj.cantidad_pescado} kg</td>
-                        <a class="editar"><i class="fa-solid fa-pen-to-square"></i></a><a class="eliminar"><i class="fa-regular fa-pen-to-square"></i></a>
-    
+                        <td>${obj.id}</td>
+                        <td>${obj.nombre_cliente}</td>
+                        <td>${obj.tipo}</td>
+                        <td>${obj.fecha}</td>
+                        <td>${obj.monto}</td>
+                        
                     `;
                 objsTable.appendChild(row);
             });
         })
         .catch((error) => console.error("Error al obtener los objs:", error));
 
-    fetch(url+"/clientes/", {
+    fetch(url+"/api/clientes", {
         method: "GET", // Especificando el método GET explícitamente
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420", // Para saltar la advertencia de Ngrok
@@ -76,6 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }) // Cambia la URL según tu configuración
         .then((response) => response.json())
         .then((data) => {
+            let count = 0;
             const objsTable = document.querySelector("#clientes tbody");
             data.data.forEach((obj) => {
                 const row = document.createElement("tr");
@@ -84,15 +88,16 @@ document.addEventListener("DOMContentLoaded", () => {
                         <td>${obj.nombre}</td>
                         <td>${obj.email}</td>
                         <td>${obj.telefono}</td>
-                        <a class="editar"><i class="fa-solid fa-pen-to-square"></i></a><a class="eliminar"><i class="fa-regular fa-pen-to-square"></i></a>
+                        <a class="eliminar" value="${count}"><i class="fa-regular fa-pen-to-square"></i></a>
         
                         `;
+                count++;
                 objsTable.appendChild(row);
             });
         })
         .catch((error) => console.error("Error al obtener los objs:", error));
 
-    fetch(url+'/maquinaria/', {
+    fetch(url+'/api/maquinaria', {
         method: "GET",  // Especificando el método GET explícitamente
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420",  // Para saltar la advertencia de Ngrok
@@ -105,9 +110,11 @@ document.addEventListener("DOMContentLoaded", () => {
             data.data.forEach(obj => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                        <td>${obj.codigo_pescado}</td>
-                        <td>${obj.pescado}</td>
-                        <td>${obj.cantidad_pescado} kg</td>
+                        <td>${obj.id_embarcacion}</td>
+                        <td>${obj.nombre}</td>
+                        <td>${obj.tipo_embarcacion}</td>
+                        <td>${obj.capacidad}</td>
+                        <td>${obj.estado}</td>
                         <a class="editar" value=${count}><i class="fa-solid fa-pen-to-square"></i></a><a class="eliminar ${count}"><i class="fa-regular fa-pen-to-square"></i></a>
     
                     `;
@@ -117,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(error => console.error('Error al obtener los objs:', error));
 
-    fetch(url+'/nomina/', {
+    fetch(url+'/api/nomina', {
         method: "GET",  // Especificando el método GET explícitamente
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420",  // Para saltar la advertencia de Ngrok
@@ -125,16 +132,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }) // Cambia la URL según tu configuración
         .then(response => response.json())
         .then(data => {
+            let count = 0;
             const objsTable = document.querySelector('#nomina tbody');
             data.data.forEach(obj => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                        <td>${obj.codigo_pescado}</td>
-                        <td>${obj.pescado}</td>
-                        <td>${obj.cantidad_pescado} kg</td>
-                        <a class="editar"><i class="fa-solid fa-pen-to-square"></i></a><a class="eliminar"><i class="fa-regular fa-pen-to-square"></i></a>
+                        <td>${obj.cedula}</td>
+                        <td>${obj.nombre}</td>
+                        <td>${obj.apellido}</td>
+                        <td>${obj.clave}</td>
+                        <a class="editar" value=${count}><i class="fa-solid fa-pen-to-square"></i></a><a class="eliminar ${count}"><i class="fa-regular fa-pen-to-square"></i></a>
     
                     `;
+                count++;
                 objsTable.appendChild(row);
             });
         })
