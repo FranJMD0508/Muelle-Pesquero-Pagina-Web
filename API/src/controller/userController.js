@@ -1,30 +1,24 @@
 // Respuesta Estandarizadas de las funciones
 import { 
     createClienteService,
-    createHerramientaService, 
+    createInvetarioPescadoService, 
     createPescadoService, 
     createTransaccionesService, 
     deleteClienteServiceByid, 
-    deleteHerramientaServiceByid, 
     deletePescadoServiceByid, 
     deleteTransaccionesServiceByid, 
     getAllClientesService, 
-    getAllHerramientasService, 
     getAllPescadosService, 
     getAllTransaccionesService, 
-    getClienteServiceByid, 
-    getHerramientasServiceByid, 
+    getClienteServiceByid,  
     getMontoNetoService, 
     getMontoTotalEntreFechasService, 
     getPescadosServiceByid, 
     updateClienteServiceByid, 
-    updateHerramientaServiceByid, 
     updatePescadoServiceByid,
     getTransaccionesEntreFechasService,
     getTransaccionesServiceByid, 
     getVentasYClientesEntreFechasService,
-    createIngresoPescadoService,
-    deleteIngresoPescadoServiceByid,
     createNominaService,
     getAllNominaService,
     getNominaServiceByid,
@@ -35,8 +29,18 @@ import {
     getEmbarcacionServiceByid,
     updateEmbarcacionServiceByid,
     deleteEmbarcacionServiceByid,
-    getAllRegistroPescadosService,
-    getPescadoConMayoresIngresosEntreFechasService} from "../models/userModel.js";
+    getAllInventarioPescadosService,
+    getInventarioPescadosServiceByid,
+    updateInventarioPescadoServiceByid,
+    deleteInventarioPescadoServiceByid,
+    createInventarioService,
+    getAllInventarioService,
+    getInventarioServiceByid,
+    updateInventarioServiceByid,
+    deleteInventarioServiceByid,
+    createSolicitudVentaService,
+    updateSolicitudVentaService,
+    deleteSolicitudVentaService} from "../models/userModel.js";
 
 const handleResponse = (res,status,message,data = null) => {
     res.status(status).json({
@@ -47,50 +51,89 @@ const handleResponse = (res,status,message,data = null) => {
 };
 
 export const createpescado = async (req, res, next) => {
-    const { codigo_pescado, pescado,cantidad_pescado,fecha_entrada,fecha_caducidad } = req.body;
+    const { id_pescado, nombre, precio } = req.body;
+    console.log(id_pescado,nombre,precio)
+    // Validar que los campos estén presentes
+    if (!id_pescado || !nombre || !precio) {
+        return res.status(400).json({ message: "Todos los campos son requeridos." });
+    }
 
-    // Convertir peso_pescado a un número entero
-    const pesoPescadoInt = parseFloat(cantidad_pescado);
-    isValidDate(fecha_entrada);
-    isValidDate(fecha_caducidad);
-    // Verificar si la conversión fue exitosa
-    if (isNaN(pesoPescadoInt)) {
-        return res.status(400).json({ message: "El peso del pescado debe ser un número entero válido." });
+    // Convertir precio a número flotante
+    const precioFloat = parseFloat(precio);
+
+    // Validar que el precio sea un número válido
+    if (isNaN(precioFloat)) {
+        return res.status(400).json({ message: "El precio debe ser un número válido." });
     }
 
     try {
-        const newPescado = await createPescadoService(codigo_pescado, pescado, pesoPescadoInt,fecha_entrada,fecha_caducidad);
-        handleResponse(res, 201, "Pescado Creado Con Éxito", newPescado);
+        // Crear el pescado en la base de datos llamando al servicio
+        const newPescado = await createPescadoService(id_pescado, nombre, precioFloat);
+        
+        // Responder con el pescado creado
+        return handleResponse(res, 201, "Pescado creado con éxito", newPescado);
     } catch (e) {
-        next(e);
+        next(e);  // Manejo de errores
     }
 };
 
-export const createResgistropescado = async (req, res, next) => {
-    const { codigo_pescado, pescado, descripcion } = req.body;
+export const createInventariopescado = async (req, res, next) => {
+    const { id_pescado, nombre, peso, fecha_ingreso, fecha_caducidad, estado, proceso, id_embarcacion } = req.body;
+
+    // Validar que todos los campos necesarios estén presentes
+    if (!id_pescado || !nombre || !peso || !fecha_ingreso || !fecha_caducidad || !estado || !proceso || !id_embarcacion) {
+        return res.status(400).json({ message: "Todos los campos son requeridos." });
+    }
+
+    // Convertir el peso a número flotante
+    const pesoFloat = parseFloat(peso);
+
+    // Validar que el peso sea un número válido
+    if (isNaN(pesoFloat)) {
+        return res.status(400).json({ message: "El peso debe ser un número válido." });
+    }
+
+    // Validar las fechas
+    const isValidDate = (date) => !isNaN(Date.parse(date));
+    if (!isValidDate(fecha_ingreso) || !isValidDate(fecha_caducidad)) {
+        return res.status(400).json({ message: "Las fechas deben ser válidas." });
+    }
+
     try {
-        const newPescado = await createIngresoPescadoService(codigo_pescado, pescado, descripcion);
-        handleResponse(res, 201, "Pescado Creado Con Éxito", newPescado);
+        // Llamar al servicio para crear el registro de pescado en el inventario
+        const newPescado = await createInvetarioPescadoService(
+            id_pescado, 
+            nombre, 
+            pesoFloat, 
+            fecha_ingreso, 
+            fecha_caducidad, 
+            estado, 
+            proceso, 
+            id_embarcacion
+        );
+        
+        // Responder con el pescado creado
+        return handleResponse(res, 201, "Pescado creado con éxito", newPescado);
     } catch (e) {
-        next(e);
+        next(e);  // Manejo de errores
     }
 };
 
 
-export const createherramienta = async (req, res, next) => {
-    const { codigo_herramienta, herramienta, cantidad_herramienta } = req.body;
+export const createInventario = async (req, res, next) => {
+    const {codigo_producto,nombre_producto,tipo_producto,cantidad} = req.body;
 
     // Convertir cantidad_herramienta a un número entero
-    const cantidadHerramientaInt = parseInt(cantidad_herramienta, 10);
+    const cantidadproducotInt = parseInt(cantidad, 10);
 
     // Verificar si la conversión fue exitosa
-    if (isNaN(cantidadHerramientaInt)) {
-        return res.status(400).json({ message: "La cantidad de la herramienta debe ser un número entero válido." });
+    if (isNaN(cantidadproducotInt)) {
+        return res.status(400).json({ message: "La cantidad de los productos debe ser un número entero válido." });
     }
 
     try {
-        const newHerramienta = await createHerramientaService(codigo_herramienta, herramienta, cantidadHerramientaInt);
-        handleResponse(res, 201, "Herramienta Creada Con Éxito", newHerramienta);
+        const newproducto = await createInventarioService(codigo_producto,nombre_producto,tipo_producto,cantidadproducotInt);
+        handleResponse(res, 201, "Herramienta Creada Con Éxito", newproducto);
     } catch (e) {
         next(e);
     }
@@ -106,18 +149,44 @@ export const createcliente = async (req, res, next) => {
     }
 };
 
-
-export const createEmbarcacion = async (req, res, next) => {
-    const { cantidad_barco,tipo_embarcacion,estado,capacidad_carga_max} = req.body;
-    const cantidad_de_barco = parseInt(cantidad_barco);
-    const capacidad_carga = parseFloat(capacidad_carga_max);
+export const createSolicitudVenta = async (req, res, next) => {
+    const { nombre_cliente,cedula_cliente,peso_pez,nombre_solicitud,estatus} = req.body;
     try {
-        const newEmbarcacion = await createEmbarcacionService(cantidad_de_barco,tipo_embarcacion,estado,capacidad_carga);
-        handleResponse(res, 201, "Embarcacion Creada Con Éxito", newEmbarcacion);
+        const newCliente = await createSolicitudVentaService(nombre_cliente,cedula_cliente,peso_pez,nombre_solicitud,estatus);
+        handleResponse(res, 201, "Solicitud Creada Con Éxito", newCliente);
     } catch (e) {
         next(e);
     }
 };
+
+
+export const createEmbarcacion = async (req, res, next) => {
+    const { id_embarcacion, nombre, capacidad, tipo_embarcacion,estado } = req.body;
+
+    // Validar que todos los campos necesarios estén presentes
+    if (!id_embarcacion || !nombre || !capacidad || !tipo_embarcacion || !estado) {
+        return res.status(400).json({ message: "Todos los campos son requeridos." });
+    }
+
+    // Convertir la capacidad de carga máxima a un número flotante
+    const capacidadCargaMaxFloat = parseFloat(capacidad);
+
+    // Validar que la capacidad de carga sea un número válido
+    if (isNaN(capacidadCargaMaxFloat)) {
+        return res.status(400).json({ message: "La capacidad de carga máxima debe ser un número válido." });
+    }
+
+    try {
+        // Llamar al servicio para crear la embarcación en la base de datos
+        const newEmbarcacion = await createEmbarcacionService(id_embarcacion, nombre, capacidad, tipo_embarcacion,estado);
+        
+        // Responder con la embarcación creada
+        return handleResponse(res, 201, "Embarcación Creada Con Éxito", newEmbarcacion);
+    } catch (e) {
+        next(e);  // Manejo de errores
+    }
+};
+
 
 export const createnomina = async (req, res, next) => {
     const { nombre,apellido,cedula,clave} = req.body;
@@ -174,19 +243,21 @@ export const getAllPescados = async (req,res,next) => {
     };
 };
 
-export const getAllResgistroPescados = async (req,res,next) => {
+export const getAllInventarioPescados = async (req,res,next) => {
     try{
-        const Pescados = await getAllRegistroPescadosService();
+        const Pescados = await getAllInventarioPescadosService();
         handleResponse(res,200,"Pescados Mostrados con Exito", Pescados);
     }
     catch(e){
         next(e);
     };
 };
-export const getAllHerramientas = async (req,res,next) => {
+
+
+export const getAllInventario = async (req,res,next) => {
     try{
-        const herramientas = await getAllHerramientasService();
-        handleResponse(res,200,"Herramientas Mostrados con Exito", herramientas);
+        const inventario = await getAllInventarioService();
+        handleResponse(res,200,"Productos Mostrados con Exito", inventario);
     }
     catch(e){
         next(e);
@@ -213,6 +284,17 @@ export const getAllClientes = async (req,res,next) => {
         next(e);
     };
 };
+
+export const getAllSolicitudVentas = async (req,res,next) => {
+    try{
+        const clientes = await getAllClientesService();
+        handleResponse(res,200,"Solicitudes Mostrados con Exito", clientes);
+    }
+    catch(e){
+        next(e);
+    };
+};
+
 
 export const getAllNomina = async (req,res,next) => {
     try{
@@ -336,6 +418,17 @@ export const getPescadoById = async (req,res,next) => {
     };
 };
 
+export const getInventarioPescadoById = async (req,res,next) => {
+    try{
+        const Pescado = await getInventarioPescadosServiceByid(req.params.id);
+        if(!Pescado) return handleResponse(res,404,"Pescado no encontrado");
+        handleResponse(res,200,"Pescado Encontrado Con exito",Pescado);
+    }
+    catch(e){
+        next(e);
+    };
+};
+
 export const getClienteById = async (req,res,next) => {
     try{
         const Cliente = await getClienteServiceByid(req.params.id);
@@ -358,11 +451,11 @@ export const getNominaById = async (req,res,next) => {
     };
 };
 
-export const getHerramientaById = async (req,res,next) => {
+export const getInventarioById = async (req,res,next) => {
     try{
-        const herramienta = await getHerramientasServiceByid(req.params.id);
-        if(!herramienta) return handleResponse(res,404,"Herramienta no encontrado");
-        handleResponse(res,200,"Herramienta Encontrado Con exito",herramienta);
+        const producto = await getInventarioServiceByid(req.params.id);
+        if(!producto) return handleResponse(res,404,"Producto no encontrado");
+        handleResponse(res,200,"producto Encontrado Con exito",producto);
     }
     catch(e){
         next(e);
@@ -370,32 +463,56 @@ export const getHerramientaById = async (req,res,next) => {
 };
 
 
-export const updatePescado = async (req,res,next) => {
-    const {codigo_pescado,pescado,peso_pescado,fecha_entrada,fecha_caducidad} = req.body
-    isValidDate(fecha_entrada);
-    isValidDate(fecha_caducidad);
-    try{
-        const updatePescado = await updatePescadoServiceByid(codigo_pescado,pescado,peso_pescado,fecha_entrada,fecha_caducidad,req.params.id);
-        if(!updatePescado) return handleResponse(res,404,"Pescado no encontrado");
-        handleResponse(res,200,"Pescado Actualizado Con exito",updatePescado)
+export const updatePescado = async (req, res, next) => {
+    const { codigo_pescado, pescado, precio } = req.body;
+
+    // Validación de los parámetros (se puede añadir más validación según sea necesario)
+    if (!codigo_pescado || !pescado || !precio) {
+        return res.status(400).json({ message: "Faltan datos requeridos (codigo_pescado, pescado, precio)" });
     }
-    catch(e){
-        next(e);
-    };
+
+    try {
+        // Llamamos al servicio para actualizar el pescado
+        const updatedPescado = await updatePescadoServiceByid(codigo_pescado, pescado, precio, req.params.id);
+
+        // Si no se encuentra el pescado con el ID proporcionado, respondemos con 404
+        if (!updatedPescado) {
+            return handleResponse(res, 404, "Pescado no encontrado");
+        }
+
+        // Si la actualización es exitosa, respondemos con el pescado actualizado
+        handleResponse(res, 200, "Pescado actualizado con éxito", updatedPescado);
+    } catch (e) {
+        next(e);  // En caso de error, lo pasamos al manejador de errores
+    }
 };
 
 
-export const updateIngresoPescado = async (req,res,next) => {
-    const {codigo_pescado,pescado,descripcion} = req.body
-    try{
-        const updatePescado = await updateIngresoPescadoServiceByid(codigo_pescado,pescado,descripcion,req.params.id);
-        if(!updatePescado) return handleResponse(res,404,"Pescado no encontrado");
-        handleResponse(res,200,"Pescado Actualizado Con exito",updatePescado)
+
+export const updateInventarioPescado = async (req, res, next) => {
+    const { nombre, peso, fecha_ingreso, fecha_caducidad, estado, proceso, id_embarcacion } = req.body;
+
+    // Validar si los campos requeridos están presentes
+    if (!codigo_pescado || !nombre || !peso || !fecha_ingreso || !fecha_caducidad || !estado || !proceso || !id_embarcacion) {
+        return res.status(400).json({ message: "Faltan datos requeridos." });
     }
-    catch(e){
-        next(e);
-    };
+
+    try {
+        // Llamar al servicio para actualizar el pescado en el inventario
+        const updatedPescado = await updateInventarioPescadoServiceByid(nombre, peso, fecha_ingreso, fecha_caducidad, estado, proceso, id_embarcacion, req.params.id);
+
+        // Si no se encuentra el pescado con el id_pescado
+        if (!updatedPescado) {
+            return handleResponse(res, 404, "Pescado no encontrado");
+        }
+
+        // Si la actualización fue exitosa, respondemos con el pescado actualizado
+        handleResponse(res, 200, "Pescado actualizado con éxito", updatedPescado);
+    } catch (e) {
+        next(e);  // Si ocurre algún error, lo pasamos al manejador de errores
+    }
 };
+
 
 
 export const updateCliente = async (req,res,next) => {
@@ -404,6 +521,19 @@ export const updateCliente = async (req,res,next) => {
         const updatePescado = await updateClienteServiceByid(nombre,cedula,email,telefono,direccion,req.params.id);
         if(!updatePescado) return handleResponse(res,404,"Cliente no encontrado");
         handleResponse(res,200,"Cliente Actualizado Con exito",updatePescado)
+    }
+    catch(e){
+        next(e);
+    };
+};
+
+
+export const updateSolicitudVenta= async (req,res,next) => {
+    const {nombre_cliente, cedula_cliente,peso_pez,nombre_solicitud,estatus} = req.body
+    try{
+        const updatePescado = await updateSolicitudVentaService(nombre_cliente, cedula_cliente,peso_pez,nombre_solicitud,estatus,req.params.id);
+        if(!updatePescado) return handleResponse(res,404,"Solicitud no encontrado");
+        handleResponse(res,200,"Solicitud Actualizada Con exito",updatePescado)
     }
     catch(e){
         next(e);
@@ -422,31 +552,46 @@ export const updateNomina = async (req,res,next) => {
     };
 };
 
-export const updateherramienta = async (req,res,next) => {
-    const {codigo_herramienta,herramienta,cantidad_herramienta} = req.body
+export const updateInventario = async (req,res,next) => {
+    const {nombre_producto,tipo_producto,cantidad} = req.body
+    cantidad = parseInt(cantidad,10)
     try{
-        const updateherramienta = await updateHerramientaServiceByid(codigo_herramienta,herramienta,cantidad_herramienta,req.params.id);
-        if(!updateherramienta) return handleResponse(res,404,"Herramienta no encontrado");
-        handleResponse(res,200,"Herramienta Actualizada Con exito",updateherramienta)
+        const updateproducto = await updateInventarioServiceByid(nombre_producto,tipo_producto,cantidad,req.params.id);
+        if(!updateproducto) return handleResponse(res,404,"producto no encontrado");
+        handleResponse(res,200,"producto Actualizada Con exito",updateproducto)
     }
     catch(e){
         next(e);
     };
 };
 
-export const updateEmbarcacion = async (req,res,next) => {
-    const {cantidad_barco,tipo_embarcacion,estado_embarcacion,capacidad_carga_max} = req.body
-    const cantidad_de_barco = parseInt(cantidad_barco);
-    const capacidad_carga = parseFloat(capacidad_carga_max);
-    try{
-        const updateEmbarcacion = await updateEmbarcacionServiceByid(cantidad_de_barco,capacidad_carga,estado_embarcacion,req.params.id);
-        if(!updateEmbarcacion) return handleResponse(res,404,"Embarcacion no encontrada");
-        handleResponse(res,200,"Embarcacion Actualizada Con exito",updateEmbarcacion)
+export const updateEmbarcacion = async (req, res, next) => {
+    // Desestructuramos los datos recibidos del cuerpo de la solicitud
+    const { nombre, capacidad, tipo_embarcacion, estado } = req.body;
+
+    // Validamos que los datos sean correctos
+    const capacidadNumerica = parseFloat(capacidad);
+
+    if (isNaN(capacidadNumerica)) {
+        return res.status(400).json({ message: "La capacidad debe ser un número válido." });
     }
-    catch(e){
-        next(e);
-    };
+
+    try {
+        // Llamamos al servicio para actualizar la embarcación
+        const updatedEmbarcacion = await updateEmbarcacionServiceByid(nombre, capacidadNumerica, tipo_embarcacion, estado, req.params.id);
+
+        // Si no se encuentra la embarcación con el id_embarcacion
+        if (!updatedEmbarcacion) {
+            return handleResponse(res, 404, "Embarcación no encontrada");
+        }
+
+        // Si la actualización fue exitosa, respondemos con la embarcación actualizada
+        handleResponse(res, 200, "Embarcación actualizada con éxito", updatedEmbarcacion);
+    } catch (e) {
+        next(e);  // Pasar el error al manejador de errores
+    }
 };
+
 
 export const deletePescado = async (req,res,next) => {
     try{
@@ -459,9 +604,9 @@ export const deletePescado = async (req,res,next) => {
     };
 };
 
-export const deleteIngresoPescado = async (req,res,next) => {
+export const deleteInvetarioPescado = async (req,res,next) => {
     try{
-        const deletePescado = await deleteIngresoPescadoServiceByid(req.params.id);
+        const deletePescado = await deleteInventarioPescadoServiceByid(req.params.id);
         if(!deletePescado) return handleResponse(res,404,"Pescado no encontrado");
         handleResponse(res,200,"Pescado Eliminado Con exito",deletePescado)
     }
@@ -483,11 +628,11 @@ export const deleteEmbarcacion = async (req,res,next) => {
 };
 
 
-export const deleteHerramienta = async (req,res,next) => {
+export const deleteInventario = async (req,res,next) => {
     try{
-        const deleteHerramienta = await deleteHerramientaServiceByid(req.params.id);
-        if(!deleteHerramienta) return handleResponse(res,404,"Herramienta no encontrada");
-        handleResponse(res,200,"Herramienta Eliminada Con exito",deleteHerramienta)
+        const deleteproducto = await deleteInventarioServiceByid(req.params.id);
+        if(!deleteproducto) return handleResponse(res,404,"Producto no encontrada");
+        handleResponse(res,200,"Producto Eliminada Con exito",deleteproducto)
     }
     catch(e){
         next(e);
@@ -499,6 +644,18 @@ export const deleteCliente = async (req,res,next) => {
         const deletecliente = await deleteClienteServiceByid(req.params.id);
         if(!deletecliente) return handleResponse(res,404,"Cliente no encontrado");
         handleResponse(res,200,"Cliente Eliminado Con exito",deletecliente)
+    }
+    catch(e){
+        next(e);
+    };
+};
+
+
+export const deleteSolicitudVenta = async (req,res,next) => {
+    try{
+        const deletecliente = await deleteSolicitudVentaService(req.params.id);
+        if(!deletecliente) return handleResponse(res,404,"Solicitud no encontrado");
+        handleResponse(res,200,"Solicitud Eliminado Con exito",deletecliente)
     }
     catch(e){
         next(e);
@@ -558,35 +715,3 @@ export const getVentasYClientesEntreFechas = async(req,res,next) => {
         
     }  
 };
-
-export const getPescadoConMayoresIngresosEntreFechas = async (req, res, next) => {
-           const { fechaInicio, fechaFin } = req.query;
-    
-        // Validación simple de fechas
-        if (!fechaInicio || !fechaFin) {
-            return handleResponse(res, 400, "Ambas Fechas Son Requeridas");
-        }
-    
-        // Verificar que las fechas sean válidas
-        const isValidDate = (date) => !isNaN(Date.parse(date)); // Usamos Date.parse() para verificar fechas válidas
-    
-        if (!isValidDate(fechaInicio) || !isValidDate(fechaFin)) {
-            return handleResponse(res, 400, "Las fechas deben estar en un formato válido.");
-        }
-    
-        try {
-            // Llamar al servicio que consulta la base de datos
-            const result = await getPescadoConMayoresIngresosEntreFechasService(fechaInicio, fechaFin);
-    
-            // Verificar que la respuesta no esté vacía o sea undefined
-            if (!result || result.length === 0) {
-                return handleResponse(res, 200, "No se encontraron transacciones en el rango de fechas proporcionado.");
-            }
-    
-            // Devolver la respuesta con los datos obtenidos
-            handleResponse(res, 200, "Ventas y Clientes obtenidos con éxito", { ventasYclientes: result });
-            
-        } catch (e) {
-            next(e);
-        }
-    };

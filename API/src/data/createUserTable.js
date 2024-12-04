@@ -2,16 +2,10 @@ import pool from "../config/db.js";
 
 export const createPescadoTable = async () => {
     const queryText = ` 
-    CREATE TABLE IF NOT EXISTS Pescados(
-    id serial PRIMARY KEY,
-    codigo_pescado varchar(100) NOT NULL,     -- Clave foránea que hace referencia a TiposPescado
-    pescado varchar(100) not null,
-    cantidad_pescado float NOT NULL DEFAULT 0,  -- Peso del pescado ingresado
-    fecha_entrada DATE,                       -- Fecha de entrada
-    fecha_caducidad DATE,                        -- Fecha de salida
-    CONSTRAINT fk_codigo_pescado FOREIGN KEY (codigo_pescado)
-        REFERENCES TiposPescado(codigo_pescado)
-        ON DELETE CASCADE  -- Opcional: Elimina los registros en IngresoPescado cuando se elimina un tipo de pescado
+    CREATE TABLE IF NOT EXISTS pescados(
+    id_pescado VARCHAR(20) PRIMARY KEY,  -- Identificador único para cada especie de pescado (ej. "ATUN")
+    nombre VARCHAR(100) NOT NULL,        -- Nombre del pescado (ej. "Atún")
+    precio DECIMAL(10, 2) NOT NULL       -- Precio por unidad o kilogramo del pescado
 );`;
 try{
     pool.query(queryText);
@@ -29,7 +23,6 @@ export const createNominaTable = async () => {
     apellido VARCHAR(100) NOT NULL,    -- Apellido del empleado
     cedula VARCHAR(20) UNIQUE NOT NULL, -- Cédula de identidad (única para cada empleado)
     clave VARCHAR(255) unique NOT NULL      -- Clave de acceso (puede ser una contraseña)
-    rol VARCHAR(50) NOT NULL          -- Guarda el rol del trabajador (Viene de un dropdonw del registro)
 );
 `;
 try{
@@ -43,20 +36,13 @@ try{
 
 export const createEmbarcacionTable = async () => {
     const queryText = ` 
-    -- Crear el tipo ENUM si no existe previamente
-    DO $$ BEGIN
-    CREATE TYPE estado_embarcacion AS ENUM ('Operando', 'Inactivo');
-    EXCEPTION
-    WHEN duplicate_object THEN NULL; -- Si el tipo ya existe, no hacer nada
-    END $$;
-
 -- Crear la tabla solo si no existe
     CREATE TABLE IF NOT EXISTS embarcaciones (
-    id SERIAL PRIMARY KEY,               -- Identificador único para cada embarcación
-    cantidad_barco int default 0,
-    tipo_embarcacion VARCHAR(100),       -- Nombre o tipo de la embarcación
-    estado estado_embarcacion not null,           -- Estado de la embarcación (Operando/Inactivo)
-    capacidad_carga_max FLOAT           -- Capacidad máxima de carga (en toneladas)
+    id_embarcacion VARCHAR(20) PRIMARY KEY,  -- Identificador único para la embarcación (ej. "EMB001")
+    nombre VARCHAR(100) NOT NULL,            -- Nombre o descripción de la embarcación (ej. "Embarcación Pesquera 1")
+    capacidad DECIMAL(10, 2) NOT NULL,       -- Capacidad de la embarcación (en toneladas o kg)
+    tipo_embarcacion VARCHAR(50) NOT NULL,   -- Tipo de embarcación (ej. "Pesquera", "Recreativa", "Comercial")
+    estado VARCHAR(50) NOT NULL              -- Estado de la embarcación (ej. "Operativa", "En mantenimiento")
 );
 `;
 try{
@@ -68,12 +54,18 @@ try{
 };
 
 
-export const createResgistroPescadoTable = async () => {
+export const createInventarioPescadoTable = async () => {
     const queryText = ` 
-    CREATE TABLE IF NOT EXISTS TiposPescado(
-    codigo_pescado varchar(100) PRIMARY KEY,  -- Código único para cada tipo de pescado
-    pescado varchar(100) NOT NULL,            -- Tipo de pescado
-    descripcion text         -- Descripción opcional
+    CREATE TABLE IF NOT EXISTS inventario_pescado(
+    id_pescado VARCHAR(20) REFERENCES pescados(id_pescado),  -- Relacionado con la tabla pescados
+    nombre VARCHAR(100) NOT NULL,        -- Nombre del pescado (ej. "Atún")
+    peso DECIMAL(10, 2) NOT NULL,        -- Peso total del lote de pescado (en kg)
+    fecha_ingreso TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Fecha de ingreso al inventario
+    fecha_caducidad TIMESTAMP NOT NULL,  -- Fecha de caducidad del pescado
+    estado VARCHAR(50) NOT NULL,         -- Estado del pescado (ej. "nuevo", "en proceso", etc.)
+    proceso VARCHAR(50) NOT NULL,        -- Proceso al que ha sido sometido el pescado (ej. "fresco", "congelado")
+    id_embarcacion VARCHAR(20) REFERENCES embarcaciones(id_embarcacion),  -- Embarcación que trajo el lote
+    PRIMARY KEY (id_pescado, fecha_ingreso)  -- Clave primaria compuesta: pescado y fecha de ingreso
 );`;
 try{
     pool.query(queryText);
@@ -85,13 +77,15 @@ try{
 
 
 
-export const createHerramientaTable = async () => {
-    const queryText = `Create table if not exists Herramientas(
-    id serial primary key,
-    codigo_herramienta varchar(100) unique not null,
-    herramienta varchar(100)  not null,
-    cantidad_herramienta int not null default 0
-)`;
+export const createInventarioTable = async () => {
+    const queryText = `Create table if not exists inventario(
+        codigo_producto VARCHAR(100) PRIMARY KEY,  -- Usamos codigo_producto como la clave primaria
+        nombre_producto VARCHAR(100) NOT NULL,
+        tipo_producto VARCHAR(50) NOT NULL,  -- Herramienta, Comida, Bebida, etc.
+        cantidad INT NOT NULL DEFAULT 0,
+        fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        CONSTRAINT fk_tipo_producto FOREIGN KEY (tipo_producto) REFERENCES TiposProductos(tipo_producto)
+    )`;
 try{
     pool.query(queryText);
     //console.log("Tabla Creada si no existe");
@@ -99,6 +93,19 @@ try{
     console.log("Error al crear la tabla: ",e);
 };
 };
+
+export const createTipoProductos = async () => {
+    const queryText = `
+    CREATE TABLE IF NOT EXISTS TiposProductos (
+    tipo_producto VARCHAR(50) PRIMARY KEY
+);`;
+try{
+    pool.query(queryText);
+    //console.log("Tabla Creada si no existe");
+}catch(e){
+    console.log("Error al crear la tabla: ",e);
+};
+}
 
 export const createClienteTable = async () => {
     const queryText = `
@@ -144,71 +151,46 @@ export const createTransaccionesTable = async () => {
     }
 };
 
-//Crear el trigger para las base de datos
+export const ingresarTiposProductos = async () => {
 
-export const createFunction = async () => {
     const queryText = `
-    CREATE OR REPLACE FUNCTION insertar_o_actualizar_cliente()
-    	RETURNS TRIGGER AS $$
-    BEGIN
-    -- Verifica si el cliente ya existe en la tabla 'clientes' por su cédula
-    IF NOT EXISTS (SELECT 1 FROM clientes WHERE cedula = NEW.cedula_cliente) THEN
-        -- Si no existe, inserta un nuevo cliente en la tabla 'clientes'
-        INSERT INTO clientes (nombre, cedula, email, telefono, direccion)
-        VALUES (NEW.nombre_cliente, NEW.cedula_cliente, NEW.email_cliente, NEW.telefono_cliente, NEW.direccion_cliente);
-    ELSE
-        -- Si ya existe, actualiza la información del cliente
-        UPDATE clientes 
-        SET nombre = NEW.nombre_cliente,
-            email = NEW.email_cliente,
-            telefono = NEW.telefono_cliente,
-            direccion = NEW.direccion_cliente
-        WHERE cedula = NEW.cedula_cliente;
-    END IF;
-    -- Devuelve el nuevo registro de la transacción
-    RETURN NEW;
-    END;
-$$ LANGUAGE plpgsql;
-    `;
-  
-    try {
-      await pool.query(queryText);  // Ejecuta la función en la base de datos
-      console.log("Función 'insertar_o_actualizar_cliente' creada correctamente.");
-    } catch (e) {
-      console.log("Error al crear la función: ", e);
-    }
-  };
+    -- Insertar los tipos de productos en la tabla TiposProductos
+INSERT INTO TiposProductos (tipo_producto)
+VALUES
+    ('Comida'),
+    ('Bebida'),
+    ('Herramienta'),
+    ('Material de Reparacion')
+ON CONFLICT (tipo_producto) DO NOTHING;
 
-  export const createTrigger = async () => {
-    // Consulta para verificar si el trigger ya existe
-    const checkTriggerQuery = `
-      SELECT 1
-      FROM pg_trigger t
-      JOIN pg_class c ON c.oid = t.tgrelid
-      WHERE c.relname = 'transacciones' 
-      AND t.tgname = 'trigger_insertar_cliente';
     `;
-  
+
     try {
-      // Verificamos si el trigger ya existe
-      const result = await pool.query(checkTriggerQuery);
-  
-      // Si el trigger no existe, lo creamos
-      if (result.rowCount === 0) {
-        const createTriggerQuery = `
-        CREATE TRIGGER trigger_insertar_cliente
-    AFTER INSERT ON transacciones
-    FOR EACH ROW
-    EXECUTE FUNCTION insertar_o_actualizar_cliente();
-        `;
-        
-        // Ejecutamos la consulta para crear el trigger
-        await pool.query(createTriggerQuery);
-        console.log("Trigger creado exitosamente.");
-      } else {
-        console.log("El trigger ya existe, no se creó.");
-      }
-    } catch (err) {
-      console.error("Error al crear el trigger:", err);
+            await pool.query(queryText);
+        console.log("Tipos de productos ingresados o ya existen.");
+    } catch (e) {
+        console.log("Error al ingresar tipos de productos: ", e);
     }
-  };
+};
+
+export const createSolicitudVentasTable = async () => {
+    const queryText = `
+    CREATE TABLE IF NOT EXISTS solicitud_ventas (
+        id SERIAL PRIMARY KEY,                     -- Identificador único de la solicitud
+        nombre_cliente VARCHAR(100) NOT NULL,       -- Nombre del cliente
+        cedula_cliente VARCHAR(100) NOT NULL,      -- Cédula del cliente (clave foránea)
+        peso_pez DECIMAL(10, 2) NOT NULL,          -- Peso del pez en kg
+        nombre_solicitud VARCHAR(255) NOT NULL,     -- Nombre o descripción de la solicitud
+        estatus VARCHAR(50) CHECK (estatus IN ('Pendiente', 'Completada', 'Cancelada')) NOT NULL,  -- Estado de la solicitud
+        fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Fecha de la solicitud
+        CONSTRAINT fk_cedula_cliente FOREIGN KEY (cedula_cliente) REFERENCES Clientes(cedula)  -- Relación con la tabla Clientes
+    );
+    `;
+
+    try {
+        await pool.query(queryText);
+        console.log("Tabla solicitud_ventas creada correctamente.");
+    } catch (e) {
+        console.log("Error al crear la tabla solicitud_ventas: ", e);
+    }
+};
