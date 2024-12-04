@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solicitud Personalizada</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="personalizada.css">
 </head>
 <body>
     <header>
@@ -13,10 +13,16 @@
     <main>
         <form id="solicitudForm">
             <div class="form-group">
-                <label for="cliente">Nombre del Cliente:</label>
-                <input type="text" id="cliente" name="cliente" placeholder="Nombre y Cédula">
+                <label for="nombreCliente">Nombre del Cliente:</label>
+                <input type="text" id="nombreCliente" name="nombreCliente" placeholder="Nombre">
+                <label for="cedulaCliente">Cédula del Cliente:</label>
+                <input type="text" id="cedulaCliente" name="cedulaCliente" placeholder="Cédula">
                 <label for="fecha">Fecha de Solicitud:</label>
                 <input type="date" id="fecha" name="fecha">
+                <label for="telefono">Número de Teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" placeholder="Número de Teléfono">
+                <label for="email">Dirección de Correo:</label>
+                <input type="email" id="email" name="email" placeholder="Correo Electrónico">
             </div>
             <div class="form-group">
                 <label for="producto">Productos:</label>
@@ -38,16 +44,46 @@
                 <label for="cantidad">Peso a Solicitar (kg):</label>
                 <input type="number" id="cantidad" name="cantidad" step="0.01" placeholder="0.00" min="0.01">
                 <label for="precioUnitario">Precio Unitario:</label>
-                <span id="precioUnitario"></span>
+                <span id="precioUnitario">15.00</span>
             </div>
+            <button class="button">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">Guardar Solicitud</span>
+            </button>
         </form>
+        <button id="vaciarAlmacenamiento" class="button">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+        </button>
+        <table id="tablaSolicitudes">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Cédula</th>
+                    <th>Producto</th>
+                    <th>Fecha</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Peso (kg)</th>
+                    <th>Precio Unitario</th>
+                    <th>Precio Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Las solicitudes se agregarán aquí -->
+            </tbody>
+        </table>
     </main>
     <footer>
-        <p>&copy;2024 Interfaz de Ventas de Muelle Pesquero</p>
-        <p>                 All Rights Reserved.      </p>
-        <button class="back-button" onclick="location.href='menuprincipal.html'">VOLVER AL MENU PRINCIPAL</button>
+        <button class="button" onclick="location.href='menuprincipal.html'">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front">VOLVER AL MENU PRINCIPAL</span>
+        </button>
+        <p>&copy;2024 Solicitudes Personalizadas de Muelle Pesquero</p>
     </footer>
-    <script src="script.js"></script>
+    <script src="solicitudes.js"></script>
 </body>
 </html>
 
