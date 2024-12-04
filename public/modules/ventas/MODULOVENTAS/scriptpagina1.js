@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     const items = document.querySelectorAll(".item img");
-
+    //CAMBIA IMAGEN
     items.forEach(function(item) {
         const originalSrc = item.src;
         const hoverSrc = item.getAttribute("data-hover");
@@ -58,20 +58,11 @@ document.addEventListener("DOMContentLoaded", function() {
         window.location.href = 'estructura.html';  
     });
 });
-
+    /*
     const cartButton = document.getElementById('cart-button');
     cartButton.addEventListener('click', () => {
         window.location.href = 'carrito.html';
     });
-
-document.addEventListener("DOMContentLoaded", function() {
-    const orderButton = document.querySelector(".order-button");
-    const weightSelect = document.getElementById("weight");
-
-    const backButton = document.querySelector(".back-button");
-    backButton.addEventListener("click", function() {
-        window.location.href = 'estructura.html';  
-    });
-});
+    */
 
 
