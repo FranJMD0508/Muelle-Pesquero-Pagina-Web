@@ -22,6 +22,10 @@ const actionNew = () => {
           <label for="direccionCliente" class="form-label">Dirección</label>
           <input type="text" class="form-control" id="direccionCliente" placeholder="Calle, número, ciudad" required>
         </div>
+        <div class="col-md-6">
+          <label for="direccionCliente" class="form-label">Cedula</label>
+          <input type="text" class="form-control" id="cedula" placeholder="Cedula" required>
+        </div>
       </div>
     </fieldset>
 
