@@ -58,6 +58,8 @@ export const createInventarioPescadoTable = async () => {
     const queryText = ` 
     CREATE TABLE IF NOT EXISTS inventario_pescado(
     id_pescado VARCHAR(20) REFERENCES pescados(id_pescado),  -- Relacionado con la tabla pescados
+    id_lote int not null,
+    clasificacion varchar(50) not null,
     nombre VARCHAR(100) NOT NULL,        -- Nombre del pescado (ej. "Atún")
     peso DECIMAL(10, 2) NOT NULL,        -- Peso total del lote de pescado (en kg)
     fecha_ingreso TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Fecha de ingreso al inventario
@@ -133,14 +135,10 @@ export const createTransaccionesTable = async () => {
     monto NUMERIC(15, 2) NOT NULL,          -- Monto de la transacción
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Fecha y hora de la transacción
     descripcion TEXT,                      -- Descripción de la transacción
-    codigo_pescado VARCHAR(100),           -- Código de pescado asociado
-    nombre_cliente VARCHAR(100) NOT NULL,   -- Nombre del cliente que realiza la transacción
-    cedula_cliente VARCHAR(100) NOT NULL,   -- Cédula del cliente que realiza la transacción
-    email_cliente VARCHAR(100),             -- Correo electrónico del cliente
-    telefono_cliente VARCHAR(30),           -- Teléfono del cliente
-    direccion_cliente TEXT,                 -- Dirección del cliente
-    CONSTRAINT fk_codigo_pescado FOREIGN KEY (codigo_pescado) REFERENCES TiposPescado(codigo_pescado),  -- Relación con la tabla pescados
-    CONSTRAINT fk_cedula_cliente FOREIGN KEY (cedula_cliente) REFERENCES clientes(cedula)   -- Relación con la tabla clientes (cedula)
+    numero_factura_compras VARCHAR(50),                -- Relacionado con la factura de compras, si es un egreso
+    numero_factura_ventas VARCHAR(50),                 -- Relacionado con la factura de ventas, si es un ingreso
+    CONSTRAINT fk_factura_compras FOREIGN KEY (numero_factura_compras) REFERENCES factura_compras(numero_factura),
+    CONSTRAINT fk_factura_ventas FOREIGN KEY (numero_factura_ventas) REFERENCES factura_ventas(numero_factura)
 );
  `;
     try {
@@ -194,3 +192,110 @@ export const createSolicitudVentasTable = async () => {
         console.log("Error al crear la tabla solicitud_ventas: ", e);
     }
 };
+
+
+export const createFacturaComprasTable = async () => {
+    const queryText = `
+    CREATE TABLE IF NOT EXISTS factura_compras (
+        id SERIAL PRIMARY KEY,                             -- Identificador único de la factura de compra
+        numero_factura VARCHAR(50) UNIQUE NOT NULL,        -- Número único de la factura
+        nombre_cliente varchar(50),
+        cedula_rif varchar(50),
+        email varchar(100),
+        telefono varchar(50),
+        direccion text,
+        fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,         -- Fecha de la factura
+        tipo_producto VARCHAR(50) NOT NULL,                -- Tipo de producto (Herramienta, Material para muelle, etc.)
+        descripcion_producto TEXT,                         -- Descripción del producto
+        cantidad INT NOT NULL,                             -- Cantidad de productos comprados
+        precio_unitario DECIMAL(10, 2) NOT NULL,           -- Precio unitario del producto
+        total DECIMAL(15, 2)  -- Total de la compra 
+    );
+    `;
+    try {
+        await pool.query(queryText);
+        console.log("Tabla factura_compras creada correctamente.");
+    } catch (e) {
+        console.log("Error al crear la tabla factura_compras: ", e);
+    }
+};
+
+
+export const createFacturaVentasTable = async () => {
+    const queryText = `
+    CREATE TABLE IF NOT EXISTS factura_ventas (
+        id SERIAL PRIMARY KEY,                             -- Identificador único de la factura de venta
+        numero_factura VARCHAR(50) UNIQUE NOT NULL,        -- Número único de la factura
+        fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,         -- Fecha de la factura
+        codigo_pescado VARCHAR(20) REFERENCES pescados(id_pescado),  -- Relacionado con el pescado vendido
+        cantidad INT NOT NULL,                             -- Cantidad de pescado vendido
+        precio_unitario DECIMAL(10, 2) NOT NULL,           -- Precio unitario del pescado
+        total DECIMAL(15, 2) ,  -- Total de la venta (cantidad * precio unitario)
+        nombre_cliente VARCHAR(100) NOT NULL,              -- Nombre del cliente
+        cedula_cliente VARCHAR(100) NOT NULL,              -- Cédula del cliente
+        email_cliente VARCHAR(100),                        -- Correo electrónico del cliente
+        telefono_cliente VARCHAR(30),                      -- Teléfono del cliente
+        direccion_cliente TEXT                             -- Dirección del cliente
+    );
+    `;
+    try {
+        await pool.query(queryText);
+        console.log("Tabla factura_ventas creada correctamente.");
+    } catch (e) {
+        console.log("Error al crear la tabla factura_ventas: ", e);
+    }
+};
+
+export const createTriggerEgresosCompras = async () => {
+    const queryText = `
+    CREATE OR REPLACE FUNCTION insertar_egreso_factura_compras() 
+    RETURNS TRIGGER AS $$
+    BEGIN
+        -- Insertar un egreso en la tabla egresos_ingresos cuando se inserta una factura de compra
+        INSERT INTO transacciones (tipo, monto, descripcion, numero_factura_compras)
+        VALUES ('egreso', NEW.total, 'Compra de ' || NEW.tipo_producto, NEW.numero_factura);
+        RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+
+    CREATE TRIGGER trigger_egreso_factura_compras
+    AFTER INSERT ON factura_compras
+    FOR EACH ROW
+    EXECUTE FUNCTION insertar_egreso_factura_compras();
+    `;
+
+    try {
+        await pool.query(queryText);
+        console.log("Trigger para egresos (factura_compras) creado correctamente.");
+    } catch (e) {
+        console.log("Error al crear el trigger para egresos (factura_compras): ", e);
+    }
+};
+
+
+export const createTriggerIngresosVentas = async () => {
+    const queryText = `
+    CREATE OR REPLACE FUNCTION insertar_ingreso_factura_ventas() 
+    RETURNS TRIGGER AS $$
+    BEGIN
+        -- Insertar un ingreso en la tabla egresos_ingresos cuando se inserta una factura de venta
+        INSERT INTO transacciones (tipo, monto, descripcion, numero_factura_ventas)
+        VALUES ('ingreso', NEW.total, 'Venta de pescado: ' || NEW.codigo_pescado, NEW.numero_factura);
+        RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+
+    CREATE TRIGGER trigger_ingreso_factura_ventas
+    AFTER INSERT ON factura_ventas
+    FOR EACH ROW
+    EXECUTE FUNCTION insertar_ingreso_factura_ventas();
+    `;
+
+    try {
+        await pool.query(queryText);
+        console.log("Trigger para ingresos (factura_ventas) creado correctamente.");
+    } catch (e) {
+        console.log("Error al crear el trigger para ingresos (factura_ventas): ", e);
+    }
+};
+

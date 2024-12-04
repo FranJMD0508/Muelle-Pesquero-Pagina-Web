@@ -40,7 +40,14 @@ import {
     deleteInventarioServiceByid,
     createSolicitudVentaService,
     updateSolicitudVentaService,
-    deleteSolicitudVentaService} from "../models/userModel.js";
+    deleteSolicitudVentaService,
+    getAllFacturasVentasService,
+    getAllFacturasComprasService,
+    createFacturaCompraService,
+    createFacturaVentasService,
+    deleteFacturaVentasServiceByid,
+    getPescadoConMayoresIngresosEntreFechasService,
+    getClientesMasConcurridosService} from "../models/userModel.js";
 
 const handleResponse = (res,status,message,data = null) => {
     res.status(status).json({
@@ -52,7 +59,6 @@ const handleResponse = (res,status,message,data = null) => {
 
 export const createpescado = async (req, res, next) => {
     const { id_pescado, nombre, precio } = req.body;
-    console.log(id_pescado,nombre,precio)
     // Validar que los campos estén presentes
     if (!id_pescado || !nombre || !precio) {
         return res.status(400).json({ message: "Todos los campos son requeridos." });
@@ -78,7 +84,7 @@ export const createpescado = async (req, res, next) => {
 };
 
 export const createInventariopescado = async (req, res, next) => {
-    const { id_pescado, nombre, peso, fecha_ingreso, fecha_caducidad, estado, proceso, id_embarcacion } = req.body;
+    const { id_pescado, id_lote,clasificacion,nombre, peso, fecha_ingreso, fecha_caducidad, estado, proceso, id_embarcacion } = req.body;
 
     // Validar que todos los campos necesarios estén presentes
     if (!id_pescado || !nombre || !peso || !fecha_ingreso || !fecha_caducidad || !estado || !proceso || !id_embarcacion) {
@@ -102,7 +108,9 @@ export const createInventariopescado = async (req, res, next) => {
     try {
         // Llamar al servicio para crear el registro de pescado en el inventario
         const newPescado = await createInvetarioPescadoService(
-            id_pescado, 
+            id_pescado,
+            id_lote,
+            clasificacion, 
             nombre, 
             pesoFloat, 
             fecha_ingreso, 
@@ -233,6 +241,87 @@ export const createtransacciones = async (req, res, next) => {
 };
 
 
+
+export const createFacturaCompras = async (req, res, next) => {
+    const {     
+        numero_factura,             
+        nombre_cliente,
+        cedula_rif,
+        email,
+        telefono,
+        direccion,
+        tipo_producto,
+        descripcion_producto,
+        cantidad,
+        precio_unitario,
+        total
+    } = req.body;
+
+
+    // Validar que todos los campos obligatorios estén presentes (excepto dirección)
+    if (!numero_factura || !nombre_cliente || !cedula_rif || !email || !telefono || !tipo_producto || !descripcion_producto || !cantidad || !precio_unitario || !total) {
+        return res.status(400).json({ message: "Todos los campos son obligatorios, excepto la dirección." });
+    }
+
+    try {
+        const transaccion = await createFacturaCompraService(         
+            numero_factura,             
+            nombre_cliente,
+            cedula_rif,
+            email,
+            telefono,
+            direccion, // Dirección es opcional
+            tipo_producto,
+            descripcion_producto,
+            cantidad,
+            precio_unitario,
+            total
+        );
+        handleResponse(res, 201, "Factura Creada Con Éxito", transaccion);
+    } catch (e) {
+        next(e);
+    }
+};
+
+
+
+export const createFacturaVentas = async (req, res, next) => {
+    const {     
+        numero_factura,
+        codigo_pescado,
+        cantidad,
+        precio_unitario,     
+        total,
+        nombre_cliente,
+        cedula_cliente,
+        email_cliente,
+        telefono_cliente,
+        direccion_cliente
+    } = req.body;
+    // Validar que todos los campos obligatorios estén presentes (excepto dirección)
+    if (!numero_factura || !codigo_pescado || !cantidad || !precio_unitario || !total || !nombre_cliente || !cedula_cliente || !email_cliente || !telefono_cliente) {
+        return res.status(400).json({ message: "Todos los campos son obligatorios, excepto la dirección." });
+    }
+    try {
+        const transaccion = await createFacturaVentasService(                   
+            numero_factura,
+            codigo_pescado,
+            cantidad,
+            precio_unitario,     
+            total,
+            nombre_cliente,
+            cedula_cliente,
+            email_cliente,
+            telefono_cliente,
+            direccion_cliente // Dirección es opcional
+        );
+        handleResponse(res, 201, "Factura Creada Con Éxito", transaccion);
+    } catch (e) {
+        next(e);
+    }
+};
+
+
 export const getAllPescados = async (req,res,next) => {
     try{
         const Pescados = await getAllPescadosService();
@@ -317,6 +406,27 @@ export const getAllTransacciones = async (req,res,next) => {
     };
 };
 
+export const getAllFacturasCompras = async (req,res,next) => {
+    try{
+        const transacciones = await getAllFacturasComprasService();
+        handleResponse(res,200,"Facturas De Compras Mostradas con Exito", transacciones);
+    }
+    catch(e){
+        next(e);
+    };
+};
+
+
+
+export const getAllFacturasVentas = async (req,res,next) => {
+    try{
+        const transacciones = await getAllFacturasVentasService();
+        handleResponse(res,200,"Factura de Ventas Mostradas con Exito", transacciones);
+    }
+    catch(e){
+        next(e);
+    };
+};
 
 export const getMontoNeto = async(req,res,next) => {
     try {
@@ -490,16 +600,20 @@ export const updatePescado = async (req, res, next) => {
 
 
 export const updateInventarioPescado = async (req, res, next) => {
-    const { nombre, peso, fecha_ingreso, fecha_caducidad, estado, proceso, id_embarcacion } = req.body;
-
-    // Validar si los campos requeridos están presentes
-    if (!codigo_pescado || !nombre || !peso || !fecha_ingreso || !fecha_caducidad || !estado || !proceso || !id_embarcacion) {
+    const { clasificacion,nombre,peso, fecha_ingreso, fecha_caducidad, estado, proceso, id_embarcacion } = req.body;
+    
+    if (!nombre || !clasificacion || !peso || !fecha_ingreso || !fecha_caducidad || !estado || !proceso || !id_embarcacion) {
         return res.status(400).json({ message: "Faltan datos requeridos." });
     }
+    const isValidDate = (date) => !isNaN(Date.parse(date)); // Usamos Date.parse() para verificar fechas válidas
 
+ if (!isValidDate(fecha_ingreso) || !isValidDate(fecha_caducidad)) {
+     return handleResponse(res, 400, "Las fechas deben estar en un formato válido.");
+ }
+ console.log(typeof fecha_ingreso)
     try {
         // Llamar al servicio para actualizar el pescado en el inventario
-        const updatedPescado = await updateInventarioPescadoServiceByid(nombre, peso, fecha_ingreso, fecha_caducidad, estado, proceso, id_embarcacion, req.params.id);
+        const updatedPescado = await updateInventarioPescadoServiceByid(clasificacion,nombre,peso, fecha_ingreso, fecha_caducidad, estado, proceso, id_embarcacion, req.params.id);
 
         // Si no se encuentra el pescado con el id_pescado
         if (!updatedPescado) {
@@ -684,6 +798,28 @@ export const deleteTransaccion = async (req,res,next) => {
     };
 };
 
+export const deleteFacturaCompra = async (req,res,next) => {
+    try{
+        const deletetransaccion = await deleteTransaccionesServiceByid(req.params.id);
+        if(!deletetransaccion) return handleResponse(res,404,"Transaccion no encontrada");
+        handleResponse(res,200,"Factura De Compra Eliminada Con exito",deletetransaccion)
+    }
+    catch(e){
+        next(e);
+    };
+};
+
+export const deleteFacturaVenta = async (req,res,next) => {
+    try{
+        const deletetransaccion = await deleteFacturaVentasServiceByid(req.params.id);
+        if(!deletetransaccion) return handleResponse(res,404,"Transaccion no encontrada");
+        handleResponse(res,200,"Factura De Ventas Eliminada Con exito",deletetransaccion)
+    }
+    catch(e){
+        next(e);
+    };
+};
+
 export const getVentasYClientesEntreFechas = async(req,res,next) => {
     const { fechaInicio, fechaFin } = req.query;
     
@@ -691,7 +827,6 @@ export const getVentasYClientesEntreFechas = async(req,res,next) => {
     if (!fechaInicio || !fechaFin) {
         return handleResponse(res, 400, "Ambas Fechas Son Requeridas");
     }
-
     // Verificar que las fechas sean válidas
     const isValidDate = (date) => !isNaN(Date.parse(date)); // Usamos Date.parse() para verificar fechas válidas
 
@@ -714,4 +849,69 @@ export const getVentasYClientesEntreFechas = async(req,res,next) => {
         next(e)
         
     }  
+};
+
+
+export const getPescadoConMayoresIngresosEntreFechas = async (req, res, next) => {
+    const { fechaInicio, fechaFin } = req.query;
+
+ // Validación simple de fechas
+ if (!fechaInicio || !fechaFin) {
+     return handleResponse(res, 400, "Ambas Fechas Son Requeridas");
+ }
+
+ // Verificar que las fechas sean válidas
+ const isValidDate = (date) => !isNaN(Date.parse(date)); // Usamos Date.parse() para verificar fechas válidas
+
+ if (!isValidDate(fechaInicio) || !isValidDate(fechaFin)) {
+     return handleResponse(res, 400, "Las fechas deben estar en un formato válido.");
+ }
+
+ try {
+     // Llamar al servicio que consulta la base de datos
+     const result = await getPescadoConMayoresIngresosEntreFechasService(fechaInicio, fechaFin);
+
+     // Verificar que la respuesta no esté vacía o sea undefined
+     if (!result || result.length === 0) {
+         return handleResponse(res, 200, "No se encontraron transacciones en el rango de fechas proporcionado.");
+     }
+
+     // Devolver la respuesta con los datos obtenidos
+     handleResponse(res, 200, "Ventas y Clientes obtenidos con éxito", { ventasYclientes: result });
+     
+ } catch (e) {
+     next(e);
+ }
+};
+
+export const getClientesMasCocurridos = async (req, res, next) => {
+    const { fechaInicio, fechaFin } = req.query;
+
+ // Validación simple de fechas
+ if (!fechaInicio || !fechaFin) {
+     return handleResponse(res, 400, "Ambas Fechas Son Requeridas");
+ }
+
+ // Verificar que las fechas sean válidas
+ const isValidDate = (date) => !isNaN(Date.parse(date)); // Usamos Date.parse() para verificar fechas válidas
+
+ if (!isValidDate(fechaInicio) || !isValidDate(fechaFin)) {
+     return handleResponse(res, 400, "Las fechas deben estar en un formato válido.");
+ }
+
+ try {
+     // Llamar al servicio que consulta la base de datos
+     const result = await getClientesMasConcurridosService(fechaInicio, fechaFin);
+
+     // Verificar que la respuesta no esté vacía o sea undefined
+     if (!result || result.length === 0) {
+         return handleResponse(res, 200, "No se encontraron transacciones en el rango de fechas proporcionado.");
+     }
+
+     // Devolver la respuesta con los datos obtenidos
+     handleResponse(res, 200, "Ventas y Clientes obtenidos con éxito", { ventasYclientes: result });
+     
+ } catch (e) {
+     next(e);
+ }
 };

@@ -21,6 +21,13 @@ import {
     getTransaccionesByRangoFecha, 
     getTransaccionesMontosByRangoFecha, 
     deleteTransaccion,
+    //Facturas
+    getAllFacturasCompras,
+    getAllFacturasVentas,
+    createFacturaCompras,
+    createFacturaVentas,
+    deleteFacturaCompra,
+    deleteFacturaVenta,
 
     // Monto Neto (si es necesario)
     getMontoNeto,
@@ -50,7 +57,9 @@ import {
     createSolicitudVenta,
     getAllSolicitudVentas,
     updateSolicitudVenta,
-    deleteSolicitudVenta
+    deleteSolicitudVenta,
+    getPescadoConMayoresIngresosEntreFechas,
+    getClientesMasCocurridos
 } from "../controller/userController.js";
 import { updateInventarioServiceByid } from "../models/userModel.js";
 
@@ -60,7 +69,7 @@ const router = express.Router();
 router.get("/inventario/pescado",getAllInventarioPescados)
 router.post("/inventario/pescado",createInventariopescado)
 router.get("/inventario/pescado/:id",getInventarioPescadoById)
-router.put("/inventario/pescado",updateInventarioPescado)
+router.put("/inventario/pescado/:id",updateInventarioPescado)
 router.delete("/ingreso/pescado/:id",deleteInvetarioPescado)
 router.post("/pescados", createpescado);                // Crear pescado
 router.get("/pescados", getAllPescados);                // Obtener todos los pescados
@@ -92,11 +101,22 @@ router.delete("/solicitud/:id", deleteSolicitudVenta);
 // Rutas de Transacciones
 router.post("/transacciones", createtransacciones);       // Crear transacción
 router.get("/transacciones", getAllTransacciones);      // Obtener todas las transacciones
+router.get("/transacciones/masvendidos",getPescadoConMayoresIngresosEntreFechas)
 router.get("/transacciones/rango", getTransaccionesByRangoFecha);  // Obtener transacciones por rango de fecha
 router.get("/transacciones/clientes", getVentasYClientesEntreFechas)
+router.get("/transacciones/concurrido",getClientesMasCocurridos)
 router.get("/transacciones/:id", getTransaccionesByid); // Obtener transacción por ID
 router.get("/transacciones/monto/rango", getTransaccionesMontosByRangoFecha);  // Obtener monto total por rango de fecha
 router.delete("/transacciones/:id", deleteTransaccion); // Eliminar transacción
+
+
+// Facturas
+router.get("/factura/compras",getAllFacturasCompras)
+router.get("/factura/ventas",getAllFacturasVentas)
+router.post("/factura/compras",createFacturaCompras)
+router.post("/factura/ventas",createFacturaVentas)
+router.delete("/factura/compras",deleteFacturaCompra)
+router.delete("/factura/ventas",deleteFacturaVenta)
 
 // Rutas de Empleados
 router.get("/nomina",getAllNomina)

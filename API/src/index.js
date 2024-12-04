@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import pool from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js"
 import errorHandling from "./middleware/errorHandler.js";
-import {createPescadoTable, createInventarioTable, createClienteTable, createTransaccionesTable, createNominaTable, createEmbarcacionTable, createInventarioPescadoTable, createTipoProductos, ingresarTiposProductos, createSolicitudVentasTable} from "./data/createUserTable.js";
+import {createPescadoTable, createInventarioTable, createClienteTable, createTransaccionesTable, createNominaTable, createEmbarcacionTable, createInventarioPescadoTable, createTipoProductos, ingresarTiposProductos, createSolicitudVentasTable, createFacturaVentasTable, createFacturaComprasTable, createTriggerEgresosCompras, createTriggerIngresosVentas} from "./data/createUserTable.js";
 dotenv.config();
 
 const app = express();
@@ -24,6 +24,9 @@ createInventarioTable();
 createPescadoTable();
 ingresarTiposProductos();
 createSolicitudVentasTable();
+createFacturaVentasTable();
+createFacturaComprasTable();
+createTransaccionesTable();
 createTipoProductos();
 createInventarioPescadoTable();
 createClienteTable();
