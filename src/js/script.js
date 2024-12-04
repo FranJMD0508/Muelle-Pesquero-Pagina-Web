@@ -4,15 +4,15 @@ const actionNew = () => {
     const bodyContent = `
    <!-- Datos del Cliente -->
     <fieldset class="border p-3 mb-4">
-      <legend class="w-auto">Datos del Cliente</legend>
+      <legend class="w-auto">Datos del Proveedor</legend>
       <div class="row g-3">
         <div class="col-md-6">
-          <label for="nombreCliente" class="form-label">Nombre del Cliente</label>
+          <label for="nombreCliente" class="form-label">Nombre del Proveedor</label>
           <input type="text" class="form-control" id="nombreCliente" placeholder="Nombre completo" required>
         </div>
         <div class="col-md-6">
           <label for="emailCliente" class="form-label">Correo Electrónico</label>
-          <input type="email" class="form-control" id="emailCliente" placeholder="cliente@ejemplo.com" required>
+          <input type="email" class="form-control" id="emailCliente" placeholder="proveedor@ejemplo.com" required>
         </div>
         <div class="col-md-6">
           <label for="telefonoCliente" class="form-label">Teléfono</label>
