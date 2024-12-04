@@ -8,19 +8,19 @@ const actionNew = () => {
       <div class="row g-3">
         <div class="col-md-6">
           <label for="nombreCliente" class="form-label">Nombre del Proveedor</label>
-          <input type="text" class="form-control" id="nombreCliente" placeholder="Nombre completo" required>
+          <input type="text" class="form-control" id="nombreProveedor" placeholder="Nombre completo" required>
         </div>
         <div class="col-md-6">
           <label for="emailCliente" class="form-label">Correo Electrónico</label>
-          <input type="email" class="form-control" id="emailCliente" placeholder="proveedor@ejemplo.com" required>
+          <input type="email" class="form-control" id="emailProveedor" placeholder="proveedor@ejemplo.com" required>
         </div>
         <div class="col-md-6">
           <label for="telefonoCliente" class="form-label">Teléfono</label>
-          <input type="tel" class="form-control" id="telefonoCliente" placeholder="123-456-7890" required>
+          <input type="tel" class="form-control" id="telefonoProveedor" placeholder="123-456-7890" required>
         </div>
         <div class="col-md-6">
           <label for="direccionCliente" class="form-label">Dirección</label>
-          <input type="text" class="form-control" id="direccionCliente" placeholder="Calle, número, ciudad" required>
+          <input type="text" class="form-control" id="direccionProveedor" placeholder="Calle, número, ciudad" required>
         </div>
         <div class="col-md-6">
           <label for="direccionCliente" class="form-label">Cedula</label>
