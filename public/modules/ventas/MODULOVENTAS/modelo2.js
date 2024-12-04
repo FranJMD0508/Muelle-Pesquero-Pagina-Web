@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const url = "";
-    fetch(url+"/API/pescados/", {
+    const url = "https://f786-190-120-250-84.ngrok-free.app";
+    fetch(url+"/inventario/pescado/", {
         method: "GET",
         headers: new Headers({
             "ngrok-skip-browser-warning": "69420", // Para saltar la advertencia de Ngrok
@@ -8,9 +8,9 @@ document.addEventListener("DOMContentLoaded", function() {
     })
     .then((response) => response.json())
     .then((datos) => {
-        const menu = document.querySelector(".menu");
+        const menu = document.querySelector("#Fileteados");
         datos.data.map((obj) => {
-            const articulo = document.createElement("article").classList.add("item");
+            const articulo = document.createElement("article").classList.add("item col-sm-6 col-md-4 col-lg-3 mb-4");
             const contenido = crearArticle(obj); 
             if (obj.cantidad===0) {
                 articulo.innerHTML = `
@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", function() {
         <h2>${obj.name}</h2>
         <img src="${obj.imagen+".jpg"}" alt="${obj.name} data-hover="${obj.name+"2.jpg"}">
         <p>${obj.price}</p>
-        <p>${obj.description}</p>
         <button class="order-button">ORDENAR</button>
         `;
         return contenido;
