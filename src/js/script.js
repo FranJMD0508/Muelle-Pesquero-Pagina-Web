@@ -76,6 +76,53 @@ const actionNew = () => {
 
     MODAL.setContent(MODAL_TITLES.new, bodyContent, footerContent);
     MODAL.show();
+    document.getElementById('productos').addEventListener('input', function(e) {
+    if (e.target.id.startsWith('cantidad') || e.target.id.startsWith('precio')) {
+        calcularTotales();
+    }
+});
+
+
+function calcularTotales() {
+    let subtotal = 0;
+    const productos = document.getElementById('productos').getElementsByClassName('row');
+
+    for (let i = 0; i < productos.length; i++) {
+        const cantidad = parseFloat(productos[i].querySelector('[id^="cantidad"]').value) || 0;
+        const precio = parseFloat(productos[i].querySelector('[id^="precio"]').value) || 0;
+        subtotal += cantidad * precio;
+    }
+
+    const iva = subtotal * 0.16;
+    const total = subtotal + iva;
+
+    document.getElementById('subtotal').value = subtotal.toFixed(2);
+    document.getElementById('impuestos').value = iva.toFixed(2);
+    document.getElementById('total').value = total.toFixed(2);
+}
+
+
+document.getElementById('addProduct').addEventListener('click', function() {
+    const productCount = document.getElementById('productos').getElementsByClassName('row').length + 1;
+    const newRow = `
+        <div class="row g-3 mb-3">
+            <div class="col-md-6">
+                <label for="producto${productCount}" class="form-label">Descripción del Producto</label>
+                <input type="text" class="form-control" id="producto${productCount}" placeholder="Ej: Chocolate" required>
+            </div>
+            <div class="col-md-3">
+                <label for="cantidad${productCount}" class="form-label">Cantidad</label>
+                <input type="number" class="form-control" id="cantidad${productCount}" min="1" required>
+            </div>
+            <div class="col-md-3">
+                <label for="precio${productCount}" class="form-label">Precio Unitario</label>
+                <input type="number" class="form-control" id="precio${productCount}" min="0" step="0.01" placeholder="0.00" required>
+            </div>
+        </div>
+    `;
+    document.getElementById('productos').insertAdjacentHTML('beforeend', newRow);
+});
+
 }
 
 
