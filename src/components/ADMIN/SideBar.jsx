@@ -104,10 +104,22 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        href='modules/produccion/registro.html'
+                        href='modules/produccion/formulario.html'
                     >
                         <i className="bi bi-house-gear-fill"></i>
                         <span>Producción</span>
+                    </a>
+                </li>
+
+                <li className='nav-item'>
+                    <a 
+                        className='nav-link collapsed'
+                        data-bs-target="#components-nav"
+                        data-bs-toggle="collapsed"
+                        href='modules/compras/index.html'
+                    >
+                        <i className="bi bi-bag-fill"></i>
+                        <span>Compras</span>
                     </a>
                 </li>
 

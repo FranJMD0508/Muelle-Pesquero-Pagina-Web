@@ -5,11 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const formulario = document.querySelector('.formulario');
     let especies = [];
 
-    let urlEspecies = 'https://8b95-190-120-250-84.ngrok-free.app/API/pescados';
-    let urlInventario = 'https://8b95-190-120-250-84.ngrok-free.app/API/inventario/pescado';
+    let urlEspecies = 'https://affd-168-194-111-17.ngrok-free.app/API/pescados';
+    let urlInventario = 'https://affd-168-194-111-17.ngrok-free.app/API/inventario/pescado';
 
     // URL para obtener las embarcaciones (ajusta según tu API)
-    const urlEmbarcaciones = 'https://8b95-190-120-250-84.ngrok-free.app/API/Embarcacion';
+    const urlEmbarcaciones = 'https://affd-168-194-111-17.ngrok-free.app/API/Embarcacion';
 
     // Agregar variable para almacenar las embarcaciones y sus capacidades
     let embarcaciones = [];

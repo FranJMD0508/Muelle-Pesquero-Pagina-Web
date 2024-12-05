@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Función para cargar los pescados desde la API
     const cargarPescados = async () => {
-        const url = 'https://8b95-190-120-250-84.ngrok-free.app/API/inventario/pescado';
+        const url = 'https://affd-168-194-111-17.ngrok-free.app/API/inventario/pescado';
         try {
             const response = await fetch(url, {
                 method: 'GET',
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btnEnviar').addEventListener('click', async () => {
         const filas = tabla.getElementsByTagName('tr');
         const filasParaEliminar = [];
-        const url = 'https://8b95-190-120-250-84.ngrok-free.app/API/inventario/pescado';
+        const url = 'https://affd-168-194-111-17.ngrok-free.app/API/inventario/pescado';
 
         // Collect checked rows data
         for (let i = filas.length - 1; i >= 0; i--) {
