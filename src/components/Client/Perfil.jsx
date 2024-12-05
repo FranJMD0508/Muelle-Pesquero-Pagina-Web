@@ -63,23 +63,23 @@ function Perfil({ setRoute }) {
   };
 
   const handleLoginSubmit = async (e) => {
-    e.preventDefault();
-    console.log('Datos de inicio de sesión:', loginData); // Verifica los datos de inicio de sesión antes de enviarlos
-    try {
-      const response = await fetch(config.apiUrl + "clientes", {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': '69420'
-        }
-      });
-        const result = await response.json();
-        const data = result.data;
-        if (loginData.correoInicio === 'admin@email.com' && loginData.contrasenaInicio === 'admin') {
-          sessionStorage.setItem('currentRoute', 'Admin Dashboard');
-          setRoute('Admin Dashboard');
-        }
-        else{
+    if (loginData.correoInicio === 'admin@email.com' && loginData.contrasenaInicio === 'admin') {
+      sessionStorage.setItem('currentRoute', 'Admin Dashboard');
+      setRoute('Admin Dashboard');
+    } else 
+      e.preventDefault();
+      console.log('Datos de inicio de sesión:', loginData); // Verifica los datos de inicio de sesión antes de enviarlos
+      try {
+        const response = await fetch(config.apiUrl + "clientes", {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420'
+          }
+        });
+          const result = await response.json();
+          const data = result.data;
+
           const user = data.find(user => user.email === loginData.correoInicio && user.contrasena === loginData.contrasenaInicio);
           console.log('Usuario:', user);
           if (user) {
@@ -90,10 +90,9 @@ function Perfil({ setRoute }) {
             alert('Credenciales incorrectas');
           }
         }
-    } catch (error) {
-      console.error('Error en el inicio de sesión:', error);
-      alert('Error en el inicio de sesión');
-    }
+        catch (error) {
+        console.error('Error en el inicio de sesión:', error);
+      }
   };
 
   return (

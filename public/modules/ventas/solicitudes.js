@@ -134,7 +134,34 @@ document.getElementById('vaciarAlmacenamiento').addEventListener('click', functi
     location.reload(); 
 });
 
+//NUEVA FUNCION DE ANDRE Y LEO ADD BY ANDRES
+function enviarDatosAPI(){
+    const data = {
+        nombreCliente,
+        cedulaCliente,
+        producto,
+        fecha,
+        telefono,
+        email,
+        cantidad: cantidad.toFixed(2),
+        precioUnitario: precioUnitario.toFixed(2),
+        precioTotal
+    };
 
+    /* ARREGLAR LA RUTA INDICADA (LET HIM COCK) */
+    fetch('https://8b95-190-120-250-84.ngrok-free.app/api/factura/ventas', {
+        method: 'POST',
+        headers: {
+            "ngrok-skip-browser-warning": "69420", // Para saltar la advertencia de Ngrok
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+
+    })
+    .then(response => response.json())
+    .then(data => console.log("Respuesta de la API: ", data))
+    .catch(error => console.error('Error:', error));
+}
 
 
 
