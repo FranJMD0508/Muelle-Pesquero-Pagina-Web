@@ -116,6 +116,18 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
+                        href='modules/produccion/registro.html'
+                    >
+                        <i className="bi bi-house-gear-fill"></i>
+                        <span>Producción</span>
+                    </a>
+                </li>
+
+                <li className='nav-item'>
+                    <a 
+                        className='nav-link collapsed'
+                        data-bs-target="#components-nav"
+                        data-bs-toggle="collapsed"
                         onClick={() => handleRouteChange('Cliente Inicio')}
                     >
                         <i className="bi bi-box-arrow-left"></i>
