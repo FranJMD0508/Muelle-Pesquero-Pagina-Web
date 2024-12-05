@@ -198,7 +198,6 @@ export const createTransaccionesService = async (
 
 
 export const createFacturaCompraService = async (
-    numero_factura,
     nombre_cliente,
     cedula_rif,
     email,
@@ -212,7 +211,6 @@ export const createFacturaCompraService = async (
 ) => {
     const result = await pool.query(
         `INSERT INTO factura_compras (
-            numero_factura,
             nombre_cliente,
             cedula_rif,
             email,
@@ -224,9 +222,9 @@ export const createFacturaCompraService = async (
             precio_unitario,
             total
         ) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,$10,$11) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,$10) 
         RETURNING *`,
-        [    numero_factura,
+        [
             nombre_cliente,
             cedula_rif,
             email,
@@ -312,10 +310,10 @@ export const updateInventarioServiceByid = async (nombre_producto, tipo_producto
     return result.rows[0];
 };
 
-export const updateEmbarcacionServiceByid = async (nombre, tipo_embarcacion, estado, capacidad, id_embarcacion) => {
+export const updateEmbarcacionServiceByid = async (nombre, capacidad, tipo_embarcacion, estado, id_embarcacion) => {
     const result = await pool.query(
-        "UPDATE embarcaciones SET nombre = $1, tipo_embarcacion = $2, estado = $3, capacidad = $4 WHERE id_embarcacion = $5 RETURNING *",
-        [nombre, tipo_embarcacion, estado, capacidad, id_embarcacion]
+        "UPDATE embarcaciones SET nombre = $1, capacidad = $2, tipo_embarcacion = $3, estado = $4 WHERE id_embarcacion = $5 RETURNING *",
+        [nombre, capacidad, tipo_embarcacion, estado, id_embarcacion]
     );
     return result.rows[0];  // Retorna el registro actualizado
 };
@@ -371,7 +369,7 @@ export const deletePescadoServiceByid = async (id_pescado) => {
 export const deleteInventarioPescadoServiceByid = async (id_lote) => {
     const result = await pool.query(
         "DELETE FROM inventario_pescado WHERE id_lote = $1 RETURNING *",
-        [id_pescado]
+        [id_lote]
     );
     return result.rows[0];  
 };
@@ -402,6 +400,26 @@ export const deleteSolicitudVentaService = async (id) => {
     }
 };
 
+export const getSolicitudVentaByIdService = async (id) => {
+    const queryText = `
+    SELECT * FROM solicitud_ventas
+    WHERE id = $1;
+    `;
+    
+    try {
+        const result = await pool.query(queryText, [id]);
+        
+        if (result.rows.length > 0) {
+            return result.rows[0];  // Devuelve el primer resultado encontrado
+        } else {
+            console.log("No se encontró ninguna solicitud de venta con ese ID.");
+            return null;  // Si no se encuentra el registro, retorna null
+        }
+    } catch (e) {
+        console.log("Error al buscar la solicitud de venta: ", e);
+        throw e;  // Lanzamos el error para que el consumidor de esta función pueda manejarlo
+    }
+};
 
 export const deleteNominaServiceByid = async (id) => {
     const result = await pool.query("DELETE FROM Nomina WHERE id=$1 RETURNING *", [id]);

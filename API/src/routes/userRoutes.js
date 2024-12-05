@@ -59,7 +59,8 @@ import {
     updateSolicitudVenta,
     deleteSolicitudVenta,
     getPescadoConMayoresIngresosEntreFechas,
-    getClientesMasCocurridos
+    getClientesMasCocurridos,
+    getSolicitudPescadoById
 } from "../controller/userController.js";
 import { updateInventarioServiceByid } from "../models/userModel.js";
 
@@ -70,7 +71,7 @@ router.get("/inventario/pescado",getAllInventarioPescados)
 router.post("/inventario/pescado",createInventariopescado)
 router.get("/inventario/pescado/:id",getInventarioPescadoById)
 router.put("/inventario/pescado/:id",updateInventarioPescado)
-router.delete("/ingreso/pescado/:id",deleteInvetarioPescado)
+router.delete("/inventario/pescado/:id",deleteInvetarioPescado)
 router.post("/pescados", createpescado);                // Crear pescado
 router.get("/pescados", getAllPescados);                // Obtener todos los pescados
 router.get("/pescados/:id", getPescadoById);            // Obtener pescado por ID
@@ -94,7 +95,7 @@ router.delete("/clientes/:id", deleteCliente);          // Eliminar cliente
 
 router.post("/solicitud", createSolicitudVenta);               
 router.get("/solicitud", getAllSolicitudVentas);               
-router.get("/solicitud/:id");            
+router.get("/solicitud/:id",getSolicitudPescadoById);            
 router.put("/solicitud/:id", updateSolicitudVenta);             
 router.delete("/solicitud/:id", deleteSolicitudVenta);
 
@@ -127,10 +128,11 @@ router.delete("/nomina/:id",deleteNomina)
 
 // Rutas de Embarcacion
 router.get("/Embarcacion",getAllEmbarcacion)
-router.get("/Embarcacion/:id",getEmbarcacionsByid)
+router.get("/embarcacion/:id",getEmbarcacionsByid)
 router.post("/Embarcacion",createEmbarcacion)
-router.post("/Embarcacion/:id",updateEmbarcacion)
-router.delete("Embarcacion/:id",deleteEmbarcacion)
+router.put("/Embarcacion/:id",updateEmbarcacion)
+router.delete("/Embarcacion/:id",deleteEmbarcacion)
+
 
 // Ruta para obtener el monto neto (si es necesario)
 router.get("/monto/total", getMontoNeto);               // Obtener el monto neto

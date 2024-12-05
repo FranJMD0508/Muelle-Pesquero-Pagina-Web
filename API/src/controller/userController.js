@@ -47,7 +47,8 @@ import {
     createFacturaVentasService,
     deleteFacturaVentasServiceByid,
     getPescadoConMayoresIngresosEntreFechasService,
-    getClientesMasConcurridosService} from "../models/userModel.js";
+    getClientesMasConcurridosService,
+    getSolicitudVentaByIdService} from "../models/userModel.js";
 
 const handleResponse = (res,status,message,data = null) => {
     res.status(status).json({
@@ -560,6 +561,23 @@ export const getNominaById = async (req,res,next) => {
         next(e);
     };
 };
+
+export const getSolicitudPescadoById = async (req, res, next) => {
+    try {
+        // Llamamos al servicio que consulta el pescado por ID
+        const pescado = await getSolicitudVentaByIdService(req.params.id);
+        
+        // Si no se encuentra el pescado, retornamos un error 404
+        if (!pescado) return handleResponse(res, 404, "Solicitud no encontrado");
+        
+        // Si el pescado es encontrado, lo retornamos con éxito (código 200)
+        handleResponse(res, 200, "Solicitud encontrado con éxito", pescado);
+    } catch (e) {
+        // Si ocurre algún error, lo pasamos al middleware de manejo de errores
+        next(e);
+    }
+};
+
 
 export const getInventarioById = async (req,res,next) => {
     try{
