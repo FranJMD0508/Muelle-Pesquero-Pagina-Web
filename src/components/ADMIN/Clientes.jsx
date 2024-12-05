@@ -20,7 +20,7 @@ function Clientes() {
   }, []);
 
   return (
-    <div className="container">
+    <div className="contenedor-tabla">
         <h1>Historial de Clientes</h1>
         <table id="clientes">
             <thead>

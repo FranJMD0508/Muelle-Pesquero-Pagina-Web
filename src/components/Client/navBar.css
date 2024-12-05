@@ -88,7 +88,7 @@
         display: block; /* Muestra el botón de menú */
     }
 
-    i {
+    .menu-toggle .bi {
         font-size: 2rem;
     }
 }

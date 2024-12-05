@@ -8,7 +8,7 @@
     margin: 50px 0 50px 0;
     border-radius: 10px;
     height: 70vh;
-    min-width: 70vw;
+    min-width: 65vw;
     box-shadow: 0px 0 10px rgba(0, 0, 0, 0.447);
     position: relative;
     overflow: hidden;
@@ -157,7 +157,7 @@
     border: none;
     outline: none;
     background: transparent;
-    color: rgb(112, 112, 112);
+    color: rgb(61, 61, 61);
     font-size: 1rem;
     padding: 0 35px 0 5px;
     width: 100%;
@@ -229,7 +229,7 @@
 
 @media (max-width: 700px){
     .contenedorForm{
-        height: 90vh;
+        height: 100vh;
     }
     .iniciar, .registrar{
         max-height: 50%;
@@ -282,5 +282,9 @@
     .avisoRegistrar.closed{
         left: 0;
         top: 50%;
+    }
+
+    .contenedorForm button .bi{
+        font-size: 15px;
     }
 }

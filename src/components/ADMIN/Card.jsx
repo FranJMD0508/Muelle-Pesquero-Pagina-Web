@@ -66,6 +66,7 @@ function Card({card, icon}) {
       .then(response => response.json())
       .then(data => {
         setTransacciones(data.data)
+        console.log(data.data.ventasYclientes)
       })
       .catch(e => console.log(e.message));
   };
@@ -79,7 +80,6 @@ function Card({card, icon}) {
   useEffect(() => {
     if (fechaInicio && fechaFin) {
       fetchTransacciones(`${config.apiUrl}transacciones/clientes?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
-      console.log(`FECHAA: ${config.apiUrl}transacciones/clientes?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
     }
   }, [fechaInicio, fechaFin]);
 
@@ -100,12 +100,12 @@ function Card({card, icon}) {
           <div className='ps-3'>
             <h6>
                 {
-                    card === 'Ganancias' && monto
+                    card === 'Ganancias'
                     ? '$' + (monto?.montoTotal?.toLocaleString('en-US') || '0')
-                    : card === 'Ventas' && monto
-                    ? (transacciones.ventasYclientes.cantidad_ventas?.toLocaleString('en-US') || '0')
-                    : card === 'Clientes' && monto
-                    ? (transacciones.ventasYclientes.cantidad_clientes?.toLocaleString('en-US') || '0')
+                    : card === 'Ventas'
+                    ? (transacciones?.ventasYclientes?.cantidad_ventas?.toLocaleString('en-US') || '0')
+                    : card === 'Clientes'
+                    ? (transacciones?.ventasYclientes?.cantidad_clientes?.toLocaleString('en-US') || '0')
                     : 'Cargando...'
                 }
             </h6>

@@ -28,7 +28,7 @@ function Alimentos() {
   };
 
   return (
-    <div className="container">
+    <div className="contenedor-tabla">
     <h1>Inventario de alimentos</h1>
     <table id="alimentos">
         <thead>

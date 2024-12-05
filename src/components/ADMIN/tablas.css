@@ -1,6 +1,4 @@
-
-
-.container {
+.contenedor-tabla {
     flex-grow: 1;
     padding: 20px;
     border-radius: 5px;
@@ -9,33 +7,50 @@
     color: #012970;
     font-family: sans-serif;
     font-weight: 700;
+    position: relative;
+    overflow: auto;
+    max-height: 100vh;
 }
 
-.container h1{
+.contenedor-tabla h1 {
     text-align: center;
     color: #012970;
     font-family: "Roboto", sans-serif;
-    font-size: 900;
+    font-size: 2.5em;
+    position: sticky;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    left: 0;
+    z-index: 2;
 }
 
-table {
+.contenedor-tabla table {
     background-color: #fff;
     width: 100%;
     border-collapse: collapse;
+    min-width: 700px;
 }
 
-th,
-td {
+.contenedor-tabla th,
+.contenedor-tabla td {
     border-bottom: 1px solid #ddd;
     text-align: center;
-    padding: 10px;
+    padding: 10px 30px 10px 30px;
 }
 
-th {
+.contenedor-tabla th {
     background-color: #fff;
+    position: sticky;
+    top: -25px;
 }
 
+.contenedor-tabla td {
+    color: #595959;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
 
-td{
-    color: #899bbd;
+@media (max-width: 500px) {
+    .contenedor-tabla h1{
+        font-size: 2em;
+    }
 }

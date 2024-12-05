@@ -28,9 +28,9 @@ function Transacciones() {
   };
 
   return (
-    <div class="container">
+    <div class="contenedor-tabla">
     <h1>Historial de Transacciones</h1>
-    <table id="alimentos">
+    <table id="transacciones">
         <thead>
             <tr>
                 <th>ID</th>
@@ -45,7 +45,8 @@ function Transacciones() {
         </thead>
           <tbody>
                 {
-                  data.map(pago => (
+                  data
+                  ?data.map(pago => (
                     <tr key={pago.id}>
                         <td>{pago.id}</td>
                         <td>{pago.tipo}</td>
@@ -57,6 +58,7 @@ function Transacciones() {
                         <td>{pago.cedula_cliente}</td>
                     </tr>
                     ))
+                  : <tr><td colSpan='9' className='text-center'>No hay datos</td></tr>
                 }
           </tbody>
       </table>
