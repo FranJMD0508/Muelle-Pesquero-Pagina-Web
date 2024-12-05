@@ -1,4 +1,5 @@
 import React from 'react'
+import './menuCompras.css'
 
 function MenuCompras({ setRoute }) {
 
@@ -6,8 +7,8 @@ function MenuCompras({ setRoute }) {
     <div className='mainCompras'>
         <h2>¿A qué menú desea acceder?</h2>
         <div className="menuCompras">
-            <a href="/modules/ventas/estructura.html">ESTANDAR</a>
-            <a href="/modules/ventas/personalizadas.html">PERSONALIZADO</a>
+            <a href="/modules/ventas/estructura.html"><i className='bi bi-person'></i>ESTANDAR</a>
+            <a href="/modules/ventas/personalizadas.html"><i className='bi bi-person-gear'></i>PERSONALIZADO</a>
         </div>
     </div>
   )

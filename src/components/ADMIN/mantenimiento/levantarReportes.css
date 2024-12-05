@@ -1,9 +1,8 @@
 .contenedorMantenimiento{
-    background: linear-gradient(to bottom, rgb(50, 120, 154), rgb(20, 50, 90));
     padding: 20px;
-    color: white;
 }
 
 .contenedorMantenimiento h1{
+    color: rgb(72, 72, 72);
     margin-bottom: 20px;
 }

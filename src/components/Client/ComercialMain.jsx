@@ -5,7 +5,7 @@ import './comercialMain.css'
 import MenuCompras from './MenuCompras';
 import Personalizado from './Personalizado';
 
-function ComercialMain({ route }) {
+function ComercialMain({ route, setRoute }) {
   const [rutaCompras, setCompras] = useState('Menu');
   const [backgroundStyle, setBackgroundStyle] = useState({ backgroundColor: 'white' });
 
@@ -14,14 +14,23 @@ function ComercialMain({ route }) {
       setBackgroundStyle({
         background: 'linear-gradient(to bottom, rgb(50, 120, 154), rgb(20, 50, 90))',
       });
-    } else {
+    } 
+    else if (route === 'Compras') {
+      setBackgroundStyle({
+        background: 'url(./assets/images/catalogo-slide.jpg)',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed',
+      });
+    } 
+    else {
       setBackgroundStyle({ backgroundColor: 'white' });
     }
   }, [route]);
 
   const renderContent = () => {
     if (route === 'Inicio') {
-      return <Inicio />
+      return <Inicio setRoute={setRoute}/>
     }
     else if (route === 'Compras') {
 

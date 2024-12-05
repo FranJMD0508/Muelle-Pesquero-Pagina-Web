@@ -29,10 +29,10 @@ function Perfil() {
       <div className={`iniciar ${estado ? 'open' : 'closed'}`}>
         <h2>Inicia sesión aquí</h2>
         <form action="" id="iniciarForm">
-          <div class="inputbox">
+          <div className="inputbox">
               <input type="email" id="correo" placeholder='Correo electrónico' required />
           </div>
-          <div class="inputbox">
+          <div className="inputbox">
               <input type="password" id="password" placeholder='Contraseña' required />
           </div>
           <div className="opciones">
@@ -48,16 +48,16 @@ function Perfil() {
       <div className={`registrar ${estado ? 'open' : 'closed'}`}>
         <h2>Regístrate aquí</h2>
         <form action="" id="registrarForm">
-          <div class="inputbox">
+          <div className="inputbox">
               <input type="text" id="nombre" placeholder='Nombre' required />
           </div>
-          <div class="inputbox">
+          <div className="inputbox">
               <input type="number" id="cedula" placeholder='Cédula' required />
           </div>
-          <div class="inputbox">
+          <div className="inputbox">
               <input type="email" id="correo" placeholder='Correo electrónico' required />
           </div>
-          <div class="inputbox">
+          <div className="inputbox">
               <input type="password" id="password" placeholder='Contraseña' required />
           </div>
           <button type="submit">Registrarse</button>

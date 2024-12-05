@@ -1,7 +1,7 @@
 import React from 'react'
 import './footer.css'
 
-function ComercialFooter() {
+function ComercialFooter({ setRoute}) {
   return (
     <footer>
         <a href="/" id="logo-footer">
@@ -30,23 +30,23 @@ function ComercialFooter() {
         </div>
 
         <div className="apartado">
-          <h4>PERFIL</h4>
+          <h4>SECCIONES</h4>
           <div id="perfil">
-            <a href="">
+            <a onClick={() => setRoute('Cliente Compras')}>
               <i className="bi bi-caret-right-fill"></i>
-              Iniciar Sesión
+              Catálogo
             </a>
-            <a href="">
+            <a onClick={() => setRoute('Cliente Nosotros')}>
               <i className="bi bi-caret-right-fill"></i>
-              Registrarse
+              Nosotros
             </a>
-            <a href="">
+            <a onClick={() => setRoute('Cliente Contacto')}>
+              <i className="bi bi-caret-right-fill"></i>
+              Contacto
+            </a>
+            <a onClick={() => setRoute('Cliente Perfil')}>
               <i className="bi bi-caret-right-fill"></i>
               Perfil
-            </a>
-            <a href="">
-              <i className="bi bi-caret-right-fill"></i>
-              Carrito
             </a>
           </div>
         </div>

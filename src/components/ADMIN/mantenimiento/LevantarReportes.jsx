@@ -2,20 +2,23 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import './levantarReportes.css'
 
-const API = 'http://localhost:3000/api/users'; // Asegúrate de que el endpoint esté correcto
+const API = 'https://8b95-190-120-250-84.ngrok-free.app/Api/Embarcacion'; // Asegúrate de que el endpoint esté correcto
 
 const LevantarReportes = () => {
   const [datos, setDatos] = useState([]);
 
   const getDatos = async () => {
-    try {
-      const response = await fetch(API);
-      const data = await response.json();
-      console.log(data);
-      setDatos(data); // Cambiado para usar data directamente
-    } catch (error) {
-      console.error(error);
-    }
+    fetch(API, {
+      method: "get",
+      headers: new Headers({
+        "ngrok-skip-browser-warning": "69420",
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        setDatos(data.data)
+      })
+      .catch(e => console.log(e.message));
   };
 
   // Manejar el envío del formulario
@@ -122,7 +125,10 @@ const LevantarReportes = () => {
     try {
       const response = await fetch(`${API}/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420'
+        },
         body: JSON.stringify(completado)
       });
 

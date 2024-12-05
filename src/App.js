@@ -17,7 +17,7 @@ import ComercialFooter from './components/Client/ComercialFooter';
 import NavBar from './components/Client/NavBar';
 
 function App() {
-  const [route, setRoute] = useState('Cliente Inicio');
+  const [route, setRoute] = useState('Admin Dashboard');
   const ruta = route.split(' ');
 
   const renderContent = () => {
@@ -26,8 +26,8 @@ function App() {
         <>
           <ComercialHeader />
           <NavBar setRoute={setRoute}/>
-          <ComercialMain route={ruta[1]} />
-          <ComercialFooter />
+          <ComercialMain setRoute={setRoute} route={ruta[1]} />
+          <ComercialFooter setRoute={setRoute}/>
         </>
       );
     } 
