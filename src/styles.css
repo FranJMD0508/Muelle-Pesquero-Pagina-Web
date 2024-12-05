@@ -8,28 +8,65 @@ body{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-header{
+#cabecero{
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+}
+
+#logo{
+    color: white;
+    justify-content: center;
     align-items: center;
-    padding: 20px 10px 20px 10px;
-    background-color: rgb(106, 147, 250);
-    border: 3.5px solid white;
+    display: flex;
+    padding: 40px;
+    width: 100%;
+    background: linear-gradient(to bottom, rgb(82, 169, 216), rgb(0, 74, 165));
 }
 
-header img{
+#logo img{
+    height: 70px;
     border-radius: 50%;
+    margin-right: 5px;
+    transition: all 0.3s ease;
 }
 
-.logo{
+#navbar {
     display: flex;
     align-items: center;
+    background-color: rgb(47, 150, 254);
+    padding: 0;
+    margin: 0;
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.168));
 }
 
-.logo img{
-    height: 50px;
-    border-radius: 50%;
-    padding: 0 5px;
+#navbar ul {
+    list-style: none;
+    justify-content: center;
+    display: flex;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+#navbar li {
+    text-align: center;
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: medium;
+    padding: 0.6rem 0 0.6rem 0;
+    flex: 1;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+#navbar li:hover{
+    background-color: rgb(42, 135, 228);
+    color: white;
+}
+
+#navbar li:nth-child(odd){
+    border-left: 1px solid rgba(88, 88, 88, 0.596);
+    border-right: 1px solid rgba(88, 88, 88, 0.596);
 }
 
 a{
@@ -89,6 +126,26 @@ nav a{
     color: white;
 }
 
+.fila {
+    display: flex;
+    gap: 10px;
+}
+
+.campo {
+    flex: 1 1 calc(50% - 10px);
+    display: flex;
+    flex-direction: column;
+}
+
+.fila-centrada { 
+    justify-content: center; 
+} 
+
+.campo-centrado { 
+    flex: 0 1 100%; 
+    max-width: 250px;
+}
+
 .select {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     width: 100%;
@@ -98,6 +155,7 @@ nav a{
 
 .formulario label {
     font-weight: 600;
+    margin-bottom: 5px;
 }
 
 .formulario input {
@@ -119,77 +177,6 @@ nav a{
     border-color: rgba(255, 255, 255, 0.8);
 }
 
-.tabla-produccion {
-    width: 100%;
-    max-width: 800px;
-    margin: 20px auto;
-    border-collapse: collapse;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    background-color: rgb(106, 147, 250);
-    color: white;
-    border: 3.5px solid white;
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-.tabla-produccion th, .tabla-produccion td {
-    padding: 10px;
-    border: 2px solid white;
-    text-align: center;
-}
-
-.tabla-produccion th {
-    background-color: rgb(86, 127, 230);
-    font-weight: 600;
-}
-
-.tabla-produccion tr:nth-child(even) {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.tabla-produccion tr:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-#seleccionar-todo {
-    width: 30px;
-}
-
-#btnEnviar {
-    background-color: green;
-    overflow: hidden;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color: white;
-    margin-left: 20px;
-    width: 150px;
-    height: 60px;
-    font-size: 20px;
-    border-radius: 25px;
-    border: 3.5px solid white;
-    transition: all 0.2s;
-}
-
-#btnEnviar:hover {
-    background-color: rgb(150, 200, 230);
-}
-
-#btnRechazar {
-    background-color: red;
-    overflow: hidden;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color: white;
-    margin-left: 20px;
-    width: 150px;
-    height: 60px;
-    font-size: 20px;
-    border-radius: 25px;
-    border: 3.5px solid white;
-    transition: all 0.2s;
-}
-
-#btnRechazar:hover {
-    background-color: rgb(150, 200, 230);
-}
 #proc {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     border: 2px solid white;
@@ -198,48 +185,6 @@ nav a{
     height: 40px;
     font-size: 14px;
     font-weight: lighter;
-}
-
-.modal {
-    display: none; /* Oculto por defecto */ 
-    position: fixed; /* Fijado en la pantalla */ 
-    z-index: 1; /* Se muestra sobre otros elementos */ 
-    left: 0; 
-    top: 0; 
-    width: 100%; /* Ancho completo */ 
-    height: 100%; /* Altura completa */ 
-    overflow: auto; /* Habilitar scroll si es necesario */ 
-    background-color: rgba(0,0,0,0.4);
-}
-
-.modal-content { 
-    background-color: #fefefe; 
-    margin: 15% auto; /* Centrando el contenido del modal */ 
-    padding: 20px; 
-    border: 1px solid #888; 
-    width: 80%; /* Ancho del contenido del modal */ 
-    position: relative;
-    top: -50%;
-    opacity: 0;
-    transition: all 0.5s ease-in-out;
-}
-
-.modal-content.show { 
-    top: 0; /* Mueve el modal al centro */ 
-    opacity: 1; /* Hacer visible el modal */ 
-}
-
-.close { 
-    color: #aaa; 
-    float: right; 
-    font-size: 28px; 
-    font-weight: bold; 
-}
-
-.close:hover, .close:focus { 
-    color: black; 
-    text-decoration: none; 
-    cursor: pointer; 
 }
 
 .dropdown {
@@ -257,7 +202,7 @@ nav a{
 }
 
 .menu-desplegable {
-    display: none; /* Inicialmente oculto */
+    display: none;
     position: absolute;
     background-color: rgb(106, 147, 250);
     min-width: 160px;
@@ -280,13 +225,6 @@ nav a{
 
 .dropdown:hover .menu-desplegable {
     display: block;
-}
-
-.checkbox-y-confirmar-y-rechazar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 10px auto;
 }
 
 .contenedor-principal {
@@ -330,8 +268,91 @@ nav a{
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Modificar el estilo existente del formulario para que se ajuste al nuevo layout */
 .formulario {
     margin: 0;
-    width: 400px;
+    width: 600px;
+}
+
+.formulario select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.formulario select:focus {
+    outline: none;
+    border-color: rgb(106, 147, 250);
+    box-shadow: 0 0 5px rgba(106, 147, 250, 0.3);
+}
+
+footer{
+    background: linear-gradient(to bottom, rgb(82, 169, 216), rgb(0, 63, 139));
+    color: white;
+    display: flex;
+    gap: 20px;
+    padding: 20px 30px 20px 10px;
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.168));
+}
+
+.apartado{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.apartado h4{
+    font-size: 18px;
+    border-bottom: 2px solid white;
+    padding-bottom: 10px;
+}
+
+.apartado h5{
+    font-size: 16px;
+    margin: 0 0 -5px 0;
+}
+
+.apartado img{
+    height: 5px;
+    width: 5px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 5px;
+}
+
+.apartado a{
+    display: flex;
+    gap: 10px;
+    color: white;
+    width: max-content;
+    transition: all 0.1s ease;
+}
+
+#perfil{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+#perfil a{
+    background-color: rgb(91, 161, 225);
+    padding: 5px;
+    min-width: 150px;
+    transition: all 0.1s ease;
+    align-items: center;
+}
+
+#perfil a:hover{
+    background-color: rgb(66, 120, 171);
+}
+
+.apartado a:hover{
+    color: rgb(237, 237, 237);
+}
+
+.pagos img {
+    height: 20px;
+    width: 20px;
 }
