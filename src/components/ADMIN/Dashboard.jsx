@@ -3,12 +3,13 @@ import './dashboard.css'
 import Card from './Card';
 import Reports from './Reports';
 import TopSelling from './TopSelling';
+import TopCustomers from './TopCustomers';
 
 function Dashboard() {
 
   return (
     <section className="dashboard section">
-        <div className="row">
+          <div className="row">
             <div className="col-lg-8">
                 <div className="row">
                     <Card card={"Ventas"} icon={"bi bi-cart"} />
@@ -20,10 +21,13 @@ function Dashboard() {
                     <div className="col-12">
                       <TopSelling />
                     </div>
+                    <div className="col-12">
+                      <TopCustomers />
+                    </div>
                 </div>
             </div>
             <div className="col-lg-4"></div>
-        </div>
+          </div>
     </section>
   )
 }

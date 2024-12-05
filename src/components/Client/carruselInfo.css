@@ -9,8 +9,19 @@
     padding: 20px;
     border-radius: 10px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
+}
+
+.slide-texto h3{
+    font-size: 3em;
+    margin-bottom: -5px;
+}
+
+.slide-texto p{
+    font-size: 1.4em;
 }
 
 .carousel-item {

@@ -28,9 +28,9 @@ function Transacciones() {
   };
 
   return (
-    <div class="container">
+    <div class="contenedor-tabla">
     <h1>Historial de Transacciones</h1>
-    <table id="alimentos">
+    <table id="transacciones">
         <thead>
             <tr>
                 <th>ID</th>
@@ -38,25 +38,25 @@ function Transacciones() {
                 <th>Monto ($)</th>
                 <th>Fecha</th>
                 <th>Descripción</th>
-                <th>Producto</th>
-                <th>Cliente</th>
-                <th>Cédula</th>
+                <th>Número de Factura Compras</th>
+                <th>Número de Factura Ventas</th>
             </tr>
         </thead>
           <tbody>
                 {
-                  data.map(pago => (
+                  data
+                  ?data.map(pago => (
                     <tr key={pago.id}>
                         <td>{pago.id}</td>
                         <td>{pago.tipo}</td>
                         <td>{pago.monto}</td>
                         <td>{formatDate(pago.fecha)}</td>
                         <td>{pago.descripcion}</td>
-                        <td>{pago.codigo_pescado}</td>
-                        <td>{pago.nombre_cliente}</td>
-                        <td>{pago.cedula_cliente}</td>
+                        <td>{pago.numero_factura_compras}</td>
+                        <td>{pago.numero_factura_ventas}</td>
                     </tr>
                     ))
+                  : <tr><td colSpan='9' className='text-center'>No hay datos</td></tr>
                 }
           </tbody>
       </table>

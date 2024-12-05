@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú de Ventas de Pescados</title>
+    <link rel="stylesheet" href="estilos.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <!-- BARRA DEL NAV FIXED -->
+    <nav class="navbar navbar-expand-md color-nav">
+        <div class="container-fluid">
+            <h6 class="navbar-brand">Muelle Pesquero</h6>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
+                aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <!-- ESTE BLOQUE CORRESPONDE AL SCROLL -->
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 70px;">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Volver</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="#Frescos">Pescados Frescos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="#Fileteados">Pescados Fileteados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contactanos</a>
+                    </li>
+                </ul>
+
+                <!-- CONTENIDO SECUNDARIO DEL NAV -->
+                <div class="search-bar d-flex" role="search">
+                    <input class="form-control" type="search" id="search-input" placeholder="Buscar pescados"
+                        aria-label="Search">
+                    <button id="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <button id="OPCIONAL" class="cart-button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"><i
+                            class="fa-solid fa-basket-shopping"></i></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ESTE ES EL CANVAS DE LAS COMPRAS (EL CARRITO PUES) -->
+    <div class="offcanvas offcanvas-end compras" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+        aria-labelledby="offcanvasWithBothOptionsLabel">
+        <div class="offcanvas-header">
+            <h3 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Registro de compras</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+
+        <!-- CUERPO DEL CANVAS -->
+        <div class="offcanvas-body">
+            <section class="carrito">
+                <h2>Productos en el Carrito</h2>
+                <ul id="lista-carrito">
+                    <!-- Aquí se mostrarán los productos añadidos -->
+                </ul>
+                <div class="contenedor-compras">
+                    <button id="finCompra" type="submit" value="">Comprar</button>
+                </div>
+                <!-- NO QUIERO BORRAR ESTO, SE VE IMPORTANTE --><!--
+                <h2>Datos desde la API</h2>
+                <table id="alimentos">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        --><!-- Aquí se llenarán los datos de la API --><!--
+                    </tbody>
+                </table>
+                -->
+
+            </section>
+        </div>
+
+    </div>
+
+    <!-- CONTENIDO DE VENTAS -->
+    <main>
+        <div class="container-xxl text-center">
+            <section class="menu row">
+
+                <!-- SECCION DE PESCADOS FRESCOS -->
+                <h1 id="Frescos">Pescados Frescos</h1>
+                <!-- AQUI SE HACE EL innerHTML -->
+                <article class="item col-sm-6 col-md-4 col-lg-3 mb-4" data-product="jurel">
+                    <img src="jurel2.jpg" alt="Salmón" data-hover="jurel.jpg">
+                    <h2>Jurel</h2>
+                    <p>Precio: $13.00/kg</p>
+                    <button class="order-button">ORDENAR</button>
+                </article>
+                <article class="item col-sm-6 col-md-4 col-lg-3 mb-4" data-product="atun">
+                    <img src="atun.jpg" alt="Atún" data-hover="atun2.jpg">
+                    <h2>Atún</h2>
+                    <p>Precio: $25.00/kg</p>
+                    <button class="order-button">ORDENAR</button>
+                </article>
+                <article class="item col-sm-6 col-md-4 col-lg-3 mb-4" data-product="robalo">
+                    <img src="robalo.jpg" alt="Robalo" data-hover="robalo2.jpg">
+                    <h2>Robalo</h2>
+                    <p>Precio: $12.00/kg</p>
+                    <button class="order-button">ORDENAR</button>
+                </article>
+                <article class="item col-sm-6 col-md-4 col-lg-3 mb-4" data-product="merluza">
+                    <img src="merluza.jpg" alt="Merluza" data-hover="merluza2.jpg">
+                    <h2>Merluza</h2>
+                    <p>Precio: $11.00/kg</p>
+                    <button class="order-button">ORDENAR</button>
+                </article>
+                <article class="item col-sm-6 col-md-4 col-lg-3 mb-4" data-product="pargo">
+                    <img src="pargo.jpg" alt="Pargo" data-hover="pargo2.jpg">
+                    <h2>Pargo</h2>
+                    <p>Precio: $36.00/kg</p>
+                    <button class="order-button">ORDENAR</button>
+                </article>
+                <article class="item col-sm-6 col-md-4 col-lg-3 mb-4" data-product="sardina">
+                    <img src="sardina.jpg" alt="Sardina" data-hover="sardina2.jpg">
+                    <h2>Sardina</h2>
+                    <p>Precio: $3.20/kg</p>
+                    <button class="order-button">ORDENAR</button>
+                </article>
+                <article class="item col-sm-6 col-md-4 col-lg-3 mb-4" data-product="dorado">
+                    <img src="dorado.jpg" alt="dorado" data-hover="dorado2.jpg">
+                    <h2>Dorado</h2>
+                    <p>Precio: $12.30/kg</p>
+                    <button class="order-button">ORDENAR</button>
+                </article>
+                <article class="item col-sm-6 col-md-4 col-lg-3 mb-4" data-product="corvina">
+                    <img src="corvina.jpg" alt="corvina" data-hover="corvina2.jpg">
+                    <h2>Corvina</h2>
+                    <p>Precio: $12.00/kg</p>
+                    <button class="order-button">ORDENAR</button>
+                </article>
+                <article class="item col-sm-6 col-md-4 col-lg-3 mb-4" data-product="trucha">
+                    <img src="trucha.jpg" alt="trucha" data-hover="trucha2.jpg">
+                    <h2>Trucha</h2>
+                    <p>Precio: $17.00/kg</p>
+                    <button class="order-button">ORDENAR</button>
+                </article>
+                <article class="item col-sm-6 col-md-4 col-lg-3 mb-4" data-product="camarones">
+                    <img src="camaron.jpg" alt="camarones" data-hover="camaron2.jpg">
+                    <h2>Camarones</h2>
+                    <p>Precio: $12.00/kg</p>
+                    <button class="order-button">ORDENAR</button>
+                </article>
+                <article class="item col-sm-6 col-md-4 col-lg-3 mb-4" data-product="langostas">
+                    <img src="langosta.jpg" alt="langostas" data-hover="langosta2.jpg">
+                    <h2>langostas</h2>
+                    <p>Precio: $100.00/kg</p>
+                    <button class="order-button">ORDENAR</button>
+                </article>
+                <article class="item col-sm-6 col-md-4 col-lg-3 mb-4" data-product="mejillones">
+                    <img src="mejillones.jpg" alt="mejillones" data-hover="mejillones2.jpg">
+                    <h2>mejillones</h2>
+                    <p>Precio: $6.10/kg</p>
+                    <button class="order-button">ORDENAR</button>
+                </article>
+                <article class="item col-sm-6 col-md-4 col-lg-3 mb-4" data-product="calamares">
+                    <img src="calamares2.jpg" alt="calamares" data-hover="calamares.jpg">
+                    <h2>Calamares</h2>
+                    <p>Precio: $33.20/kg</p>
+                    <button class="order-button">ORDENAR</button>
+                </article>
+                <article class="item col-sm-6 col-md-4 col-lg-3 mb-4" data-product="cangrejos">
+                    <img src="cangrejo.jpg" alt="cangrejos" data-hover="cangrejo2.jpg">
+                    <h2>Cangrejo</h2>
+                    <p>Precio: $36.20/kg</p>
+                    <button class="order-button">ORDENAR</button>
+                </article>
+
+                <!-- SECCION DE PESCADOS FILETEADOS -->
+                <h1 id="Fileteados">Pescado Fileteados</h1>
+                <!-- AQUI SE HACE EL innerHTML -->
+
+            </section>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Menú de Ventas de Muelle Pesquero</p>
+    </footer>
+    <script src="modelo2.js"></script>
+</body>
+
+</html>

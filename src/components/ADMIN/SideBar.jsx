@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './sideBar.css'
 
 function SideBar({ setRoute }) {
+
+    const handleRouteChange = (route) => {
+        setRoute(route);
+        sessionStorage.setItem('currentRoute', route);
+      };
+
+    useEffect(() => {
+        const savedRoute = sessionStorage.getItem('currentRoute');
+        if (savedRoute) {
+            setRoute(savedRoute);
+        }
+      }, [setRoute]);
 
     return (
         <aside id='sidebar' className='sidebar'>
@@ -9,7 +21,7 @@ function SideBar({ setRoute }) {
                 <li className='nav-item'>
                     <a 
                         className='nav-link'
-                        onClick={() => setRoute('Admin Dashboard')}
+                        onClick={() => handleRouteChange('Admin Dashboard')}
                     >
                         <i className='bi bi-speedometer'></i>
                         <span>Dashboard</span> 
@@ -21,7 +33,7 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        onClick={() => setRoute('Admin Alimentos')}
+                        onClick={() => handleRouteChange('Admin Alimentos')}
                     >
                         <i className="fa-solid fa-fish"></i>
                         <span>Alimentos</span>
@@ -33,7 +45,7 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        onClick={() => setRoute('Admin Herramientas')}
+                        onClick={() => handleRouteChange('Admin Herramientas')}
                     >
                         <i className="bi bi-tools"></i>
                         <span>Herramientas</span>
@@ -45,7 +57,7 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        onClick={() => setRoute('Admin Transacciones')}
+                        onClick={() => handleRouteChange('Admin Transacciones')}
                     >
                         <i className="bi bi-cash-coin"></i>
                         <span>Transacciones</span>
@@ -57,7 +69,7 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        onClick={() => setRoute('Admin Clientes')}
+                        onClick={() => handleRouteChange('Admin Clientes')}
                     >
                         <i className="bi bi-people-fill"></i>
                         <span>Clientes</span>
@@ -69,7 +81,7 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        onClick={() => setRoute('Admin Maquinaria')}
+                        onClick={() => handleRouteChange('Admin Maquinaria')}
                     >
                         <i className="fa-solid fa-ship"></i>
                         <span>Maquinaria</span>
@@ -81,10 +93,45 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        onClick={() => setRoute('Admin Nomina')}
+                        onClick={() => handleRouteChange('Admin Mantenimiento')}
                     >
-                        <i className="fa-solid fa-id-card-clip"></i>
-                        <span>Nómina</span>
+                        <i className="bi bi-hammer"></i>
+                        <span>Mantenimiento</span>
+                    </a>
+                </li>
+                <li className='nav-item'>
+                    <a 
+                        className='nav-link collapsed'
+                        data-bs-target="#components-nav"
+                        data-bs-toggle="collapsed"
+                        href='modules/produccion/formulario.html'
+                    >
+                        <i className="bi bi-house-gear-fill"></i>
+                        <span>Producción</span>
+                    </a>
+                </li>
+
+                <li className='nav-item'>
+                    <a 
+                        className='nav-link collapsed'
+                        data-bs-target="#components-nav"
+                        data-bs-toggle="collapsed"
+                        href='modules/compras/index.html'
+                    >
+                        <i className="bi bi-bag-fill"></i>
+                        <span>Compras</span>
+                    </a>
+                </li>
+
+                <li className='nav-item'>
+                    <a 
+                        className='nav-link collapsed'
+                        data-bs-target="#components-nav"
+                        data-bs-toggle="collapsed"
+                        onClick={() => handleRouteChange('Cliente Inicio')}
+                    >
+                        <i className="bi bi-box-arrow-left"></i>
+                        <span>Salir</span>
                     </a>
                 </li>
             </ul>

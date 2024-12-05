@@ -5,7 +5,7 @@ function NavBar({ setRoute }) {
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-      const savedRoute = localStorage.getItem('currentRoute');
+      const savedRoute = sessionStorage.getItem('currentRoute');
       if (savedRoute) {
           setRoute(savedRoute);
       }
@@ -18,7 +18,7 @@ function NavBar({ setRoute }) {
 
     const handleRouteChange = (route) => {
       setRoute(route);
-      localStorage.setItem('currentRoute', route);
+      sessionStorage.setItem('currentRoute', route);
     };
 
   return (
@@ -31,14 +31,9 @@ function NavBar({ setRoute }) {
                 INICIO
                 </li>
                 <li
-                onClick={() => handleRouteChange('Cliente')}
+                onClick={() => handleRouteChange('Cliente Compras')}
                 >
                 CATÁLOGO
-                </li>
-                <li
-                onClick={() => handleRouteChange('Cliente')}
-                >
-                NOSOTROS
                 </li>
                 <li
                 onClick={() => handleRouteChange('Cliente')}

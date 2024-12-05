@@ -20,9 +20,9 @@ function Nomina() {
   }, []);
 
   return (
-    <div class="container">
+    <div class="contenedor-tabla">
     <h1>Nómina de Empleados</h1>
-    <table id="alimentos">
+    <table id="nomina">
         <thead>
             <tr>
                 <th>Nombre</th>

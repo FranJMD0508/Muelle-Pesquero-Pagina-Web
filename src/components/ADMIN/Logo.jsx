@@ -2,8 +2,13 @@ import React from 'react'
 import './logo.css'
 
 function Logo() {
+
     const handleToggleSideBar = () => {
         document.body.classList.toggle('toggle-sidebar');
+    };
+
+    const handleBlur = () => {
+        document.body.classList.remove('toggle-sidebar');
     };
 
     return (
@@ -11,6 +16,8 @@ function Logo() {
                         <i
                 className="bi bi-list toggle-sidebar-btn"
                 onClick={handleToggleSideBar}
+                onBlur={handleBlur}
+                tabIndex="0"
             ></i>
             <a href='/' className='logo d-flex align-items-center'>
                 {/* <img src="" alt=""/> */}

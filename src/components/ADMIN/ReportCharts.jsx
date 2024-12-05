@@ -46,6 +46,10 @@ function ReportCharts({ filter }) {
             },
           },
         },
+        xaxis: {
+          type: 'datetime',
+          categories: [],
+        },
         tooltip: {
           x: {
             format: 'dd/MM/yy HH:mm',
@@ -54,7 +58,7 @@ function ReportCharts({ filter }) {
       },
     });
 
-    const fetchTransacciones = (array) => {
+    const fetchTransacciones = () => {
       fetch(config.apiUrl + "transacciones", {
         method: "get",
         headers: new Headers({
@@ -62,15 +66,87 @@ function ReportCharts({ filter }) {
         }),
       })
         .then(response => response.json())
-        .then(data => {
-          procesarTransacciones(data.data,array);
+        .then(dataTran => {
+
+          let arrayTransacciones = [];
+
+          arrayTransacciones = dataTran.data
+          arrayTransacciones.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+
+          procesarTransacciones(arrayTransacciones);
+        })
+        .catch(e => console.log(e.message));
+    }
+    
+    const fetchClientes = (array) => {
+      fetch(config.apiUrl + "factura/ventas", {
+        method: "get",
+        headers: new Headers({
+          "ngrok-skip-browser-warning": "69420",
+        }),
+      })
+        .then(response => response.json())
+        .then(dataClien => {
+
+          let arrayClientes = [];
+
+          arrayClientes = dataClien.data
+          arrayClientes.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+
+          procesarClientes(arrayClientes, array);
         })
         .catch(e => console.log(e.message));
     }
 
-    const procesarTransacciones = (transacciones, array) => {
-        array.length = 0;
-        const ganancias = transacciones.reduce((acc, transaccion) => {
+    const procesarClientes = (arrayClientes, array) => {
+      array.length = 0;
+      const clientes = arrayClientes.reduce((acc, cliente) => {
+        const fecha = new Date(cliente.fecha).toISOString().split('T')[0]; 
+
+        if (!acc[fecha]) {
+          acc[fecha] = 0;
+        }
+        if (array.includes(cliente.cedula_cliente) === false) {
+          acc[fecha] += 1;
+          array.push(cliente.cedula_cliente);
+        }
+        return acc;
+      }, {});
+
+      const clientesData = Object.keys(clientes).map(fecha => ({
+        x: fecha,
+        y: clientes[fecha],
+
+      }));
+
+      let newSeries, newColors, newCategories;
+
+      newSeries = [
+          {
+              name: 'Clientes',
+              data: clientesData
+          },
+      ];
+      newColors = ['#ff771d'];
+      newCategories = clientesData.map(fecha => fecha.x);
+
+      setData(prevData => ({
+        ...prevData,
+        series: newSeries,
+        options: {
+          ...prevData.options,
+          xaxis: {
+            ...prevData.options.xaxis,
+            categories: newCategories,
+          },
+          colors: newColors,
+        },
+      }));
+    }
+    
+
+    const procesarTransacciones = (arrayTransacciones) => {
+        const ganancias = arrayTransacciones.reduce((acc, transaccion) => {
           const fecha = new Date(transaccion.fecha).toISOString().split('T')[0]; 
           const monto = transaccion.tipo === 'ingreso' ? parseFloat(transaccion.monto) : -parseFloat(transaccion.monto);
           if (!acc[fecha]) {
@@ -80,27 +156,13 @@ function ReportCharts({ filter }) {
           return acc;
         }, {});
 
-        const ventas = transacciones.reduce((acc, transaccion) => {
+        const ventas = arrayTransacciones.reduce((acc, transaccion) => {
           const fecha = new Date(transaccion.fecha).toISOString().split('T')[0]; 
           const nventas = transaccion.tipo === 'ingreso' ? 1 : 0;
           if (!acc[fecha]) {
             acc[fecha] = 0;
           }
           acc[fecha] += nventas;
-          return acc;
-        }, {});
-
-        const clientes = transacciones.reduce((acc, transaccion) => {
-          const fecha = new Date(transaccion.fecha).toISOString().split('T')[0]; 
-          const nclientes = transaccion.tipo === 'ingreso' ? 1 : 0;
-
-          if (!acc[fecha]) {
-            acc[fecha] = 0;
-          }
-          if (array.includes(transaccion.cedula_cliente) === false) {
-            acc[fecha] += nclientes;
-            array.push(transaccion.cedula_cliente);
-          }
           return acc;
         }, {});
     
@@ -115,13 +177,6 @@ function ReportCharts({ filter }) {
             y: ventas[fecha],
             
           }));
-
-        const clientesData = Object.keys(clientes).map(fecha => ({
-            x: fecha,
-            y: clientes[fecha],
-            
-          }));
-          console.log("Ganancia: ", gananciaData.map(fecha => fecha.x));
 
           let newSeries, newColors, newCategories;
           if (filter === 'Ventas' || filter === "Ventas") {
@@ -144,16 +199,6 @@ function ReportCharts({ filter }) {
               newColors = ['#2eca6a'];
               newCategories = gananciaData.map(fecha => fecha.x);
           }
-          else if (filter === 'Clientes' || filter === "Clientes") {
-              newSeries = [
-                  {
-                      name: 'Clientes',
-                      data: clientesData
-                  },
-              ];
-              newColors = ['#ff771d'];
-              newCategories = clientesData.map(fecha => fecha.x);
-          }
 
           setData(prevData => ({
             ...prevData,
@@ -171,7 +216,12 @@ function ReportCharts({ filter }) {
 
     useEffect(() => {
         const clientes = []
-        fetchTransacciones(clientes);
+        if (filter === 'Ventas' || filter === "Ventas" || filter === 'Ganancias' || filter === "Ganancias") {
+          fetchTransacciones();
+        }
+        else if (filter === 'Clientes'){
+          fetchClientes(clientes);
+        }
     }, [filter]);
 
   return (
