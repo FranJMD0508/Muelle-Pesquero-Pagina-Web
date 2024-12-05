@@ -28,28 +28,35 @@ const actionNew = () => {
         </div>
       </div>
     </fieldset>
-
     <!-- Productos a Facturar -->
     <fieldset class="border p-3 mb-4">
-      <legend class="w-auto">Productos</legend>
-      <div id="productos">
+    <legend class="w-auto">Productos</legend>
+    <div id="productos">
         <div class="row g-3 mb-3">
-          <div class="col-md-6">
-            <label for="producto1" class="form-label">Descripción del Producto</label>
-            <input type="text" class="form-control" id="producto1" placeholder="Ej: Chocolate" required>
-          </div>
-          <div class="col-md-3">
-            <label for="cantidad1" class="form-label">Cantidad</label>
-            <input type="number" class="form-control" id="cantidad1" min="1" required>
-          </div>
-          <div class="col-md-3">
-            <label for="precio1" class="form-label">Precio Unitario</label>
-            <input type="number" class="form-control" id="precio1" min="0" step="0.01" placeholder="0.00" required>
-          </div>
+            <div class="col-md-6">
+                <label for="tipoProducto" class="form-label">Tipo de Producto</label>
+                <select class="form-control" id="tipoProducto" required>
+                    <option value="">Seleccione un tipo</option>
+                    <option value="Herramienta">Herramienta</option>
+                    <option value="Material para muelle">Material para muelle</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="producto1" class="form-label">Descripción del Producto</label>
+                <input type="text" class="form-control" id="producto1" placeholder="Ej: Chocolate" required>
+            </div>
+            <div class="col-md-3">
+                <label for="cantidad1" class="form-label">Cantidad</label>
+                <input type="number" class="form-control" id="cantidad1" min="1" required>
+            </div>
+            <div class="col-md-3">
+                <label for="precio1" class="form-label">Precio Unitario</label>
+                <input type="number" class="form-control" id="precio1" min="0" step="0.01" placeholder="0.00" required>
+            </div>
         </div>
-      </div>
-      <button type="button" class="btn btn-success btn-sm" id="addProduct">Añadir Producto</button>
-    </fieldset>
+    </div>
+    <button type="button" class="btn btn-success btn-sm" id="addProduct">Añadir Producto</button>
+</fieldset>
 
     <!-- Resumen -->
     <fieldset class="border p-3 mb-4">
@@ -76,7 +83,8 @@ const actionNew = () => {
 
     MODAL.setContent(MODAL_TITLES.new, bodyContent, footerContent);
     MODAL.show();
-    document.getElementById('productos').addEventListener('input', function(e) {
+
+document.getElementById('productos').addEventListener('input', function(e) {
     if (e.target.id.startsWith('cantidad') || e.target.id.startsWith('precio')) {
         calcularTotales();
     }
@@ -125,11 +133,88 @@ document.getElementById('addProduct').addEventListener('click', function() {
 
 }
 
+const actionSaveNew = async () => {
+    try {
+        // Get base form data
+        const baseFormData = {
+            numero_factura: 'FC' + Math.random().toString().slice(2, 8),
+            nombre_cliente: document.getElementById('nombreProveedor').value,
+            cedula_rif: document.getElementById('cedula').value,
+            email: document.getElementById('emailProveedor').value,
+            telefono: document.getElementById('telefonoProveedor').value,
+            direccion: document.getElementById('direccionProveedor').value,
+            fecha: new Date().toISOString()
+        };
 
-const actionSaveNew = () => {
-    alert("Hago solicitud a mi api y guardo los datos");
-    MODAL.hide();
-}
+        const requiredBaseFields = ['nombre_cliente', 'cedula_rif', 'email', 'telefono', 'direccion'];
+        const emptyBaseFields = requiredBaseFields.filter(field => !baseFormData[field]);
+
+        if (emptyBaseFields.length > 0) {
+            throw new Error(`Por favor complete los campos requeridos: ${emptyBaseFields.join(', ')}`);
+        }
+
+        const productosContainer = document.getElementById('productos');
+        const productRows = productosContainer.getElementsByClassName('row');
+        const productos = [];
+
+        for (let i = 0; i < productRows.length; i++) {
+            const productoId = i + 1;
+            const descripcion = document.getElementById(`producto${productoId}`).value;
+            const cantidad = document.getElementById(`cantidad${productoId}`).value;
+            const precioUnitario = document.getElementById(`precio${productoId}`).value;
+
+            if (descripcion && cantidad && precioUnitario) {
+                productos.push({
+                    descripcion_producto: descripcion,
+                    cantidad: parseInt(cantidad),
+                    precio_unitario: parseFloat(precioUnitario).toFixed(2),
+                    total: (parseInt(cantidad) * parseFloat(precioUnitario)).toFixed(2)
+                });
+            }
+        }
+
+        if (productos.length === 0) {
+            throw new Error('Debe agregar al menos un producto');
+        }
+
+        const formData = {
+            ...baseFormData,
+            tipo_producto: "Producto", 
+            descripcion_producto: productos[0].descripcion_producto,
+            cantidad: productos[0].cantidad,
+            precio_unitario: productos[0].precio_unitario,
+            total: document.getElementById('total').value
+        };
+
+        // Make API call
+        const response = await fetch('https://affd-168-194-111-17.ngrok-free.app/Api/factura/compras', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        alert(`Factura guardada`);
+
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById('modalForm'));
+        modal.hide();
+
+
+
+    } catch (error) {
+        console.error('Error:', error);
+        alert(`Error al guardar la factura: ${error.message}`);
+    }
+};
+
 
 const actionEdit = (id) => {
     const bodyContent = `Datos de factura nro ${id}`;
