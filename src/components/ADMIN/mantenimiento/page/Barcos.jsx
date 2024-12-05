@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
 import CardMantenimiento from "../CardMantenimiento"
-import './barcos.css'
 
-const API = 'https://affd-168-194-111-17.ngrok-free.app/Api/Embarcacion'
+const API = 'https://affd-168-194-111-17.ngrok-free.app/Api/Embarcacion'; // Asegúrate de que el endpoint esté correcto
 const Barcos = () => {
   const [datos, setDatos] = useState([]);
 
   const getDatos = async () => {
-      fetch(API, {
-        method: "get",
-        headers: new Headers({
-          "ngrok-skip-browser-warning": "69420",
-        }),
-      })
+    fetch(API, {
+      method: "get",
+      headers: new Headers({
+        "ngrok-skip-browser-warning": "69420",
+      }),
+    })
       .then(response => response.json())
       .then(data => {
         setDatos(data.data)

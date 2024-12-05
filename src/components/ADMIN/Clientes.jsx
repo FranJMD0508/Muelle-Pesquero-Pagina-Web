@@ -25,10 +25,10 @@ function Clientes() {
         <table id="clientes">
             <thead>
                 <tr>
-                    <th>Cedula</th>
+                    <th>Cédula</th>
                     <th>Nombre</th>
                     <th>Email</th>
-                    <th>Telefono</th>
+                    <th>Teléfono</th>
                     <th>Contraseña</th>
                 </tr>
             </thead>

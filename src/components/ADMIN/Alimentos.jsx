@@ -6,7 +6,7 @@ function Alimentos() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch(config.apiUrl + "pescados", {
+    fetch(config.apiUrl + "inventario/pescado", {
       method: "get",
       headers: new Headers({
         "ngrok-skip-browser-warning": "69420",
@@ -33,22 +33,32 @@ function Alimentos() {
     <table id="alimentos">
         <thead>
             <tr>
-                <th>Código</th>
+                <th>ID Producto</th>
+                <th>ID Lote</th>
+                <th>Clasificación</th>
                 <th>Nombre</th>
-                <th>Cantidad (Kg)</th>
-                <th>Fecha de entrada</th>
+                <th>Cantidad (kg)</th>
+                <th>Fecha de ingreso</th>
                 <th>Fecha de caducidad</th>
+                <th>Estado</th>
+                <th>Proceso</th>
+                <th>Embarcación de origen</th>
             </tr>
         </thead>
           <tbody>
                 {
                   data.map(producto => (
-                    <tr key={producto.id}>
-                        <td>{producto.codigo_pescado}</td>
-                        <td>{producto.pescado}</td>
-                        <td>{producto.cantidad_pescado}</td>
-                        <td>{formatDate(producto.fecha_entrada)}</td>
+                    <tr key={producto.id_pescado}>
+                        <td>{producto.id_pescado}</td>
+                        <td>{producto.id_lote}</td>
+                        <td>{producto.clasificacion}</td>
+                        <td>{producto.nombre}</td>
+                        <td>{producto.peso}</td>
+                        <td>{formatDate(producto.fecha_ingreso)}</td>
                         <td>{formatDate(producto.fecha_caducidad)}</td>
+                        <td>{producto.estado}</td>
+                        <td>{producto.proceso}</td>
+                        <td>{producto.id_embarcacion}</td>
                     </tr>
                   ))
                 }

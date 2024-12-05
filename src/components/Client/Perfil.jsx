@@ -86,8 +86,6 @@ function Perfil({ setRoute }) {
             sessionStorage.setItem('currentRoute', 'Cliente Compras');
             setRoute('Cliente Compras');
             alert('Bienvenido de vuelta');
-          } else {
-            alert('Credenciales incorrectas');
           }
         }
         catch (error) {

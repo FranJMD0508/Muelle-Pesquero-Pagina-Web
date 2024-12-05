@@ -93,18 +93,6 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        onClick={() => handleRouteChange('Admin Nómina')}
-                    >
-                        <i className="fa-solid fa-id-card-clip"></i>
-                        <span>Nómina</span>
-                    </a>
-                </li>
-
-                <li className='nav-item'>
-                    <a 
-                        className='nav-link collapsed'
-                        data-bs-target="#components-nav"
-                        data-bs-toggle="collapsed"
                         onClick={() => handleRouteChange('Admin Mantenimiento')}
                     >
                         <i className="bi bi-hammer"></i>

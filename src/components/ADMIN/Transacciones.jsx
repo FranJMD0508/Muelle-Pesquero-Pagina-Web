@@ -38,9 +38,8 @@ function Transacciones() {
                 <th>Monto ($)</th>
                 <th>Fecha</th>
                 <th>Descripción</th>
-                <th>Producto</th>
-                <th>Cliente</th>
-                <th>Cédula</th>
+                <th>Número de Factura Compras</th>
+                <th>Número de Factura Ventas</th>
             </tr>
         </thead>
           <tbody>
@@ -53,9 +52,8 @@ function Transacciones() {
                         <td>{pago.monto}</td>
                         <td>{formatDate(pago.fecha)}</td>
                         <td>{pago.descripcion}</td>
-                        <td>{pago.codigo_pescado}</td>
-                        <td>{pago.nombre_cliente}</td>
-                        <td>{pago.cedula_cliente}</td>
+                        <td>{pago.numero_factura_compras}</td>
+                        <td>{pago.numero_factura_ventas}</td>
                     </tr>
                     ))
                   : <tr><td colSpan='9' className='text-center'>No hay datos</td></tr>
