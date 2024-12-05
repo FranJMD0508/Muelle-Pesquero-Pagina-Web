@@ -26,7 +26,6 @@
     display: block;
     margin: auto;
     transition: all 0.2s ease;
-    cursor: pointer;
     object-fit: contain;
 }
 
@@ -144,6 +143,9 @@
         width: 100%;
         height: 100%;
         object-fit: contain;
+    }
+    .info h4, .info h5, .info .bi, .info span{ 
+        font-size: 6.5vmin;
     }
 
     .info h5{

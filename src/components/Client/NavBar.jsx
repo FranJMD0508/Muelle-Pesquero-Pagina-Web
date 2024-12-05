@@ -38,11 +38,6 @@ function NavBar({ setRoute }) {
                 <li
                 onClick={() => handleRouteChange('Cliente')}
                 >
-                NOSOTROS
-                </li>
-                <li
-                onClick={() => handleRouteChange('Cliente')}
-                >
                 CONTACTO
                 </li>
                 <li 

@@ -20,7 +20,6 @@ function ComercialMain({ route, setRoute }) {
         background: 'url(./assets/images/catalogo-slide.jpg)',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
-        backgroundAttachment: 'fixed',
       });
     } 
     else {
@@ -45,7 +44,7 @@ function ComercialMain({ route, setRoute }) {
       }
     }
     else if (route === 'Perfil') {
-      return <Perfil />
+      return <Perfil setRoute={setRoute}/>
     }
   }
 

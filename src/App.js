@@ -17,7 +17,7 @@ import ComercialFooter from './components/Client/ComercialFooter';
 import NavBar from './components/Client/NavBar';
 
 function App() {
-  const [route, setRoute] = useState('Admin Dashboard');
+  const [route, setRoute] = useState('Cliente Inicio');
   const ruta = route.split(' ');
 
   const renderContent = () => {
