@@ -13,10 +13,12 @@ function CarruselInfo() {
       </Carousel.Item>
       <Carousel.Item>
         <img className='d-block w-100' src='./assets/images/catalogo-slide.jpg' alt="Second slide" />
-        <div className='slide-texto'>
-          <h3>Nada como un buen catálogo</h3>
-          <p>Échale un vistazo a nuestra selección, solo para ti...</p>
-        </div>
+        <a href="/modules/ventas/estructura.html">
+          <div className='slide-texto'>
+            <h3>Nada como un buen catálogo</h3>
+            <p>Échale un vistazo a nuestra selección, solo para ti...</p>
+          </div>
+          </a>
       </Carousel.Item>
     </Carousel>
   );

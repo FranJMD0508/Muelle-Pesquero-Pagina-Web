@@ -7,14 +7,14 @@ function Perfil({ setRoute }) {
   const [formData, setFormData] = useState({
     nombre: '',
     cedula: '',
-    correo: '',
+    email: '',
     telefono: '',
     contrasena: ''
   });
 
   const [loginData, setLoginData] = useState({
-    correo: '',
-    contrasena: ''
+    correoInicio: '',
+    contrasenaInicio: ''
   });
 
   const toggleForm = () => {
@@ -38,6 +38,7 @@ function Perfil({ setRoute }) {
   };
 
   const handleSubmit = async (e) => {
+    console.log('Datos del formulario:', formData);
     e.preventDefault();
     try {
       const response = await fetch(config.apiUrl + "clientes", {
@@ -61,14 +62,37 @@ function Perfil({ setRoute }) {
     }
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    if (loginData.correo === 'admin@email.com' && loginData.contrasena === 'admin') {
-      sessionStorage.setItem('currentRoute', 'Admin Dashboard');
-      setRoute('Admin Dashboard');
-      
-    } else {
-      alert('Credenciales incorrectas');
+    console.log('Datos de inicio de sesión:', loginData); // Verifica los datos de inicio de sesión antes de enviarlos
+    try {
+      const response = await fetch(config.apiUrl + "clientes", {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420'
+        }
+      });
+        const result = await response.json();
+        const data = result.data;
+        if (loginData.correoInicio === 'admin@email.com' && loginData.contrasenaInicio === 'admin') {
+          sessionStorage.setItem('currentRoute', 'Admin Dashboard');
+          setRoute('Admin Dashboard');
+        }
+        else{
+          const user = data.find(user => user.email === loginData.correoInicio && user.contrasena === loginData.contrasenaInicio);
+          console.log('Usuario:', user);
+          if (user) {
+            sessionStorage.setItem('currentRoute', 'Cliente Compras');
+            setRoute('Cliente Compras');
+            alert('Bienvenido de vuelta');
+          } else {
+            alert('Credenciales incorrectas');
+          }
+        }
+    } catch (error) {
+      console.error('Error en el inicio de sesión:', error);
+      alert('Error en el inicio de sesión');
     }
   };
 
@@ -94,10 +118,10 @@ function Perfil({ setRoute }) {
         <h2>Inicia sesión aquí</h2>
         <form action="" id="iniciarForm" onSubmit={handleLoginSubmit}>
           <div className="inputbox">
-              <input type="email" id="correo" placeholder='Correo electrónico' value={loginData.correo} onChange={handleLoginChange} required />
+              <input type="email" id="correoInicio" placeholder='Correo electrónico' value={loginData.correoInicio} onChange={handleLoginChange} required />
           </div>
           <div className="inputbox">
-              <input type="password" id="contrasena" placeholder='Contraseña' value={loginData.contrasena} onChange={handleLoginChange} required />
+              <input type="password" id="contrasenaInicio" placeholder='Contraseña' value={loginData.contrasenaInicio} onChange={handleLoginChange} required />
           </div>
           <div className="opciones">
             <div id="recordarDiv">
@@ -120,13 +144,13 @@ function Perfil({ setRoute }) {
                 <input type="number" id="cedula" placeholder='Cédula' value={formData.cedula} onChange={handleChange} required />
             </div>
             <div className="inputbox">
-                <input type="email" id="correo" placeholder='Correo electrónico' value={formData.correo} onChange={handleChange} required />
+                <input type="email" id="email" placeholder='Correo electrónico' value={formData.email} onChange={handleChange} required />
             </div>
             <div className="inputbox">
                 <input type="text" id="telefono" placeholder='Teléfono' value={formData.telefono} onChange={handleChange} required />
             </div>
             <div className="inputbox">
-                <input type="password" id="password" placeholder='Contraseña' value={formData.password} onChange={handleChange} required />
+                <input type="password" id="contrasena" placeholder='Contraseña' value={formData.contrasena} onChange={handleChange} required />
             </div>
           </div>
           <button type="submit">Registrarse</button>

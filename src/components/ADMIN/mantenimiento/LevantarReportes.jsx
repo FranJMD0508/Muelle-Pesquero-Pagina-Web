@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import './levantarReportes.css'
 
-const API = 'https://8b95-190-120-250-84.ngrok-free.app/Api/Embarcacion'; // Asegúrate de que el endpoint esté correcto
+const API = 'https://affd-168-194-111-17.ngrok-free.app/Api/Embarcacion'; // Asegúrate de que el endpoint esté correcto
 
 const LevantarReportes = () => {
   const [datos, setDatos] = useState([]);

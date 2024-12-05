@@ -36,10 +36,6 @@ function ComercialFooter({ setRoute}) {
               <i className="bi bi-caret-right-fill"></i>
               Catálogo
             </a>
-            <a onClick={() => setRoute('Cliente Nosotros')}>
-              <i className="bi bi-caret-right-fill"></i>
-              Nosotros
-            </a>
             <a onClick={() => setRoute('Cliente Contacto')}>
               <i className="bi bi-caret-right-fill"></i>
               Contacto

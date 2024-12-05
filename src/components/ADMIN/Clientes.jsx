@@ -29,6 +29,7 @@ function Clientes() {
                     <th>Nombre</th>
                     <th>Email</th>
                     <th>Telefono</th>
+                    <th>Contraseña</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,6 +40,7 @@ function Clientes() {
                         <td>{cliente.nombre}</td>
                         <td>{cliente.email}</td>
                         <td>{cliente.telefono}</td>
+                        <td>{cliente.contrasena}</td>
                     </tr>
                     ))
                 }

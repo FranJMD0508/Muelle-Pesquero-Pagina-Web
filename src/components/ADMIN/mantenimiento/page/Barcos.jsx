@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import CardMantenimiento from "../CardMantenimiento"
 import './barcos.css'
 
-const API = 'https://8b95-190-120-250-84.ngrok-free.app/Api/Embarcacion'
+const API = 'https://affd-168-194-111-17.ngrok-free.app/Api/Embarcacion'
 const Barcos = () => {
   const [datos, setDatos] = useState([]);
 
