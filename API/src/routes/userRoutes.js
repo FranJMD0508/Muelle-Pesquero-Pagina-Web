@@ -60,7 +60,10 @@ import {
     deleteSolicitudVenta,
     getPescadoConMayoresIngresosEntreFechas,
     getClientesMasCocurridos,
-    getSolicitudPescadoById
+    getSolicitudPescadoById,
+    getAllMantenimiento,
+    updateMantenimiento,
+    createMantenimiento
 } from "../controller/userController.js";
 import { updateInventarioServiceByid } from "../models/userModel.js";
 
@@ -133,7 +136,10 @@ router.post("/Embarcacion",createEmbarcacion)
 router.put("/Embarcacion/:id",updateEmbarcacion)
 router.delete("/Embarcacion/:id",deleteEmbarcacion)
 
-
+//Mantenimiento 
+router.get("/mantenimiento", getAllMantenimiento)
+router.post("/mantenimiento", createMantenimiento)
+router.put("/mantenimiento/:id", updateMantenimiento)
 // Ruta para obtener el monto neto (si es necesario)
 router.get("/monto/total", getMontoNeto);               // Obtener el monto neto
 

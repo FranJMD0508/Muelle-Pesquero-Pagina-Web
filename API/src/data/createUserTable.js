@@ -114,6 +114,7 @@ export const createClienteTable = async () => {
     CREATE TABLE IF NOT EXISTS Clientes (
     id SERIAL PRIMARY KEY,               -- Identificador único de cliente (interno)
     nombre VARCHAR(100) NOT NULL,         -- Nombre del cliente
+    contrasena varchar(100) not null,     -- Contraseña de clientes
     cedula VARCHAR(100) UNIQUE NOT NULL,  -- Cédula del cliente (única, ya que cada cliente tiene una cédula única)
     email VARCHAR(100),                  -- Correo electrónico del cliente
     telefono VARCHAR(30),                -- Teléfono del cliente
@@ -244,6 +245,28 @@ export const createFacturaVentasTable = async () => {
     } catch (e) {
         console.log("Error al crear la tabla factura_ventas: ", e);
     }
+};
+
+export const createMantenimientoTable = async () => {
+    const queryText = ` 
+-- Crear la tabla solo si no existe
+    CREATE TABLE IF NOT EXISTS mantenimiento (
+    id SERIAL PRIMARY KEY,
+    fecha_solicitud VARCHAR(50),
+    fecha_programada VARCHAR(50),
+    area VARCHAR(50),
+    descripcion VARCHAR(50),
+    estado VARCHAR(50),
+    prioridad VARCHAR(50),
+    nombre_solicitante VARCHAR(50)
+    );
+`;
+try{
+    pool.query(queryText);
+    //console.log("Tabla Creada si no existe");
+}catch(e){
+    console.log("Error al crear la tabla: ",e);
+};
 };
 
 export const createTriggerEgresosCompras = async () => {

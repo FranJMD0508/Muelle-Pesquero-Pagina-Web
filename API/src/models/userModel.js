@@ -24,9 +24,13 @@ export const getAllSolicitudVentasService = async () => {
     return result.rows;
 };
 
-
 export const getAllNominaService = async () => {
     const result = await pool.query("SELECT * FROM Nomina");
+    return result.rows;
+};
+
+export const getAllMantenimientoService = async () => {
+    const result = await pool.query("SELECT * FROM mantenimiento");
     return result.rows;
 };
 
@@ -132,10 +136,10 @@ export const createInventarioService = async (codigo_producto, nombre_producto, 
     return result.rows[0];
 };
 
-export const createClienteService = async (nombre, cedula, email, telefono, direccion) => {
+export const createClienteService = async (nombre, contrasena,cedula, email, telefono, direccion) => {
     const result = await pool.query(
-        "INSERT INTO Clientes (nombre, cedula, email, telefono, direccion) VALUES ($1,$2,$3,$4,$5) RETURNING *",
-        [nombre, cedula, email, telefono, direccion]
+        "INSERT INTO Clientes (nombre, contrasena,cedula, email, telefono, direccion) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *",
+        [nombre,contrasena ,cedula, email, telefono, direccion]
     );
     return result.rows[0];
 };
@@ -196,8 +200,28 @@ export const createTransaccionesService = async (
     return result.rows[0];
 };
 
+export const createMantenimientoService = async (
+    fecha_solicitud,
+    fecha_programada,
+    area,
+    descripcion,
+    estado,
+    prioridad,
+    nombre_solicitante
+) => {
+    const result = await pool.query(
+        `INSERT INTO mantenimiento (fecha_solicitud, fecha_programada, area, descripcion, estado, prioridad, nombre_solicitante
+        ) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7) 
+        RETURNING *`,
+        [  fecha_solicitud, fecha_programada, area, descripcion, estado, prioridad, nombre_solicitante]
+    );
+    return result.rows[0];
+};
+
 
 export const createFacturaCompraService = async (
+    numero_factura,
     nombre_cliente,
     cedula_rif,
     email,
@@ -211,6 +235,7 @@ export const createFacturaCompraService = async (
 ) => {
     const result = await pool.query(
         `INSERT INTO factura_compras (
+            numero_factura,
             nombre_cliente,
             cedula_rif,
             email,
@@ -222,9 +247,9 @@ export const createFacturaCompraService = async (
             precio_unitario,
             total
         ) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,$10) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9,$10,$11) 
         RETURNING *`,
-        [
+        [   numero_factura,
             nombre_cliente,
             cedula_rif,
             email,
@@ -310,6 +335,16 @@ export const updateInventarioServiceByid = async (nombre_producto, tipo_producto
     return result.rows[0];
 };
 
+
+
+export const updateMantenimientoServiceByid = async (fecha_solicitud,fecha_programada,area,descripcion,estado,prioridad,nombre_solicitante,id) => {
+    const result = await pool.query(
+        "UPDATE mantenimiento SET fecha_solicitud = $1, fecha_programada = $2 , area = $3, descripcion = $4, estado = $5, prioridad = $6, nombre_solicitante = $7 WHERE id = $8 RETURNING *",
+        [fecha_solicitud,fecha_programada,area,descripcion,estado,prioridad,nombre_solicitante,id]
+    );
+    return result.rows[0];
+};
+
 export const updateEmbarcacionServiceByid = async (nombre, capacidad, tipo_embarcacion, estado, id_embarcacion) => {
     const result = await pool.query(
         "UPDATE embarcaciones SET nombre = $1, capacidad = $2, tipo_embarcacion = $3, estado = $4 WHERE id_embarcacion = $5 RETURNING *",
@@ -319,10 +354,10 @@ export const updateEmbarcacionServiceByid = async (nombre, capacidad, tipo_embar
 };
 
 
-export const updateClienteServiceByid = async (nombre, cedula, email, telefono, direccion, id) => {
+export const updateClienteServiceByid = async (nombre, contrasena,cedula, email, telefono, direccion, id) => {
     const result = await pool.query(
-        "UPDATE Clientes SET nombre = $1, cedula= $2, email = $3 , telefono = $4, direccion = $5 WHERE id= $6 RETURNING *",
-        [nombre, cedula, email, telefono, direccion, id]
+        "UPDATE Clientes SET nombre = $1, contrasena = $2, cedula= $3, email = $4 , telefono = $5, direccion = $6 WHERE id= $7 RETURNING *",
+        [nombre, contrasena,cedula, email, telefono, direccion, id]
     );
     return result.rows[0];
 };

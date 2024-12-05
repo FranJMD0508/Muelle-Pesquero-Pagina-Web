@@ -48,7 +48,10 @@ import {
     deleteFacturaVentasServiceByid,
     getPescadoConMayoresIngresosEntreFechasService,
     getClientesMasConcurridosService,
-    getSolicitudVentaByIdService} from "../models/userModel.js";
+    getSolicitudVentaByIdService,
+    getAllMantenimientoService,
+    createMantenimientoService,
+    updateMantenimientoServiceByid} from "../models/userModel.js";
 
 const handleResponse = (res,status,message,data = null) => {
     res.status(status).json({
@@ -129,6 +132,23 @@ export const createInventariopescado = async (req, res, next) => {
 };
 
 
+export const createMantenimiento = async (req, res, next) => {
+    const { fecha_solicitud, fecha_programada,area,descripcion,estado,prioridad,nombre_solicitante } = req.body;
+
+    try {
+        // Llamar al servicio para crear el registro de pescado en el inventario
+        const newPescado = await createMantenimientoService(
+            fecha_solicitud,fecha_programada,area,descripcion,estado,prioridad,nombre_solicitante
+        );
+        
+        // Responder con el pescado creado
+        return handleResponse(res, 201, "Mantenimiento creado con éxito", newPescado);
+    } catch (e) {
+        next(e);  // Manejo de errores
+    }
+};
+
+
 export const createInventario = async (req, res, next) => {
     const {codigo_producto,nombre_producto,tipo_producto,cantidad} = req.body;
 
@@ -149,9 +169,9 @@ export const createInventario = async (req, res, next) => {
 };
 
 export const createcliente = async (req, res, next) => {
-    const { nombre,cedula,email,telefono,direccion } = req.body;
+    const { nombre,contrasena,cedula,email,telefono,direccion } = req.body;
     try {
-        const newCliente = await createClienteService(nombre,cedula,email,telefono,direccion);
+        const newCliente = await createClienteService(nombre,contrasena,cedula,email,telefono,direccion);
         handleResponse(res, 201, "Cliente Creado Con Éxito", newCliente);
     } catch (e) {
         next(e);
@@ -332,6 +352,17 @@ export const getAllPescados = async (req,res,next) => {
         next(e);
     };
 };
+
+export const getAllMantenimiento = async (req,res,next) => {
+    try{
+        const Pescados = await getAllMantenimientoService();
+        handleResponse(res,200,"Mantenimiento Mostrados con Exito", Pescados);
+    }
+    catch(e){
+        next(e);
+    };
+};
+
 
 export const getAllInventarioPescados = async (req,res,next) => {
     try{
@@ -648,11 +679,24 @@ export const updateInventarioPescado = async (req, res, next) => {
 
 
 export const updateCliente = async (req,res,next) => {
-    const {nombre,cedula,email,telefono,direccion} = req.body
+    const {nombre,contrasena,cedula,email,telefono,direccion} = req.body
     try{
-        const updatePescado = await updateClienteServiceByid(nombre,cedula,email,telefono,direccion,req.params.id);
+        const updatePescado = await updateClienteServiceByid(nombre,contrasena,cedula,email,telefono,direccion,req.params.id);
         if(!updatePescado) return handleResponse(res,404,"Cliente no encontrado");
         handleResponse(res,200,"Cliente Actualizado Con exito",updatePescado)
+    }
+    catch(e){
+        next(e);
+    };
+};
+
+
+export const updateMantenimiento = async (req,res,next) => {
+    const {fecha_solicitud,fecha_programada,area,descripcion,estado,prioridad,nombre_solicitante} = req.body
+    try{
+        const updatePescado = await updateMantenimientoServiceByid(fecha_solicitud,fecha_programada,area,descripcion,estado,prioridad,nombre_solicitante,req.params.id);
+        if(!updatePescado) return handleResponse(res,404,"Cliente no encontrado");
+        handleResponse(res,200,"Mantenimiento Actualizado Con exito",updatePescado)
     }
     catch(e){
         next(e);
@@ -758,6 +802,8 @@ export const deleteEmbarcacion = async (req,res,next) => {
         next(e);
     };
 };
+
+
 
 
 export const deleteInventario = async (req,res,next) => {
