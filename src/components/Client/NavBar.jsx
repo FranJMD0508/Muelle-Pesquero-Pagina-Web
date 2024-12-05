@@ -31,7 +31,7 @@ function NavBar({ setRoute }) {
                 INICIO
                 </li>
                 <li
-                onClick={() => handleRouteChange('Cliente')}
+                onClick={() => handleRouteChange('Cliente Compras')}
                 >
                 CATÁLOGO
                 </li>

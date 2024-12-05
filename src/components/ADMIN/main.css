@@ -6,6 +6,16 @@
     transition: all 0.3s;
 }
 
+#mantenimiento{
+    position: relative;
+    margin-bottom: 38px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+    overflow: hidden;
+    z-index: 1;
+}
+
 @media (max-width: 1199px) {
     #main{
         padding: 20px;

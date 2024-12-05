@@ -81,10 +81,22 @@ function SideBar({ setRoute }) {
                         className='nav-link collapsed'
                         data-bs-target="#components-nav"
                         data-bs-toggle="collapsed"
-                        onClick={() => setRoute('Admin Nomina')}
+                        onClick={() => setRoute('Admin Nómina')}
                     >
                         <i className="fa-solid fa-id-card-clip"></i>
                         <span>Nómina</span>
+                    </a>
+                </li>
+
+                <li className='nav-item'>
+                    <a 
+                        className='nav-link collapsed'
+                        data-bs-target="#components-nav"
+                        data-bs-toggle="collapsed"
+                        onClick={() => setRoute('Admin Mantenimiento')}
+                    >
+                        <i className="bi bi-hammer"></i>
+                        <span>Mantenimiento</span>
                     </a>
                 </li>
             </ul>

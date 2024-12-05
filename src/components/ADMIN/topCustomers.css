@@ -1,0 +1,25 @@
+.dashboard .top-customers {
+    font-size: 14px;
+}
+
+.dashboard .top-customers .table thead {
+    background: #f6f6fe !important;
+}
+
+.dashboard .top-customers .table{
+    height: 150px;
+}
+
+.dashboard .top-customers .table thead th {
+    border: 0;
+    vertical-align: middle;
+}
+
+.dashboard .top-customers .table tbody td {
+    vertical-align: middle;
+}
+
+.dashboard .top-customers img{
+    border-radius: 5px;
+    max-width: 60px;
+}

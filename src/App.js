@@ -19,7 +19,6 @@ import NavBar from './components/Client/NavBar';
 function App() {
   const [route, setRoute] = useState('Cliente Inicio');
   const ruta = route.split(' ');
-  console.log(ruta);
 
   const renderContent = () => {
     if (ruta[0] === 'Cliente') {
@@ -27,7 +26,7 @@ function App() {
         <>
           <ComercialHeader />
           <NavBar setRoute={setRoute}/>
-          <ComercialMain route={ruta[1]}/>
+          <ComercialMain route={ruta[1]} />
           <ComercialFooter />
         </>
       );

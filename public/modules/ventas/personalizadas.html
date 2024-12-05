@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitud Personalizada</title>
+    <link rel="stylesheet" href="personalizada.css">
+</head>
+<body>
+    <header>
+        <h1>Solicitud Personalizada</h1>
+    </header>
+    <main>
+        <form id="solicitudForm">
+            <div class="form-group">
+                <label for="nombreCliente">Nombre del Cliente:</label>
+                <input type="text" id="nombreCliente" name="nombreCliente" placeholder="Nombre">
+                <label for="cedulaCliente">Cédula del Cliente:</label>
+                <input type="text" id="cedulaCliente" name="cedulaCliente" placeholder="Cédula">
+                <label for="fecha">Fecha de Solicitud:</label>
+                <input type="date" id="fecha" name="fecha">
+                <label for="telefono">Número de Teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" placeholder="Número de Teléfono">
+                <label for="email">Dirección de Correo:</label>
+                <input type="email" id="email" name="email" placeholder="Correo Electrónico">
+            </div>
+            <div class="form-group">
+                <label for="producto">Productos:</label>
+                <select id="producto" name="producto">
+                    <option value="atun">Atún</option>
+                    <option value="calamares">Calamares</option>
+                    <option value="cangrejos">Cangrejos</option>
+                    <option value="pargo">Pargo</option>
+                    <option value="merluza">Merluza</option>
+                    <option value="corvina">Corvina</option>
+                    <option value="dorado">Dorado</option>
+                    <option value="jurel">Jurel</option>
+                    <option value="langostas">Langostas</option>
+                    <option value="mejillones">Mejillones</option>
+                    <option value="robalo">Robalo</option>
+                    <option value="sardina">Sardina</option>
+                    <option value="trucha">Trucha</option>
+                </select>
+                <label for="cantidad">Peso a Solicitar (kg):</label>
+                <input type="number" id="cantidad" name="cantidad" step="0.01" placeholder="0.00" min="0.01">
+                <label for="precioUnitario">Precio Unitario:</label>
+                <span id="precioUnitario">15.00</span>
+            </div>
+            <button class="button">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">Guardar Solicitud</span>
+            </button>
+        </form>
+        <button id="vaciarAlmacenamiento" class="button">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+        </button>
+        <table id="tablaSolicitudes">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Cédula</th>
+                    <th>Producto</th>
+                    <th>Fecha</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Peso (kg)</th>
+                    <th>Precio Unitario</th>
+                    <th>Precio Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Las solicitudes se agregarán aquí -->
+            </tbody>
+        </table>
+    </main>
+    <footer>
+        <a class="button" href="/">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front">VOLVER AL MENU PRINCIPAL</span>
+        </a>
+        <p>&copy;2024 Solicitudes Personalizadas de Muelle Pesquero</p>
+    </footer>
+    <script src="solicitudes.js"></script>
+</body>
+</html>
+

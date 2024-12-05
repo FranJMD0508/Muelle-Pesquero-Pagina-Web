@@ -20,9 +20,9 @@ function Herramientas() {
   }, []);
 
   return (
-    <div class="container">
+    <div class="contenedor-tabla">
     <h1>Inventario de Herramientas</h1>
-    <table id="alimentos">
+    <table id="herramientas">
         <thead>
             <tr>
                 <th>Código</th>

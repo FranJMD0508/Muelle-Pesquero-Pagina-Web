@@ -31,6 +31,7 @@ a:hover{
 /*Card*/
 
 .card{
+  position: relative;
   margin-bottom: 38px;
   border: none;
   border-radius: 5px;

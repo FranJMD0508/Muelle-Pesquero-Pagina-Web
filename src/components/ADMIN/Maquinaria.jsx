@@ -20,9 +20,9 @@ function Maquinaria() {
   }, []);
 
   return (
-    <div class="container">
+    <div class="contenedor-tabla">
     <h1>Inventario de Embarcaciones</h1>
-    <table id="alimentos">
+    <table id="maquinaria">
         <thead>
             <tr>
                 <th>Cantidad</th>

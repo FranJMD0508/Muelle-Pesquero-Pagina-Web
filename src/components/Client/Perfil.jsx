@@ -30,10 +30,10 @@ function Perfil() {
         <h2>Inicia sesión aquí</h2>
         <form action="" id="iniciarForm">
           <div class="inputbox">
-              <input type="text" id="correo" placeholder='Correo electrónico' required />
+              <input type="email" id="correo" placeholder='Correo electrónico' required />
           </div>
           <div class="inputbox">
-              <input type="text" id="password" placeholder='Contraseña' required />
+              <input type="password" id="password" placeholder='Contraseña' required />
           </div>
           <div className="opciones">
             <div id="recordarDiv">
@@ -52,13 +52,13 @@ function Perfil() {
               <input type="text" id="nombre" placeholder='Nombre' required />
           </div>
           <div class="inputbox">
-              <input type="text" id="cedula" placeholder='Cédula' required />
+              <input type="number" id="cedula" placeholder='Cédula' required />
           </div>
           <div class="inputbox">
-              <input type="text" id="correo" placeholder='Correo electrónico' required />
+              <input type="email" id="correo" placeholder='Correo electrónico' required />
           </div>
           <div class="inputbox">
-              <input type="text" id="password" placeholder='Contraseña' required />
+              <input type="password" id="password" placeholder='Contraseña' required />
           </div>
           <button type="submit">Registrarse</button>
         </form>

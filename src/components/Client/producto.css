@@ -103,6 +103,10 @@
     color: white;
 }
 
+.agregar:hover span{
+    color: white;
+}
+
 @keyframes saltar{
     0% {
         transform: scale(1);
