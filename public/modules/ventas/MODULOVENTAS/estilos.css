@@ -1,3 +1,7 @@
+:root {
+    --tema_pagina: rgba(18, 124, 196, 0.87);
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -15,12 +19,17 @@ body {
     margin-top: 70px !important;
 }
 
+.navbar-brand, .navbar-toggler-icon, .navbar-toggler, .navbar-collapse, .navbar-nav a{
+    color: #f5f6f7 !important;
+}
+
 .item {
     width: 220px !important;
     padding: 10px;
-    background-color: rgba(44, 124, 177, 0.349);
+    background-color: var(--tema_pagina) !important;
     border-radius: 5px;
     transition: 0.3s ease;
+    color: #f5f6f7 !important;
 }
 
 .item:hover {
@@ -43,7 +52,7 @@ body {
     width: 100%;
     position: fixed !important;
     top: 0;
-    background-color: #09f !important;
+    background-color: rgb(16, 121, 192) !important;
     color: #f5f6f7 !important;
     z-index: 2;
 }
@@ -77,23 +86,22 @@ body {
 }
 
 .order-button{
-    padding: 5px 12px;
+    padding: 4px 12px;
     font-size: 16px;
     color: #007bff;
-    background-color: #ffffff7c;
     border: 2px solid #007bff;
-    border-radius: 18px;
-    cursor: pointer;
+    background-color: #f5f6f7;
+    border-radius: 10px;
     transition: transform 0.5s ease, background-color 0.5s ease, color 0.5s ease;
 }
 
 .order-button:hover{
-    background-color: rgba(0, 153, 255, 0.521) ;
+    background-color: rgba(0, 153, 255, 0.521);
     color: #fff;
 }
 
 footer {
-    background-color: #09f;
+    background-color: var(--tema_pagina) !important;
     color: #fff;
     text-align: center;
     width: 100%;
@@ -104,7 +112,8 @@ footer p {
 }
 
 .compras {
-    background-color: #9dd0f2ef !important;
+    background-color: var(--tema_pagina) !important;
+    color: #f5f6f7 !important;
 }
 
 .contenedor-compras {
@@ -115,4 +124,17 @@ footer p {
     padding: 5px 10px;
     border: none;
     border-radius: 10px;
+}
+
+#lista-carrito {
+    list-style: none;
+}
+#lista-carrito li {
+    margin: 10px -40px 10px 0;
+}
+#lista-carrito li input{
+    width: 20%;
+    margin: 0px 20px;
+    border-radius: 10px;
+    padding: 2px 4px;
 }
